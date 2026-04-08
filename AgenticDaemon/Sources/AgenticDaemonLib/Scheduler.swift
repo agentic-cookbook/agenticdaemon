@@ -8,6 +8,7 @@ public actor Scheduler {
     )
     private let compiler = SwiftCompiler()
     private let runner = JobRunner()
+    private let analytics: any AnalyticsProvider
     private var scheduledJobs: [String: ScheduledJob] = [:]
     private nonisolated(unsafe) var runningProcesses: [String: Process] = [:]
     private let processLock = NSLock()
@@ -19,7 +20,9 @@ public actor Scheduler {
         public var isRunning: Bool = false
     }
 
-    public init() {}
+    public init(analytics: any AnalyticsProvider = LogAnalyticsProvider()) {
+        self.analytics = analytics
+    }
 
     public func syncJobs(discovered: [JobDescriptor]) {
         let discoveredNames = Set(discovered.map(\.name))
@@ -30,6 +33,7 @@ public actor Scheduler {
                 logger.info("Skipping disabled job: \(job.name)")
                 continue
             }
+            analytics.track(.jobDiscovered(name: job.name))
             compileIfNeeded(job: job)
             scheduledJobs[job.name] = ScheduledJob(
                 descriptor: job,
@@ -65,6 +69,8 @@ public actor Scheduler {
         for job in jobsToRun {
             let descriptor = job.descriptor
             Task.detached(priority: .utility) { [self] in
+                self.analytics.track(.jobStarted(name: descriptor.name))
+                let startTime = Date.now
                 let process = runner.launch(job: descriptor)
 
                 if let process {
@@ -76,6 +82,17 @@ public actor Scheduler {
 
                     _ = self.processLock.withLock {
                         self.runningProcesses.removeValue(forKey: descriptor.name)
+                    }
+
+                    let duration = Date.now.timeIntervalSince(startTime)
+                    let exitCode = process.terminationStatus
+
+                    if !process.isRunning && exitCode == 0 {
+                        self.analytics.track(.jobCompleted(name: descriptor.name, exitCode: exitCode, durationSeconds: duration))
+                    } else if duration >= descriptor.config.timeout {
+                        self.analytics.track(.jobTimedOut(name: descriptor.name, timeoutSeconds: descriptor.config.timeout))
+                    } else {
+                        self.analytics.track(.jobFailed(name: descriptor.name, exitCode: exitCode, durationSeconds: duration))
                     }
                 }
 
@@ -140,8 +157,11 @@ public actor Scheduler {
 
     private func compileIfNeeded(job: JobDescriptor) {
         guard compiler.needsCompile(job: job) else { return }
+        let start = Date.now
         do {
             try compiler.compile(job: job)
+            let duration = Date.now.timeIntervalSince(start)
+            analytics.track(.jobCompiled(name: job.name, durationSeconds: duration))
         } catch {
             logger.error("Compile failed for \(job.name): \(error)")
         }
