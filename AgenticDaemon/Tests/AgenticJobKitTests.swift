@@ -1,6 +1,6 @@
 import Testing
 import Foundation
-@testable import AgenticJobKit
+@testable import AgenticDaemonLib
 
 @Suite("AgenticJobKit")
 struct AgenticJobKitTests {

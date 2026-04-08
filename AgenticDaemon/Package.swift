@@ -27,7 +27,7 @@ let package = Package(
         ),
         .testTarget(
             name: "AgenticDaemonTests",
-            dependencies: ["AgenticDaemonLib", "AgenticJobKit"],
+            dependencies: ["AgenticDaemonLib"],
             path: "Tests"
         )
     ]

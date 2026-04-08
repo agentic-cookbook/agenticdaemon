@@ -1,14 +1,14 @@
 import Foundation
 
 /// Input provided by the daemon to a job when it runs.
-public struct JobRequest: Sendable {
+public struct JobRequest: Sendable, Codable {
     public let jobName: String
     public let jobDirectory: URL
     public let jobsDirectory: URL
     public let runReason: RunReason
     public let consecutiveFailures: Int
 
-    public enum RunReason: String, Sendable {
+    public enum RunReason: String, Sendable, Codable {
         case scheduled
         case triggered
     }

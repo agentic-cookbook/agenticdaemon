@@ -4,7 +4,7 @@ import Foundation
 ///
 /// All fields are optional. A job that returns `JobResponse()` uses
 /// the default scheduling from its `config.json`.
-public struct JobResponse: Sendable {
+public struct JobResponse: Sendable, Codable {
     /// Override the next run interval (seconds from now).
     public var nextRunSeconds: TimeInterval?
 
