@@ -12,13 +12,24 @@ echo "Building agentic-daemon..."
 cd "$PKG_DIR"
 swift build -c release
 
-BINARY=$(swift build -c release --show-bin-path)/agentic-daemon
+BIN_PATH=$(swift build -c release --show-bin-path)
+BINARY="$BIN_PATH/agentic-daemon"
 
 echo "Installing..."
 mkdir -p "$SUPPORT/jobs"
+mkdir -p "$SUPPORT/lib/Modules"
 mkdir -p "$LOGS"
+
+# Install daemon binary
 cp "$BINARY" "$SUPPORT/agentic-daemon"
 chmod 755 "$SUPPORT/agentic-daemon"
+
+# Install AgenticJobKit shared library + module for job compilation
+cp "$BIN_PATH/libAgenticJobKit.dylib" "$SUPPORT/lib/"
+for ext in swiftmodule swiftdoc abi.json swiftsourceinfo; do
+    src="$BIN_PATH/Modules/AgenticJobKit.$ext"
+    [ -f "$src" ] && cp "$src" "$SUPPORT/lib/Modules/"
+done
 
 # Expand $HOME in plist and install
 sed "s|\${HOME}|$HOME|g" "$PLIST_SRC" > "$PLIST_DST"
@@ -32,6 +43,7 @@ launchctl bootstrap "gui/$(id -u)" "$PLIST_DST"
 echo ""
 echo "Installed: $LABEL"
 echo "  Binary:  $SUPPORT/agentic-daemon"
+echo "  JobKit:  $SUPPORT/lib/libAgenticJobKit.dylib"
 echo "  Jobs:    $SUPPORT/jobs/"
 echo "  Logs:    $LOGS/"
 echo "  Plist:   $PLIST_DST"
