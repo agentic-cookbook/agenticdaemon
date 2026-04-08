@@ -100,10 +100,17 @@ def make_test_job():
 
     swift_source = f"""\
 import Foundation
-let marker = "{MARKER_PATH}"
-let timestamp = ISO8601DateFormatter().string(from: Date())
-let content = "e2e-ok \\(timestamp)"
-try! content.write(toFile: marker, atomically: true, encoding: .utf8)
+import AgenticJobKit
+
+class Job: AgenticJob {{
+    override func run(request: JobRequest) throws -> JobResponse {{
+        let marker = "{MARKER_PATH}"
+        let timestamp = ISO8601DateFormatter().string(from: Date())
+        let content = "e2e-ok \\(timestamp)"
+        try! content.write(toFile: marker, atomically: true, encoding: .utf8)
+        return JobResponse(message: "wrote marker")
+    }}
+}}
 """
     (job_dir / "job.swift").write_text(swift_source)
 
