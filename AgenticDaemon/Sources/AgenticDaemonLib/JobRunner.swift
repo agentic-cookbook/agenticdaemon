@@ -41,6 +41,7 @@ public struct JobRunner: Sendable {
 
         if timedOut {
             process.terminate()
+            process.waitUntilExit()
             logger.warning("Job \(name) timed out after \(timeout)s, terminated")
         }
 
