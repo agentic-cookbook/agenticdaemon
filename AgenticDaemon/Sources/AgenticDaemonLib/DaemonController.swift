@@ -13,6 +13,7 @@ public final class DaemonController: @unchecked Sendable {
     private let discovery: JobDiscovery
     private let crashTracker: CrashTracker
     private let crashReportCollector: CrashReportCollector
+    private let crashReportStore: CrashReportStore
     private let analytics: any AnalyticsProvider
     private var watcher: DirectoryWatcher?
     private var running = true
@@ -28,6 +29,7 @@ public final class DaemonController: @unchecked Sendable {
         let libDir = supportDirectory.appending(path: "lib")
         crashTracker = CrashTracker(stateDir: supportDirectory)
         crashReportCollector = CrashReportCollector(supportDirectory: supportDirectory)
+        crashReportStore = CrashReportStore(crashesDirectory: supportDirectory.appending(path: "crashes"))
         self.analytics = analytics
         scheduler = Scheduler(buildDir: libDir, crashTracker: crashTracker, analytics: analytics)
     }
@@ -53,11 +55,19 @@ public final class DaemonController: @unchecked Sendable {
                     signal: report.signal,
                     exceptionType: report.exceptionType
                 ))
+                do {
+                    try crashReportStore.save(report)
+                } catch {
+                    logger.error("Failed to save crash report: \(error)")
+                }
             }
             if reports.isEmpty {
                 logger.info("Crash detected for \(crashedJob) but no crash reports found")
             }
         }
+
+        // Clean up old crash reports
+        crashReportStore.cleanup(retentionDays: 30)
 
         await scheduler.recoverFromCrash()
 

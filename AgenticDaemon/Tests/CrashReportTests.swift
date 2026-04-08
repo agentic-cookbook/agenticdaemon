@@ -95,4 +95,97 @@ struct CrashReportTests {
         let reports = collector.collectPendingReports(crashedJobName: "some-job")
         #expect(reports.isEmpty)
     }
+
+    @Test("Crash report is persisted to disk as JSON")
+    func persistsReport() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+            .appending(path: "crash-persist-test-\(UUID().uuidString)")
+        let crashesDir = tempDir.appending(path: "crashes")
+        try FileManager.default.createDirectory(at: crashesDir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: tempDir) }
+
+        let report = CrashReport(
+            jobName: "bad-plugin",
+            timestamp: Date(timeIntervalSince1970: 1_700_000_000),
+            signal: "SIGSEGV",
+            exceptionType: "EXC_BAD_ACCESS",
+            faultingThread: 3,
+            stackTrace: [
+                CrashReport.StackFrame(symbol: "abort", imageOffset: 100, sourceFile: nil, sourceLine: nil)
+            ],
+            source: .plcrash
+        )
+
+        let store = CrashReportStore(crashesDirectory: crashesDir)
+        try store.save(report)
+
+        let files = try FileManager.default.contentsOfDirectory(
+            at: crashesDir, includingPropertiesForKeys: nil
+        ).filter { $0.pathExtension == "json" }
+        #expect(files.count == 1)
+    }
+
+    @Test("Persisted crash report is readable back")
+    func readsPersistedReport() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+            .appending(path: "crash-read-test-\(UUID().uuidString)")
+        let crashesDir = tempDir.appending(path: "crashes")
+        try FileManager.default.createDirectory(at: crashesDir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: tempDir) }
+
+        let report = CrashReport(
+            jobName: "bad-plugin",
+            timestamp: Date(timeIntervalSince1970: 1_700_000_000),
+            signal: "SIGABRT",
+            exceptionType: "EXC_CRASH",
+            faultingThread: 7,
+            stackTrace: nil,
+            source: .diagnosticReport
+        )
+
+        let store = CrashReportStore(crashesDirectory: crashesDir)
+        try store.save(report)
+
+        let loaded = store.loadAll()
+        #expect(loaded.count == 1)
+        #expect(loaded[0].jobName == "bad-plugin")
+        #expect(loaded[0].signal == "SIGABRT")
+        #expect(loaded[0].source == .diagnosticReport)
+    }
+
+    @Test("Cleanup removes reports older than retention period")
+    func cleansUpOldReports() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+            .appending(path: "crash-cleanup-test-\(UUID().uuidString)")
+        let crashesDir = tempDir.appending(path: "crashes")
+        try FileManager.default.createDirectory(at: crashesDir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: tempDir) }
+
+        // Write a report file manually with an old timestamp in the name
+        let oldFile = crashesDir.appending(path: "crash-2020-01-01T000000Z.json")
+        let report = CrashReport(
+            jobName: "ancient",
+            timestamp: Date(timeIntervalSince1970: 1_577_836_800),
+            signal: nil, exceptionType: nil, faultingThread: nil,
+            stackTrace: nil, source: .plcrash
+        )
+        let data = try JSONEncoder().encode(report)
+        try data.write(to: oldFile)
+
+        // Write a recent one
+        let store = CrashReportStore(crashesDirectory: crashesDir)
+        let recentReport = CrashReport(
+            jobName: "recent",
+            timestamp: Date.now,
+            signal: "SIGABRT", exceptionType: nil, faultingThread: nil,
+            stackTrace: nil, source: .plcrash
+        )
+        try store.save(recentReport)
+
+        store.cleanup(retentionDays: 30)
+
+        let remaining = store.loadAll()
+        #expect(remaining.count == 1)
+        #expect(remaining[0].jobName == "recent")
+    }
 }
