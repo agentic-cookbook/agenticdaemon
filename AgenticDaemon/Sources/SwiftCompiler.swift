@@ -1,0 +1,62 @@
+import Foundation
+import os
+
+struct SwiftCompiler: Sendable {
+    private let logger = Logger(
+        subsystem: "com.agentic-cookbook.daemon",
+        category: "SwiftCompiler"
+    )
+
+    func needsCompile(job: JobDescriptor) -> Bool {
+        let fm = FileManager.default
+        let binaryPath = job.binaryURL.path(percentEncoded: false)
+
+        guard fm.fileExists(atPath: binaryPath) else {
+            return true
+        }
+
+        guard let sourceDate = modificationDate(of: job.sourceURL),
+              let binaryDate = modificationDate(of: job.binaryURL) else {
+            return true
+        }
+
+        return sourceDate > binaryDate
+    }
+
+    func compile(job: JobDescriptor) throws {
+        let name = job.name
+        logger.info("Compiling \(name)...")
+
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
+        process.arguments = [
+            job.sourceURL.path(percentEncoded: false),
+            "-O",
+            "-o", job.binaryURL.path(percentEncoded: false)
+        ]
+
+        let stderrPipe = Pipe()
+        process.standardError = stderrPipe
+
+        try process.run()
+        process.waitUntilExit()
+
+        if process.terminationStatus != 0 {
+            let errorData = stderrPipe.fileHandleForReading.readDataToEndOfFile()
+            let errorOutput = String(data: errorData, encoding: .utf8) ?? "(no output)"
+            logger.error("Compile failed for \(name):\n\(errorOutput)")
+            throw CompileError.failed(job: name, output: errorOutput)
+        }
+
+        logger.info("Compiled \(name) successfully")
+    }
+
+    private func modificationDate(of url: URL) -> Date? {
+        let values = try? url.resourceValues(forKeys: [.contentModificationDateKey])
+        return values?.contentModificationDate
+    }
+}
+
+enum CompileError: Error {
+    case failed(job: String, output: String)
+}

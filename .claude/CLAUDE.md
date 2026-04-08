@@ -1,1 +1,37 @@
-# CLAUDE.md
+# agentic-daemon
+
+macOS user-space daemon that auto-compiles and schedules Swift job scripts.
+
+## Build
+
+```bash
+cd AgenticDaemon
+swift build              # debug
+swift build -c release   # release
+```
+
+## Project
+
+- **Language**: Swift 6, strict concurrency
+- **Target**: macOS 14+
+- **Bundle ID**: `com.agentic-cookbook.daemon`
+- **No UI** — headless daemon, no SwiftUI, no AppKit
+- **Logging**: `os.log` with subsystem `com.agentic-cookbook.daemon`, one Logger per component with its own category
+- **Install**: `./install.sh` builds, copies binary to `~/Library/Application Support/`, installs launchd plist
+- **Jobs directory**: `~/Library/Application Support/com.agentic-cookbook.daemon/jobs/`
+
+## Architecture
+
+Each source file is one concern:
+
+| File | Responsibility |
+|------|---------------|
+| `main.swift` | Entry point, signal handling |
+| `DaemonController.swift` | Wires watcher + scheduler, owns run loop |
+| `DirectoryWatcher.swift` | DispatchSource file system watcher with debounce |
+| `JobDiscovery.swift` | Scans jobs/, reads config.json |
+| `SwiftCompiler.swift` | Compiles .swift to .job-bin, mtime caching |
+| `JobRunner.swift` | Spawns Process, enforces timeout |
+| `Scheduler.swift` | Timer loop, per-job scheduling, job sync |
+| `Models/JobConfig.swift` | Codable config struct |
+| `Models/JobDescriptor.swift` | Job metadata struct |

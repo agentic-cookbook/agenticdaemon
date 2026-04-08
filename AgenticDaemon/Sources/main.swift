@@ -1,0 +1,20 @@
+import Foundation
+import os
+
+let logger = Logger(
+    subsystem: "com.agentic-cookbook.daemon",
+    category: "main"
+)
+
+let controller = DaemonController()
+
+signal(SIGTERM) { _ in
+    controller.shutdown()
+}
+
+signal(SIGINT) { _ in
+    controller.shutdown()
+}
+
+logger.info("agentic-daemon starting")
+controller.run()
