@@ -40,11 +40,12 @@ func makeDescriptor(
     config: JobConfig = .default
 ) -> JobDescriptor {
     let dir = parent.appending(path: name)
+    let moduleName = name.replacingOccurrences(of: "-", with: "_")
     return JobDescriptor(
         name: name,
         directory: dir,
         sourceURL: dir.appending(path: "job.swift"),
-        binaryURL: dir.appending(path: ".job-bin"),
+        binaryURL: dir.appending(path: "lib\(moduleName).dylib"),
         config: config
     )
 }
@@ -52,4 +53,27 @@ func makeDescriptor(
 /// Removes a temporary directory.
 func cleanupTempDir(_ url: URL) {
     try? FileManager.default.removeItem(at: url)
+}
+
+/// Returns a valid AgenticJob plugin source string.
+func validJobSource(body: String = "") -> String {
+    """
+    import Foundation
+    import AgenticJobKit
+
+    class Job: AgenticJob {
+        override func run(request: JobRequest) throws -> JobResponse {
+            \(body)
+            return JobResponse()
+        }
+    }
+    """
+}
+
+/// Finds the SPM build directory containing AgenticJobKit artifacts.
+/// Uses #filePath to locate Tests/ → package root → .build/debug/.
+func findBuildDir(file: String = #filePath) -> URL {
+    let testsDir = URL(fileURLWithPath: file).deletingLastPathComponent()
+    let packageRoot = testsDir.deletingLastPathComponent()
+    return packageRoot.appending(path: ".build/debug")
 }

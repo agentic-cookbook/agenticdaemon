@@ -91,7 +91,7 @@ struct JobDiscoveryTests {
         let job = jobs.first!
 
         #expect(job.sourceURL.lastPathComponent == "job.swift")
-        #expect(job.binaryURL.lastPathComponent == ".job-bin")
+        #expect(job.binaryURL.lastPathComponent == "libpath_test.dylib")
         #expect(job.directory.lastPathComponent == "path-test")
         cleanupTempDir(tmpDir)
     }

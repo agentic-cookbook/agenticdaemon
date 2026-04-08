@@ -35,11 +35,13 @@ public struct JobDiscovery: Sendable {
             }
 
             let config = loadConfig(from: entry)
+            let jobName = entry.lastPathComponent
+            let moduleName = jobName.replacingOccurrences(of: "-", with: "_")
             let descriptor = JobDescriptor(
-                name: entry.lastPathComponent,
+                name: jobName,
                 directory: entry,
                 sourceURL: sourceURL,
-                binaryURL: entry.appending(path: ".job-bin"),
+                binaryURL: entry.appending(path: "lib\(moduleName).dylib"),
                 config: config
             )
             jobs.append(descriptor)

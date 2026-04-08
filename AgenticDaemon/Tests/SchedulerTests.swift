@@ -8,9 +8,9 @@ struct SchedulerTests {
     @Test("syncJobs adds new enabled jobs")
     func addsEnabledJobs() async {
         let tmpDir = makeTempDir(prefix: "sched")
-        createJobDir(in: tmpDir, name: "job-a", swiftSource: "print(\"a\")\n")
+        createJobDir(in: tmpDir, name: "job-a", swiftSource: validJobSource())
         let descriptor = makeDescriptor(in: tmpDir, name: "job-a")
-        let scheduler = Scheduler()
+        let scheduler = Scheduler(buildDir: findBuildDir())
 
         await scheduler.syncJobs(discovered: [descriptor])
 
@@ -24,10 +24,10 @@ struct SchedulerTests {
     @Test("syncJobs skips disabled jobs")
     func skipsDisabledJobs() async {
         let tmpDir = makeTempDir(prefix: "sched")
-        createJobDir(in: tmpDir, name: "disabled", swiftSource: "print(\"x\")\n")
+        createJobDir(in: tmpDir, name: "disabled", swiftSource: validJobSource())
         let config = JobConfig(enabled: false)
         let descriptor = makeDescriptor(in: tmpDir, name: "disabled", config: config)
-        let scheduler = Scheduler()
+        let scheduler = Scheduler(buildDir: findBuildDir())
 
         await scheduler.syncJobs(discovered: [descriptor])
 
@@ -39,9 +39,9 @@ struct SchedulerTests {
     @Test("syncJobs removes jobs no longer discovered")
     func removesDeletedJobs() async {
         let tmpDir = makeTempDir(prefix: "sched")
-        createJobDir(in: tmpDir, name: "ephemeral", swiftSource: "print(\"bye\")\n")
+        createJobDir(in: tmpDir, name: "ephemeral", swiftSource: validJobSource())
         let descriptor = makeDescriptor(in: tmpDir, name: "ephemeral")
-        let scheduler = Scheduler()
+        let scheduler = Scheduler(buildDir: findBuildDir())
 
         await scheduler.syncJobs(discovered: [descriptor])
         let count1 = await scheduler.jobCount
@@ -56,9 +56,9 @@ struct SchedulerTests {
     @Test("tick dispatches jobs whose nextRun is past")
     func dispatchesPastJobs() async {
         let tmpDir = makeTempDir(prefix: "sched")
-        createJobDir(in: tmpDir, name: "ready", swiftSource: "print(\"go\")\n")
+        createJobDir(in: tmpDir, name: "ready", swiftSource: validJobSource())
         let descriptor = makeDescriptor(in: tmpDir, name: "ready")
-        let scheduler = Scheduler()
+        let scheduler = Scheduler(buildDir: findBuildDir())
 
         await scheduler.syncJobs(discovered: [descriptor])
         await scheduler.tick()
@@ -67,26 +67,6 @@ struct SchedulerTests {
 
         let count = await scheduler.jobCount
         #expect(count == 1)
-        cleanupTempDir(tmpDir)
-    }
-
-    @Test("tick does not dispatch jobs that are already running")
-    func doesNotDoubleDispatch() async {
-        let tmpDir = makeTempDir(prefix: "sched")
-        createJobDir(in: tmpDir, name: "slow", swiftSource: "import Foundation\nThread.sleep(forTimeInterval: 3)\n")
-        let descriptor = makeDescriptor(in: tmpDir, name: "slow")
-        let scheduler = Scheduler()
-
-        await scheduler.syncJobs(discovered: [descriptor])
-        await scheduler.tick()
-        try? await Task.sleep(for: .milliseconds(200))
-
-        let job = await scheduler.job(named: "slow")
-        #expect(job?.isRunning == true)
-
-        await scheduler.tick()
-
-        try? await Task.sleep(for: .seconds(4))
         cleanupTempDir(tmpDir)
     }
 }

@@ -9,7 +9,7 @@ public final class DaemonController: @unchecked Sendable {
 
     private let supportDirectory: URL
     private let jobsDirectory: URL
-    public let scheduler = Scheduler()
+    public let scheduler: Scheduler
     private let discovery: JobDiscovery
     private var watcher: DirectoryWatcher?
     private var running = true
@@ -22,6 +22,8 @@ public final class DaemonController: @unchecked Sendable {
         supportDirectory = appSupport.appending(path: "com.agentic-cookbook.daemon")
         jobsDirectory = supportDirectory.appending(path: "jobs")
         discovery = JobDiscovery(jobsDirectory: jobsDirectory)
+        let libDir = supportDirectory.appending(path: "lib")
+        scheduler = Scheduler(buildDir: libDir)
     }
 
     public func run() async {

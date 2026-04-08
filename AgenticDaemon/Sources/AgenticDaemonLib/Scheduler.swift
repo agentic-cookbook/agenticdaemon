@@ -6,7 +6,7 @@ public actor Scheduler {
         subsystem: "com.agentic-cookbook.daemon",
         category: "Scheduler"
     )
-    private let compiler = SwiftCompiler()
+    private let compiler: SwiftCompiler
     private let runner = JobRunner()
     private let analytics: any AnalyticsProvider
     private var scheduledJobs: [String: ScheduledJob] = [:]
@@ -20,7 +20,8 @@ public actor Scheduler {
         public var isRunning: Bool = false
     }
 
-    public init(analytics: any AnalyticsProvider = LogAnalyticsProvider()) {
+    public init(buildDir: URL, analytics: any AnalyticsProvider = LogAnalyticsProvider()) {
+        self.compiler = SwiftCompiler(buildDir: buildDir)
         self.analytics = analytics
     }
 
