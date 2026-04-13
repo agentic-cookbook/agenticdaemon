@@ -3,3 +3,6 @@
 .swiftpm/
 .superpowers/
 .claude/worktrees/
+
+# graphify output (generated)
+graphify-out/
