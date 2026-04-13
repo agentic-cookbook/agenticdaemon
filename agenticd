@@ -6,16 +6,21 @@ Commands:
     agenticd               # same as 'agenticd status'
     agenticd status        # daemon health + job summary
     agenticd jobs          # per-job details (next run, failures, running)
+    agenticd runs [job]    # job execution history (requires daemon running)
     agenticd crashes       # recent crash reports
     agenticd logs          # tail stdout + stderr logs
 
 Install: symlinked to /usr/local/bin/agenticd by install.sh
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess
 import sys
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,9 +30,21 @@ LOGS = Path.home() / "Library" / "Logs" / LABEL
 STATUS_FILE = SUPPORT / "status.json"
 CRASHES_DIR = SUPPORT / "crashes"
 BLACKLIST_FILE = SUPPORT / "blacklist.json"
+HTTP_BASE = "http://localhost:22846"
 
 
-# ── helpers ──────────────────────────────────────────────────────────────────
+# ── HTTP client ───────────────────────────────────────────────────────────────
+
+def _http_get(path: str) -> dict | list | None:
+    """Query the HTTP API. Returns parsed JSON or None on any failure."""
+    try:
+        with urllib.request.urlopen(f"{HTTP_BASE}{path}", timeout=2) as r:
+            return json.loads(r.read())
+    except Exception:
+        return None
+
+
+# ── helpers ───────────────────────────────────────────────────────────────────
 
 def _bold(s: str) -> str:
     return f"\033[1m{s}\033[0m"
@@ -45,7 +62,7 @@ def _red(s: str) -> str:
     return f"\033[31m{s}\033[0m"
 
 def _no_color() -> bool:
-    return not sys.stdout.isatty() or os.environ.get("NO_COLOR")
+    return not sys.stdout.isatty() or bool(os.environ.get("NO_COLOR"))
 
 def _fmt(fn, s: str) -> str:
     return s if _no_color() else fn(s)
@@ -118,11 +135,13 @@ def _load_crashes() -> list[dict]:
     return reports
 
 
-# ── commands ─────────────────────────────────────────────────────────────────
+# ── commands ──────────────────────────────────────────────────────────────────
 
 def cmd_status() -> None:
     pid = _daemon_pid()
-    status = _load_status()
+    http_health = _http_get("/health")
+    status = http_health or _load_status()
+    live = http_health is not None
     blacklist = _load_blacklist()
 
     # Daemon health line
@@ -141,8 +160,12 @@ def cmd_status() -> None:
     if status:
         uptime = _uptime_str(status.get("uptimeSeconds", 0))
         job_count = status.get("jobCount", 0)
-        last_tick = _rel_time(status.get("lastTick", ""))
-        print(f"  uptime: {uptime}  jobs: {job_count}  last tick: {last_tick}")
+        source = "" if live else _fmt(_dim, " (cached)")
+        if live:
+            print(f"  uptime: {uptime}  jobs: {job_count}")
+        else:
+            last_tick = _rel_time(status.get("lastTick", ""))
+            print(f"  uptime: {uptime}  jobs: {job_count}  last tick: {last_tick}{source}")
     else:
         if not pid:
             print()
@@ -173,6 +196,35 @@ def cmd_status() -> None:
 
 
 def cmd_jobs() -> None:
+    http_jobs = _http_get("/jobs")
+    if http_jobs is not None:
+        blacklist = _load_blacklist()
+        if not http_jobs:
+            print("No jobs discovered.")
+            print(_fmt(_dim, f"  Drop a job.swift into {SUPPORT / 'jobs'}/"))
+            return
+        print(_fmt(_bold, f"{'NAME':<24} {'NEXT RUN':<16} {'FAILURES':<10} {'STATE'}"))
+        print("─" * 64)
+        for job in sorted(http_jobs, key=lambda j: j["name"]):
+            name = job["name"]
+            next_run = _rel_time(job.get("nextRun", ""))
+            failures = job.get("consecutiveFailures", 0)
+            is_running = job.get("isRunning", False)
+            is_blacklisted = job.get("isBlacklisted", name in blacklist)
+            if is_blacklisted:
+                state = _fmt(_red, "blacklisted")
+            elif is_running:
+                state = _fmt(_green, "running")
+            elif failures > 0:
+                state = _fmt(_yellow, "backing off")
+            else:
+                state = _fmt(_dim, "idle")
+            fail_str = _fmt(_yellow, str(failures)) if failures > 0 else str(failures)
+            print(f"  {name:<22} {next_run:<16} {fail_str:<10} {state}")
+        print()
+        return
+
+    # Fall back to status.json
     status = _load_status()
     blacklist = _load_blacklist()
 
@@ -198,18 +250,50 @@ def cmd_jobs() -> None:
         failures = job.get("consecutiveFailures", 0)
         is_running = job.get("isRunning", False)
         is_blacklisted = name in blacklist
-
         if is_blacklisted:
             state = _fmt(_red, "blacklisted")
         elif is_running:
             state = _fmt(_green, "running")
         elif failures > 0:
-            state = _fmt(_yellow, f"backing off")
+            state = _fmt(_yellow, "backing off")
         else:
             state = _fmt(_dim, "idle")
-
         fail_str = _fmt(_yellow, str(failures)) if failures > 0 else str(failures)
         print(f"  {name:<22} {next_run:<16} {fail_str:<10} {state}")
+    print()
+
+
+def cmd_runs() -> None:
+    args = sys.argv[2:]
+    if args:
+        job_name = args[0]
+        data = _http_get(f"/jobs/{job_name}/runs")
+        title = f"Runs for {job_name}"
+    else:
+        data = _http_get("/runs")
+        title = "Recent runs (all jobs)"
+
+    if data is None:
+        print(_fmt(_yellow, "HTTP API unavailable — run history requires the daemon to be running."))
+        return
+
+    if not data:
+        print("No runs recorded yet.")
+        return
+
+    print(_fmt(_bold, title))
+    print(_fmt(_bold, f"{'TIME':<16} {'JOB':<24} {'DURATION':<12} RESULT"))
+    print("─" * 68)
+    for r in data:
+        ts = _rel_time(r.get("startedAt", ""))
+        job = r.get("jobName", "?")
+        dur = f"{r.get('durationSeconds', 0):.2f}s"
+        success = r.get("success", False)
+        result = _fmt(_green, "ok") if success else _fmt(_red, "failed")
+        err = r.get("errorMessage", "")
+        if err:
+            result += _fmt(_dim, f"  {err[:40]}")
+        print(f"  {ts:<14} {job:<24} {dur:<12} {result}")
     print()
 
 
@@ -260,22 +344,24 @@ def cmd_logs() -> None:
         pass
 
 
-# ── dispatch ─────────────────────────────────────────────────────────────────
+# ── dispatch ──────────────────────────────────────────────────────────────────
 
 COMMANDS = {
     "status": cmd_status,
     "jobs": cmd_jobs,
+    "runs": cmd_runs,
     "crashes": cmd_crashes,
     "logs": cmd_logs,
 }
 
 def usage() -> None:
-    print("Usage: agenticd [status|jobs|crashes|logs]")
+    print("Usage: agenticd [status|jobs|runs|crashes|logs]")
     print()
-    print("  status   Daemon health and job summary (default)")
-    print("  jobs     Per-job details: next run, failures, state")
-    print("  crashes  Recent crash reports")
-    print("  logs     Tail stdout and stderr logs")
+    print("  status        Daemon health and job summary (default)")
+    print("  jobs          Per-job details: next run, failures, state")
+    print("  runs [job]    Execution history (all jobs, or one job)")
+    print("  crashes       Recent crash reports")
+    print("  logs          Tail stdout and stderr logs")
     sys.exit(1)
 
 
