@@ -55,7 +55,7 @@ struct XPCHandlerTests {
     @Test("getCrashReports encodes reports to JSON")
     func getCrashReportsEncodesJSON() {
         let report = CrashReport(
-            jobName: "sync",
+            taskName: "sync",
             timestamp: Date(timeIntervalSince1970: 1_000),
             signal: "SIGSEGV",
             exceptionType: "EXC_BAD_ACCESS",
@@ -72,7 +72,7 @@ struct XPCHandlerTests {
         decoder.dateDecodingStrategy = .iso8601
         let decoded = try? decoder.decode([CrashReport].self, from: result.value)
         #expect(decoded?.count == 1)
-        #expect(decoded?.first?.jobName == "sync")
+        #expect(decoded?.first?.taskName == "sync")
         #expect(decoded?.first?.exceptionType == "EXC_BAD_ACCESS")
     }
 

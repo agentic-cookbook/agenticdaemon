@@ -2,6 +2,7 @@ import Testing
 import AppKit
 import Foundation
 import AgenticXPCProtocol
+import DaemonKit
 @testable import AgenticMenuBarLib
 
 @Suite("MenuBuilder")
@@ -51,7 +52,7 @@ struct MenuBuilderTests {
         #expect(!menuWithout.items.map(\.title).contains { $0.contains("CRASH") })
 
         let crash = CrashReport(
-            jobName: "sync",
+            taskName: "sync",
             timestamp: Date.now.addingTimeInterval(-3600),
             signal: nil,
             exceptionType: "EXC_BAD_ACCESS",

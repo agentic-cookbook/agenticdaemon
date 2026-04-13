@@ -9,7 +9,7 @@ struct StatusWriterTests {
     func writesValidJSON() throws {
         let tmpDir = makeTempDir(prefix: "status")
         let statusURL = tmpDir.appending(path: "status.json")
-        let writer = StatusWriter(statusURL: statusURL)
+        let writer = StatusWriter(statusURL: statusURL, subsystem: "test")
 
         let snapshot = DaemonStatus(
             uptimeSeconds: 120,
@@ -51,7 +51,7 @@ struct StatusWriterTests {
     func containsExpectedFields() throws {
         let tmpDir = makeTempDir(prefix: "status")
         let statusURL = tmpDir.appending(path: "status.json")
-        let writer = StatusWriter(statusURL: statusURL)
+        let writer = StatusWriter(statusURL: statusURL, subsystem: "test")
 
         let snapshot = DaemonStatus(
             uptimeSeconds: 60,
@@ -76,7 +76,7 @@ struct StatusWriterTests {
     func jobStatusRoundTripsNewFields() throws {
         let tmpDir = makeTempDir(prefix: "status-fields")
         let statusURL = tmpDir.appending(path: "status.json")
-        let writer = StatusWriter(statusURL: statusURL)
+        let writer = StatusWriter(statusURL: statusURL, subsystem: "test")
 
         let config = JobConfig(
             intervalSeconds: 120,
@@ -121,7 +121,7 @@ struct StatusWriterTests {
     func jobStatusDefaults() throws {
         let tmpDir = makeTempDir(prefix: "status-defaults")
         let statusURL = tmpDir.appending(path: "status.json")
-        let writer = StatusWriter(statusURL: statusURL)
+        let writer = StatusWriter(statusURL: statusURL, subsystem: "test")
 
         let snapshot = DaemonStatus(
             uptimeSeconds: 10,
@@ -154,7 +154,7 @@ struct StatusWriterTests {
     func overwritesPrevious() throws {
         let tmpDir = makeTempDir(prefix: "status")
         let statusURL = tmpDir.appending(path: "status.json")
-        let writer = StatusWriter(statusURL: statusURL)
+        let writer = StatusWriter(statusURL: statusURL, subsystem: "test")
 
         let first = DaemonStatus(uptimeSeconds: 10, jobCount: 1, lastTick: Date.now, jobs: [])
         writer.write(status: first)
