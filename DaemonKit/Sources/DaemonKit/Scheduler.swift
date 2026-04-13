@@ -12,6 +12,7 @@ public actor Scheduler {
         public var nextRun: Date
         public var consecutiveFailures: Int = 0
         public var isRunning: Bool = false
+        public var pendingRunReason: TaskContext.RunReason = .scheduled
     }
 
     public init(
@@ -70,18 +71,20 @@ public actor Scheduler {
         }
         for scheduled in tasksToRun {
             scheduledTasks[scheduled.task.name]?.isRunning = true
+            scheduledTasks[scheduled.task.name]?.pendingRunReason = .scheduled
         }
 
         for scheduled in tasksToRun {
             let task = scheduled.task
             let failures = scheduled.consecutiveFailures
+            let reason = scheduled.pendingRunReason
             Task.detached(priority: .utility) { [self] in
-                await self.runTask(task: task, consecutiveFailures: failures)
+                await self.runTask(task: task, consecutiveFailures: failures, runReason: reason)
             }
         }
     }
 
-    private func runTask(task: any DaemonTask, consecutiveFailures: Int) async {
+    private func runTask(task: any DaemonTask, consecutiveFailures: Int, runReason: TaskContext.RunReason) async {
         let name = task.name
         analytics.track(.taskStarted(name: name))
         crashTracker.markRunning(taskName: name)
@@ -91,7 +94,7 @@ public actor Scheduler {
             let context = TaskContext(
                 taskName: name,
                 consecutiveFailures: consecutiveFailures,
-                runReason: .scheduled
+                runReason: runReason
             )
             let result = try await task.execute(context: context)
             let duration = Date.now.timeIntervalSince(startTime)
@@ -172,6 +175,7 @@ public actor Scheduler {
     public func triggerTask(name: String) {
         guard scheduledTasks[name] != nil else { return }
         scheduledTasks[name]?.nextRun = Date.now
+        scheduledTasks[name]?.pendingRunReason = .triggered
     }
 
     private func backoffInterval(for scheduled: ScheduledTask) -> TimeInterval {

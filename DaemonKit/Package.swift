@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "DaemonKit", targets: ["DaemonKit"])
     ],
     dependencies: [
-        .package(url: "git@github.com:microsoft/plcrashreporter.git", from: "1.8.0")
+        .package(url: "https://github.com/microsoft/plcrashreporter.git", from: "1.8.0")
     ],
     targets: [
         .target(

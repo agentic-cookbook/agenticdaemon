@@ -19,16 +19,23 @@ public final class DaemonEngine: @unchecked Sendable {
     private let configuration: DaemonConfiguration
     private let taskSource: any TaskSource
     private let analytics: any AnalyticsProvider
-    private let crashTracker: CrashTracker
+    private let _running = OSAllocatedUnfairLock(initialState: true)
+
+    /// The crash tracker. Exposed so clients can query blacklist state.
+    public let crashTracker: CrashTracker
     private let crashReportCollector: CrashReportCollector
-    private let crashReportStore: CrashReportStore
+    /// The crash report store. Exposed so clients can query crash history.
+    public let crashReportStore: CrashReportStore
 
     /// The scheduler. Exposed so clients can build XPC handlers that capture it
     /// before calling ``run(xpcExportedObject:xpcInterface:)``.
     public let scheduler: Scheduler
 
+    /// When the engine was created. Useful for uptime reporting.
+    public let startDate = Date.now
+
     private var watcher: DirectoryWatcher?
-    private var running = true
+    private var xpcServer: XPCServer?
 
     public init(
         configuration: DaemonConfiguration,
@@ -109,19 +116,20 @@ public final class DaemonEngine: @unchecked Sendable {
         if let machServiceName = configuration.machServiceName,
            let exportedObject = xpcExportedObject,
            let interface = xpcInterface {
-            let xpcServer = XPCServer(
+            let server = XPCServer(
                 machServiceName: machServiceName,
                 interface: interface,
                 exportedObject: exportedObject,
                 subsystem: configuration.identifier
             )
-            xpcServer.start()
+            server.start()
+            self.xpcServer = server
         }
 
         let taskCount = await scheduler.taskCount
         logger.info("Daemon running, \(taskCount) task(s) loaded")
 
-        while running {
+        while _running.withLock({ $0 }) {
             await scheduler.tick()
             try? await Task.sleep(for: .seconds(configuration.tickInterval))
         }
@@ -132,7 +140,7 @@ public final class DaemonEngine: @unchecked Sendable {
 
     public func shutdown() {
         logger.info("Shutdown requested")
-        running = false
+        _running.withLock { $0 = false }
     }
 
     // MARK: - Private

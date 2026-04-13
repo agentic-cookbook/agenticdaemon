@@ -9,6 +9,7 @@ public final class XPCServer: NSObject, NSXPCListenerDelegate, @unchecked Sendab
     private let listener: NSXPCListener
     private let interface: NSXPCInterface
     private let exportedObject: AnyObject
+    private let serviceName: String
 
     public init(
         machServiceName: String,
@@ -17,6 +18,7 @@ public final class XPCServer: NSObject, NSXPCListenerDelegate, @unchecked Sendab
         subsystem: String
     ) {
         self.logger = Logger(subsystem: subsystem, category: "XPCServer")
+        self.serviceName = machServiceName
         self.listener = NSXPCListener(machServiceName: machServiceName)
         self.interface = interface
         self.exportedObject = exportedObject
@@ -25,7 +27,7 @@ public final class XPCServer: NSObject, NSXPCListenerDelegate, @unchecked Sendab
     public func start() {
         listener.delegate = self
         listener.resume()
-        logger.info("XPC server listening on \(self.listener.endpoint.description)")
+        logger.info("XPC server listening on \(self.serviceName)")
     }
 
     public func listener(
