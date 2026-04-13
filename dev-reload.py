@@ -207,7 +207,7 @@ def main() -> None:
     print(f"  swift build --package-path AgenticDaemon && python3 {Path(__file__).name} --quick")
     print()
     print("Check status:")
-    print("  agd status")
+    print("  agenticd status")
     print(f"  # or: launchctl list {LABEL}")
 
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-agd — agentic-daemon management CLI
+agenticd — agentic-daemon management CLI
 
 Commands:
-    agd               # same as 'agd status'
-    agd status        # daemon health + job summary
-    agd jobs          # per-job details (next run, failures, running)
-    agd crashes       # recent crash reports
-    agd logs          # tail stdout + stderr logs
+    agenticd               # same as 'agenticd status'
+    agenticd status        # daemon health + job summary
+    agenticd jobs          # per-job details (next run, failures, running)
+    agenticd crashes       # recent crash reports
+    agenticd logs          # tail stdout + stderr logs
 
-Install: symlinked to /usr/local/bin/agd by install.sh
+Install: symlinked to /usr/local/bin/agenticd by install.sh
 """
 
 import json
@@ -167,7 +167,7 @@ def cmd_status() -> None:
             sig = c.get("signal") or c.get("exceptionType") or "unknown"
             print(f"    {job}  {sig}  {_fmt(_dim, ts)}")
         if len(crashes) > 3:
-            print(_fmt(_dim, f"    … and {len(crashes) - 3} more. Run 'agd crashes' for full list."))
+            print(_fmt(_dim, f"    … and {len(crashes) - 3} more. Run 'agenticd crashes' for full list."))
 
     print()
 
@@ -270,7 +270,7 @@ COMMANDS = {
 }
 
 def usage() -> None:
-    print("Usage: agd [status|jobs|crashes|logs]")
+    print("Usage: agenticd [status|jobs|crashes|logs]")
     print()
     print("  status   Daemon health and job summary (default)")
     print("  jobs     Per-job details: next run, failures, state")
@@ -289,7 +289,7 @@ def main() -> None:
     if cmd in ("-h", "--help", "help"):
         usage()
     if cmd not in COMMANDS:
-        print(f"agd: unknown command '{cmd}'", file=sys.stderr)
+        print(f"agenticd: unknown command '{cmd}'", file=sys.stderr)
         usage()
 
     COMMANDS[cmd]()

@@ -32,17 +32,17 @@ done
 
 # Install management CLI
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-cp "$SCRIPT_DIR/agd" "$SUPPORT/agd"
-chmod 755 "$SUPPORT/agd"
+cp "$SCRIPT_DIR/agenticd" "$SUPPORT/agenticd"
+chmod 755 "$SUPPORT/agenticd"
 
 # Symlink management CLI to /usr/local/bin for convenient access
-if ! ln -sf "$SUPPORT/agd" /usr/local/bin/agd 2>/dev/null; then
+if ! ln -sf "$SUPPORT/agenticd" /usr/local/bin/agenticd 2>/dev/null; then
     echo ""
-    read -r -p "Need sudo to symlink agd to /usr/local/bin. Create symlink? [Y/n] " yn
+    read -r -p "Need sudo to symlink agenticd to /usr/local/bin. Create symlink? [Y/n] " yn
     if [[ ! "$yn" =~ ^[Nn]$ ]]; then
-        sudo ln -sf "$SUPPORT/agd" /usr/local/bin/agd
+        sudo ln -sf "$SUPPORT/agenticd" /usr/local/bin/agenticd
     else
-        echo "Note: add $SUPPORT to PATH to use agd"
+        echo "Note: add $SUPPORT to PATH to use agenticd"
     fi
 fi
 
@@ -71,4 +71,4 @@ echo "  Plist:   $PLIST_DST"
 echo ""
 echo "Verify:"
 echo "  launchctl list | grep agentic-cookbook.daemon"
-echo "  agd status"
+echo "  agenticd status"

@@ -16,7 +16,7 @@ echo "Removing application support..."
 rm -rf "$SUPPORT"
 
 echo "Removing symlink..."
-rm -f /usr/local/bin/agd 2>/dev/null || true
+rm -f /usr/local/bin/agenticd 2>/dev/null || true
 
 echo "Remove logs? ($LOGS)"
 read -r -p "[y/N] " response
