@@ -14,6 +14,7 @@ public final class DaemonController: @unchecked Sendable {
     private let crashTracker: CrashTracker
     private let crashReportCollector: CrashReportCollector
     private let crashReportStore: CrashReportStore
+    private let jobRunStore: JobRunStore
     private let analytics: any AnalyticsProvider
     private var watcher: DirectoryWatcher?
     private var running = true
@@ -31,7 +32,12 @@ public final class DaemonController: @unchecked Sendable {
         crashReportCollector = CrashReportCollector(supportDirectory: supportDirectory)
         crashReportStore = CrashReportStore(crashesDirectory: supportDirectory.appending(path: "crashes"))
         self.analytics = analytics
-        scheduler = Scheduler(buildDir: libDir, crashTracker: crashTracker, analytics: analytics)
+        do {
+            jobRunStore = try JobRunStore(databaseURL: supportDirectory.appending(path: "runs.db"))
+        } catch {
+            fatalError("Failed to open job run store: \(error)")
+        }
+        scheduler = Scheduler(buildDir: libDir, crashTracker: crashTracker, analytics: analytics, jobRunStore: jobRunStore)
     }
 
     public func run() async {
@@ -66,8 +72,9 @@ public final class DaemonController: @unchecked Sendable {
             }
         }
 
-        // Clean up old crash reports
+        // Clean up old crash reports and run history
         crashReportStore.cleanup(retentionDays: 30)
+        jobRunStore.cleanup(retentionDays: 30)
 
         await scheduler.recoverFromCrash()
 
