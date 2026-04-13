@@ -1,19 +1,24 @@
 #!/bin/bash
 set -euo pipefail
 
-LABEL="com.agentic-cookbook.daemon"
-SUPPORT="$HOME/Library/Application Support/$LABEL"
-LOGS="$HOME/Library/Logs/$LABEL"
-PLIST_SRC="$(cd "$(dirname "$0")" && pwd)/${LABEL}.plist"
-PLIST_DST="$HOME/Library/LaunchAgents/${LABEL}.plist"
-PKG_DIR="$(cd "$(dirname "$0")" && pwd)/AgenticDaemon"
+DAEMON_LABEL="com.agentic-cookbook.daemon"
+MENUBAR_LABEL="com.agentic-cookbook.menubar"
+SUPPORT="$HOME/Library/Application Support/$DAEMON_LABEL"
+LOGS="$HOME/Library/Logs/$DAEMON_LABEL"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DAEMON_PLIST_SRC="$SCRIPT_DIR/${DAEMON_LABEL}.plist"
+DAEMON_PLIST_DST="$HOME/Library/LaunchAgents/${DAEMON_LABEL}.plist"
+MENUBAR_PLIST_SRC="$SCRIPT_DIR/${MENUBAR_LABEL}.plist"
+MENUBAR_PLIST_DST="$HOME/Library/LaunchAgents/${MENUBAR_LABEL}.plist"
+PKG_DIR="$SCRIPT_DIR/AgenticDaemon"
 
-echo "Building agentic-daemon..."
+echo "Building agentic-daemon and agentic-menubar..."
 cd "$PKG_DIR"
 swift build -c release
 
 BIN_PATH=$(swift build -c release --show-bin-path)
-BINARY="$BIN_PATH/agentic-daemon"
+DAEMON_BINARY="$BIN_PATH/agentic-daemon"
+MENUBAR_BINARY="$BIN_PATH/AgenticMenuBar"
 
 echo "Installing..."
 mkdir -p "$SUPPORT/jobs"
@@ -21,8 +26,12 @@ mkdir -p "$SUPPORT/lib/Modules"
 mkdir -p "$LOGS"
 
 # Install daemon binary
-cp "$BINARY" "$SUPPORT/agentic-daemon"
+cp "$DAEMON_BINARY" "$SUPPORT/agentic-daemon"
 chmod 755 "$SUPPORT/agentic-daemon"
+
+# Install menu bar companion binary
+cp "$MENUBAR_BINARY" "$SUPPORT/agentic-menubar"
+chmod 755 "$SUPPORT/agentic-menubar"
 
 # Install AgenticJobKit shared library + module for job compilation
 cp "$BIN_PATH/libAgenticJobKit.dylib" "$SUPPORT/lib/"
@@ -31,21 +40,31 @@ for ext in swiftmodule swiftdoc abi.json swiftsourceinfo; do
     [ -f "$src" ] && cp "$src" "$SUPPORT/lib/Modules/"
 done
 
-# Expand $HOME in plist and install
-sed "s|\${HOME}|$HOME|g" "$PLIST_SRC" > "$PLIST_DST"
+# Install daemon LaunchAgent plist
+sed "s|\${HOME}|$HOME|g" "$DAEMON_PLIST_SRC" > "$DAEMON_PLIST_DST"
 
-# Unload if already registered
-launchctl bootout "gui/$(id -u)/${LABEL}" 2>/dev/null || true
+# Install menubar LaunchAgent plist
+sed "s|\${HOME}|$HOME|g" "$MENUBAR_PLIST_SRC" > "$MENUBAR_PLIST_DST"
 
-# Load and start
-launchctl bootstrap "gui/$(id -u)" "$PLIST_DST"
+# Unload existing agents if running
+launchctl bootout "gui/$(id -u)/${DAEMON_LABEL}"  2>/dev/null || true
+launchctl bootout "gui/$(id -u)/${MENUBAR_LABEL}" 2>/dev/null || true
+
+# Load and start both agents
+launchctl bootstrap "gui/$(id -u)" "$DAEMON_PLIST_DST"
+launchctl bootstrap "gui/$(id -u)" "$MENUBAR_PLIST_DST"
 
 echo ""
-echo "Installed: $LABEL"
+echo "Installed: $DAEMON_LABEL"
 echo "  Binary:  $SUPPORT/agentic-daemon"
 echo "  JobKit:  $SUPPORT/lib/libAgenticJobKit.dylib"
 echo "  Jobs:    $SUPPORT/jobs/"
 echo "  Logs:    $LOGS/"
-echo "  Plist:   $PLIST_DST"
+echo "  Plist:   $DAEMON_PLIST_DST"
 echo ""
-launchctl list "$LABEL"
+echo "Installed: $MENUBAR_LABEL"
+echo "  Binary:  $SUPPORT/agentic-menubar"
+echo "  Plist:   $MENUBAR_PLIST_DST"
+echo ""
+launchctl list "$DAEMON_LABEL"
+launchctl list "$MENUBAR_LABEL"
