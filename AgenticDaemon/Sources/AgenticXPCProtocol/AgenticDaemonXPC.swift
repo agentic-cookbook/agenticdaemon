@@ -6,12 +6,15 @@ import Foundation
 /// Complex types cross as JSON-encoded Data:
 ///   DaemonStatus  ← getDaemonStatus
 ///   [CrashReport] ← getCrashReports
+///
+/// Reply closures are @Sendable because NSXPCConnection invokes them from
+/// arbitrary threads (cross-process IPC).
 @objc public protocol AgenticDaemonXPC {
-    func getDaemonStatus(reply: @escaping (Data) -> Void)
-    func getCrashReports(reply: @escaping (Data) -> Void)
-    func enableJob(_ name: String, reply: @escaping (Bool) -> Void)
-    func disableJob(_ name: String, reply: @escaping (Bool) -> Void)
-    func triggerJob(_ name: String, reply: @escaping (Bool) -> Void)
-    func clearBlacklist(_ name: String, reply: @escaping (Bool) -> Void)
-    func shutdown(reply: @escaping () -> Void)
+    func getDaemonStatus(reply: @escaping @Sendable (Data) -> Void)
+    func getCrashReports(reply: @escaping @Sendable (Data) -> Void)
+    func enableJob(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
+    func disableJob(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
+    func triggerJob(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
+    func clearBlacklist(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
+    func shutdown(reply: @escaping @Sendable () -> Void)
 }
