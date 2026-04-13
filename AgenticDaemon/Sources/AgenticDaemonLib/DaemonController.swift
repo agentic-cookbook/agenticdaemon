@@ -15,6 +15,7 @@ public final class DaemonController: @unchecked Sendable {
     private let crashReportCollector: CrashReportCollector
     private let crashReportStore: CrashReportStore
     private let jobRunStore: JobRunStore
+    private let httpServer: HTTPServer
     private let analytics: any AnalyticsProvider
     private var watcher: DirectoryWatcher?
     private var running = true
@@ -38,12 +39,25 @@ public final class DaemonController: @unchecked Sendable {
             fatalError("Failed to open job run store: \(error)")
         }
         scheduler = Scheduler(buildDir: libDir, crashTracker: crashTracker, analytics: analytics, jobRunStore: jobRunStore)
+        let router = HTTPRouter(
+            scheduler: scheduler,
+            jobRunStore: jobRunStore,
+            crashTracker: crashTracker,
+            startTime: Date()
+        )
+        httpServer = HTTPServer(router: router)
     }
 
     public func run() async {
         logger.info("Starting agentic-daemon")
 
         createDirectories()
+
+        do {
+            try httpServer.start()
+        } catch {
+            logger.error("Failed to start HTTP server: \(error)")
+        }
 
         // Install crash handler for future crashes
         do {
@@ -103,6 +117,7 @@ public final class DaemonController: @unchecked Sendable {
     public func shutdown() {
         logger.info("Shutdown requested")
         running = false
+        httpServer.stop()
     }
 
     private func createDirectories() {
