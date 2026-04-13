@@ -40,6 +40,21 @@ for ext in swiftmodule swiftdoc abi.json swiftsourceinfo; do
     [ -f "$src" ] && cp "$src" "$SUPPORT/lib/Modules/"
 done
 
+# Install management CLI
+cp "$SCRIPT_DIR/agenticd" "$SUPPORT/agenticd"
+chmod 755 "$SUPPORT/agenticd"
+
+# Symlink management CLI to /usr/local/bin for convenient access
+if ! ln -sf "$SUPPORT/agenticd" /usr/local/bin/agenticd 2>/dev/null; then
+    echo ""
+    read -r -p "Need sudo to symlink agenticd to /usr/local/bin. Create symlink? [Y/n] " yn
+    if [[ ! "$yn" =~ ^[Nn]$ ]]; then
+        sudo ln -sf "$SUPPORT/agenticd" /usr/local/bin/agenticd
+    else
+        echo "Note: add $SUPPORT to PATH to use agenticd"
+    fi
+fi
+
 # Install daemon LaunchAgent plist
 sed "s|\${HOME}|$HOME|g" "$DAEMON_PLIST_SRC" > "$DAEMON_PLIST_DST"
 
@@ -66,5 +81,6 @@ echo "Installed: $MENUBAR_LABEL"
 echo "  Binary:  $SUPPORT/agentic-menubar"
 echo "  Plist:   $MENUBAR_PLIST_DST"
 echo ""
-launchctl list "$DAEMON_LABEL"
-launchctl list "$MENUBAR_LABEL"
+echo "Verify:"
+echo "  launchctl list | grep agentic-cookbook"
+echo "  agenticd status"

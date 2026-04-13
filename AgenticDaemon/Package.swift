@@ -30,7 +30,8 @@ let package = Package(
                 "AgenticXPCProtocol",
                 "DaemonKit"
             ],
-            path: "Sources/AgenticDaemonLib"
+            path: "Sources/AgenticDaemonLib",
+            linkerSettings: [.linkedLibrary("sqlite3")]
         ),
         .executableTarget(
             name: "agentic-daemon",
