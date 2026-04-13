@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 import AgenticXPCProtocol
+import DaemonKit
 
 /// Opens a non-modal window showing the full content of a crash report.
 /// Retains itself until the window is closed.
@@ -23,7 +24,7 @@ public final class CrashDetailWindow: NSObject, NSWindowDelegate, @unchecked Sen
             defer: false
         )
         super.init()
-        window.title = "Crash Report — \(report.jobName)"
+        window.title = "Crash Report — \(report.taskName)"
         window.center()
         window.delegate = self
         window.isReleasedWhenClosed = false
@@ -53,7 +54,7 @@ public final class CrashDetailWindow: NSObject, NSWindowDelegate, @unchecked Sen
 
     private static func format(_ report: CrashReport) -> String {
         var lines: [String] = []
-        lines.append("Job:             \(report.jobName)")
+        lines.append("Task:            \(report.taskName)")
         lines.append("Timestamp:       \(report.timestamp)")
         lines.append("Source:          \(report.source.rawValue)")
         if let sig = report.signal        { lines.append("Signal:          \(sig)") }

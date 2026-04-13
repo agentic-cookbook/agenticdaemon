@@ -1,6 +1,7 @@
 import Foundation
 import os
 import AgenticXPCProtocol
+import DaemonKit
 
 public enum DaemonClientError: Error, Sendable {
     case notConnected

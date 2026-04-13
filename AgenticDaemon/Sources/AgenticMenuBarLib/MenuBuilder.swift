@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 import AgenticXPCProtocol
+import DaemonKit
 
 /// Builds an NSMenu from the latest DaemonStatus and crash list.
 /// Stateless — build(status:crashes:) can be called on every refresh.
@@ -185,7 +186,7 @@ public final class MenuBuilder: @unchecked Sendable {
         formatter.unitsStyle = .abbreviated
         let ago = formatter.localizedString(for: crash.timestamp, relativeTo: Date.now)
         let exc = crash.exceptionType ?? crash.signal ?? "unknown"
-        let title = "⚠ \(crash.jobName) — \(ago)   \(exc)"
+        let title = "⚠ \(crash.taskName) — \(ago)   \(exc)"
         return menuItem(title, action: { [handlers] in handlers.onShowCrash(crash) })
     }
 

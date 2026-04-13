@@ -2,6 +2,7 @@ import AppKit
 import Foundation
 import os
 import AgenticXPCProtocol
+import DaemonKit
 
 @MainActor
 public final class AppDelegate: NSObject, NSApplicationDelegate {

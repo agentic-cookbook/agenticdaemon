@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "AgenticJobKit", type: .dynamic, targets: ["AgenticJobKit"])
     ],
     dependencies: [
-        .package(url: "git@github.com:microsoft/plcrashreporter.git", from: "1.8.0")
+        .package(path: "../DaemonKit")
     ],
     targets: [
         .target(
@@ -20,6 +20,7 @@ let package = Package(
         ),
         .target(
             name: "AgenticXPCProtocol",
+            dependencies: ["DaemonKit"],
             path: "Sources/AgenticXPCProtocol"
         ),
         .target(
@@ -27,7 +28,7 @@ let package = Package(
             dependencies: [
                 "AgenticJobKit",
                 "AgenticXPCProtocol",
-                .product(name: "CrashReporter", package: "plcrashreporter")
+                "DaemonKit"
             ],
             path: "Sources/AgenticDaemonLib"
         ),
@@ -38,7 +39,7 @@ let package = Package(
         ),
         .target(
             name: "AgenticMenuBarLib",
-            dependencies: ["AgenticXPCProtocol"],
+            dependencies: ["AgenticXPCProtocol", "DaemonKit"],
             path: "Sources/AgenticMenuBarLib"
         ),
         .executableTarget(
