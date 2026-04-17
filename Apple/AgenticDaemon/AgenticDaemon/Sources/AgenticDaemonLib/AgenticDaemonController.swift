@@ -9,6 +9,7 @@ public final class AgenticDaemonController: @unchecked Sendable {
     )
 
     private let engine: DaemonEngine
+    private let strategy: TimingStrategy
     private let taskSource: ScriptTaskSource
     private let discovery: JobDiscovery
     private let jobsDirectory: URL
@@ -43,12 +44,15 @@ public final class AgenticDaemonController: @unchecked Sendable {
             crashReportProcessName: "agentic-daemon"
         )
 
+        let strategy = TimingStrategy(name: "agentic-jobs", taskSource: source)
+
         self.jobsDirectory = jobsDir
         self.discovery = discovery
         self.taskSource = source
+        self.strategy = strategy
         self.engine = DaemonEngine(
             configuration: configuration,
-            taskSource: source,
+            strategy: strategy,
             analytics: analytics
         )
     }
@@ -73,15 +77,16 @@ public final class AgenticDaemonController: @unchecked Sendable {
 
     private func makeXPCHandler() -> XPCHandler {
         let engine = self.engine
+        let strategy = self.strategy
         let taskSource = self.taskSource
         let jobsDir = self.jobsDirectory
 
         return XPCHandler(dependencies: .init(
             getStatus: {
-                let names = await engine.scheduler.taskNames
+                let names = await strategy.taskNames
                 var jobs: [DaemonStatus.JobStatus] = []
                 for name in names.sorted() {
-                    guard let st = await engine.scheduler.scheduledTask(named: name) else { continue }
+                    guard let st = await strategy.scheduledTask(named: name) else { continue }
                     let config: JobConfig
                     if let scriptTask = st.task as? ScriptDaemonTask {
                         config = scriptTask.descriptor.config
@@ -114,7 +119,7 @@ public final class AgenticDaemonController: @unchecked Sendable {
                     .appending(path: "config.json")
                 return await Self.updateJobEnabled(
                     true, at: configURL,
-                    scheduler: engine.scheduler, taskSource: taskSource
+                    strategy: strategy
                 )
             },
             disableJob: { name in
@@ -123,13 +128,13 @@ public final class AgenticDaemonController: @unchecked Sendable {
                     .appending(path: "config.json")
                 return await Self.updateJobEnabled(
                     false, at: configURL,
-                    scheduler: engine.scheduler, taskSource: taskSource
+                    strategy: strategy
                 )
             },
             triggerJob: { name in
-                let exists = await engine.scheduler.taskNames.contains(name)
+                let exists = await strategy.taskNames.contains(name)
                 guard exists else { return false }
-                await engine.scheduler.triggerTask(name: name)
+                await strategy.triggerTask(name: name)
                 return true
             },
             clearBlacklist: { name in
@@ -143,8 +148,7 @@ public final class AgenticDaemonController: @unchecked Sendable {
     private static func updateJobEnabled(
         _ enabled: Bool,
         at configURL: URL,
-        scheduler: Scheduler,
-        taskSource: ScriptTaskSource
+        strategy: TimingStrategy
     ) async -> Bool {
         let existing: JobConfig
         if let data = try? Data(contentsOf: configURL),
@@ -169,7 +173,7 @@ public final class AgenticDaemonController: @unchecked Sendable {
             return false
         }
 
-        await scheduler.syncTasks(from: taskSource)
+        await strategy.syncTasks()
         return true
     }
 
