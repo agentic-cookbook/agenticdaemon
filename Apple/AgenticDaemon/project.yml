@@ -74,6 +74,18 @@ targets:
         DEFINES_MODULE: YES
         SKIP_INSTALL: YES
 
+  MenuBarKit:
+    type: framework
+    platform: macOS
+    sources:
+      - path: MenuBarKit/Sources/MenuBarKit
+    dependencies:
+      - target: DaemonKit
+    settings:
+      base:
+        DEFINES_MODULE: YES
+        SKIP_INSTALL: YES
+
   AgenticMenuBarLib:
     type: library.static
     platform: macOS
@@ -123,6 +135,15 @@ targets:
     dependencies:
       - target: DaemonKit
 
+  MenuBarKitTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: MenuBarKit/Tests/MenuBarKitTests
+    dependencies:
+      - target: MenuBarKit
+      - target: DaemonKit
+
   AgenticDaemonTests:
     type: bundle.unit-test
     platform: macOS
@@ -156,5 +177,6 @@ schemes:
     test:
       targets:
         - DaemonKitTests
+        - MenuBarKitTests
         - AgenticDaemonTests
         - AgenticMenuBarTests
