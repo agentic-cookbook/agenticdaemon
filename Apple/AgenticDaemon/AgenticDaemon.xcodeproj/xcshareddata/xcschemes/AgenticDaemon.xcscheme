@@ -69,6 +69,17 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "394E4CD59458EA17725467E6"
+               BuildableName = "MenuBarKitTests.xctest"
+               BlueprintName = "MenuBarKitTests"
+               ReferencedContainer = "container:AgenticDaemon.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "467F1361636BC39423630B38"
                BuildableName = "AgenticDaemonTests.xctest"
                BlueprintName = "AgenticDaemonTests"
