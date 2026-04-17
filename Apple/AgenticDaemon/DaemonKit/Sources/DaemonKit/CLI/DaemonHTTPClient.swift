@@ -3,7 +3,7 @@ import Foundation
 /// Synchronous HTTP client for CLI tools and functional tests.
 /// Connects to a daemon's HTTP server for querying status.
 public struct DaemonHTTPClient: Sendable {
-    private let baseURL: String
+    public let baseURL: String
     private let timeout: TimeInterval
 
     public init(baseURL: String, timeout: TimeInterval = 2) {
@@ -14,7 +14,9 @@ public struct DaemonHTTPClient: Sendable {
     /// GET a path and decode the JSON response. Returns nil on any failure.
     public func get<T: Decodable>(_ path: String, as type: T.Type) -> T? {
         guard let data = getData(path) else { return nil }
-        return try? JSONDecoder().decode(type, from: data)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try? decoder.decode(type, from: data)
     }
 
     /// GET a path and return the raw response body. Returns nil on any failure.
