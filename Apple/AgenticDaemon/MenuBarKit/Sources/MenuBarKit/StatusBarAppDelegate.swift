@@ -78,22 +78,33 @@ public final class StatusBarAppDelegate: NSObject, NSApplicationDelegate {
 
     /// Force a refresh. Safe to call from tests via a direct-constructed
     /// delegate (without launching the app).
+    ///
+    /// Reachability is determined by whether `/health` returned any response
+    /// (HTTP 200), not by whether the body decodes into ``HealthStatus``.
+    /// Some daemons emit a different health schema; those should still show
+    /// as reachable when their HTTP server responds.
     public func refresh() {
         let http = self.http
         let composer = self.composer
         let userInfoProvider = self.userInfoProvider
         Task { [weak self] in
-            let health = http.get("/health", as: HealthStatus.self)
+            let healthData = http.getData("/health")
+            let isReachable = healthData != nil
+            let health: HealthStatus? = healthData.flatMap {
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                return try? decoder.decode(HealthStatus.self, from: $0)
+            }
             let userInfo: [String: any Sendable] = await userInfoProvider?(http) ?? [:]
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 let snapshot = MenuSnapshot(
-                    isReachable: health != nil,
+                    isReachable: isReachable,
                     health: health,
                     userInfo: userInfo
                 )
                 self.statusItem?.menu = composer.build(snapshot: snapshot)
-                self.updateIcon(isReachable: health != nil)
+                self.updateIcon(isReachable: isReachable)
             }
         }
     }
