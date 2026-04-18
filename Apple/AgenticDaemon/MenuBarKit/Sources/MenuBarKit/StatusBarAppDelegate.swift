@@ -26,6 +26,7 @@ public final class StatusBarAppDelegate: NSObject, NSApplicationDelegate {
     private let http: DaemonHTTPClient
     private let composer: MenuComposer
     private let menuIcon: String
+    private let menuImage: NSImage?
     private let refreshInterval: TimeInterval
     private let userInfoProvider: (@Sendable (DaemonHTTPClient) async -> [String: any Sendable])?
 
@@ -36,19 +37,25 @@ public final class StatusBarAppDelegate: NSObject, NSApplicationDelegate {
         http: DaemonHTTPClient,
         composer: MenuComposer,
         menuIcon: String = "⚙",
+        menuImage: NSImage? = nil,
         refreshInterval: TimeInterval = 5,
         userInfoProvider: (@Sendable (DaemonHTTPClient) async -> [String: any Sendable])? = nil
     ) {
         self.http = http
         self.composer = composer
         self.menuIcon = menuIcon
+        self.menuImage = menuImage
         self.refreshInterval = refreshInterval
         self.userInfoProvider = userInfoProvider
     }
 
     public func applicationDidFinishLaunching(_ notification: Notification) {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        item.button?.title = menuIcon
+        if let menuImage {
+            item.button?.image = menuImage
+        } else {
+            item.button?.title = menuIcon
+        }
         item.menu = composer.build(snapshot: MenuSnapshot(isReachable: false))
         self.statusItem = item
 
@@ -91,6 +98,13 @@ public final class StatusBarAppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func updateIcon(isReachable: Bool) {
-        statusItem?.button?.title = isReachable ? menuIcon : "●"
+        guard let button = statusItem?.button else { return }
+        if let menuImage {
+            button.image = menuImage
+            button.title = ""
+            button.appearsDisabled = !isReachable
+        } else {
+            button.title = isReachable ? menuIcon : "●"
+        }
     }
 }
