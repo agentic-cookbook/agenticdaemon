@@ -103,7 +103,7 @@ targets:
         DEFINES_MODULE: YES
         SKIP_INSTALL: YES
 
-  agentic-daemon:
+  agenticdaemon:
     type: tool
     platform: macOS
     sources:
@@ -116,7 +116,7 @@ targets:
       - sdk: libsqlite3.tbd
     settings:
       base:
-        PRODUCT_NAME: agentic-daemon
+        PRODUCT_NAME: agenticdaemon
 
   AgenticMenuBar:
     type: tool
@@ -176,7 +176,7 @@ schemes:
   AgenticDaemon:
     build:
       targets:
-        agentic-daemon: all
+        agenticdaemon: all
         AgenticMenuBar: all
     test:
       targets:

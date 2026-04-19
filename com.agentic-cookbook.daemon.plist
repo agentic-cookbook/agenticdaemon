@@ -8,7 +8,7 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>${HOME}/Library/Application Support/com.agentic-cookbook.daemon/agentic-daemon</string>
+        <string>${HOME}/Library/Application Support/com.agentic-cookbook.daemon/agenticdaemon</string>
     </array>
 
     <key>MachServices</key>

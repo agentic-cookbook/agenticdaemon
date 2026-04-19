@@ -8,7 +8,7 @@ struct CrashReportCollectorTests {
     /// Minimal .ips file content matching real macOS format.
     /// Line 1: metadata JSON, Line 2+: crash report JSON.
     static func makeIPSContent(
-        processName: String = "agentic-daemon",
+        processName: String = "agenticdaemon",
         exceptionType: String = "EXC_CRASH",
         signal: String = "SIGABRT",
         faultingThread: Int = 3,
@@ -76,12 +76,12 @@ struct CrashReportCollectorTests {
             try? FileManager.default.removeItem(at: supportDir)
         }
 
-        let ipsFile = diagDir.appending(path: "agentic-daemon-2026-04-07-180823.ips")
+        let ipsFile = diagDir.appending(path: "agenticdaemon-2026-04-07-180823.ips")
         try Self.makeIPSContent().write(to: ipsFile, atomically: true, encoding: .utf8)
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: diagDir
         )
@@ -106,12 +106,12 @@ struct CrashReportCollectorTests {
             try? FileManager.default.removeItem(at: supportDir)
         }
 
-        let ipsFile = diagDir.appending(path: "agentic-daemon-2026-04-07-180823.ips")
+        let ipsFile = diagDir.appending(path: "agenticdaemon-2026-04-07-180823.ips")
         try Self.makeIPSContent().write(to: ipsFile, atomically: true, encoding: .utf8)
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: diagDir
         )
@@ -136,8 +136,8 @@ struct CrashReportCollectorTests {
         }
 
         // Our daemon crash
-        let ours = diagDir.appending(path: "agentic-daemon-2026-04-07-180823.ips")
-        try Self.makeIPSContent(processName: "agentic-daemon")
+        let ours = diagDir.appending(path: "agenticdaemon-2026-04-07-180823.ips")
+        try Self.makeIPSContent(processName: "agenticdaemon")
             .write(to: ours, atomically: true, encoding: .utf8)
 
         // Some other process crash
@@ -147,7 +147,7 @@ struct CrashReportCollectorTests {
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: diagDir
         )
@@ -166,12 +166,12 @@ struct CrashReportCollectorTests {
             try? FileManager.default.removeItem(at: supportDir)
         }
 
-        let bad = diagDir.appending(path: "agentic-daemon-2026-04-07-180823.ips")
+        let bad = diagDir.appending(path: "agenticdaemon-2026-04-07-180823.ips")
         try "not valid json at all".write(to: bad, atomically: true, encoding: .utf8)
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: diagDir
         )
@@ -187,7 +187,7 @@ struct CrashReportCollectorTests {
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: supportDir.appending(path: "does-not-exist")
         )
@@ -203,7 +203,7 @@ struct CrashReportCollectorTests {
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: supportDir.appending(path: "empty")
         )
@@ -219,7 +219,7 @@ struct CrashReportCollectorTests {
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: supportDir.appending(path: "empty")
         )
@@ -238,13 +238,13 @@ struct CrashReportCollectorTests {
         }
 
         // .diag file with matching process name in content
-        let diag = diagDir.appending(path: "agentic-daemon-2026-04-07-180823.diag")
-        try Self.makeIPSContent(processName: "agentic-daemon")
+        let diag = diagDir.appending(path: "agenticdaemon-2026-04-07-180823.diag")
+        try Self.makeIPSContent(processName: "agenticdaemon")
             .write(to: diag, atomically: true, encoding: .utf8)
 
         let collector = CrashReportCollector(
             supportDirectory: supportDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: diagDir
         )

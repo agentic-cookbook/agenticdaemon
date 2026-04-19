@@ -6,7 +6,7 @@ import Foundation
 /// - `GET /jobs` — array of work unit summaries
 /// - `GET /jobs/{taskName}` — single work unit summary
 ///
-/// A daemon that wants the rich scheduler metadata (e.g. agentic-daemon's
+/// A daemon that wants the rich scheduler metadata (e.g. agenticdaemon's
 /// `JobConfig`) should render its own `/jobs` endpoint and let this one
 /// handle whatever it doesn't. Paths this doesn't own return `nil`.
 extension TimingStrategy: StrategyHTTPEndpoints {

@@ -173,7 +173,7 @@ XPC-level functional tests remain hard without launchd registration — that's e
 
 ## What clients build on top
 
-A client like agentic-daemon would:
+A client like agenticdaemon would:
 
 1. Define a struct implementing `DaemonHTTPRouter` with their routes (`/health`, `/jobs`, `/jobs/:name`, etc.)
 2. Pass it to `engine.run(httpRouter:)` alongside their XPC handler

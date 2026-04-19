@@ -17,5 +17,5 @@ signal(SIGINT) { _ in
     controller.shutdown()
 }
 
-logger.info("agentic-daemon starting")
+logger.info("agenticdaemon starting")
 await controller.run()

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add an `LSUIElement` menu bar app that communicates with `agentic-daemon` via XPC to display job status, crash reports, and provide full daemon/job control.
+**Goal:** Add an `LSUIElement` menu bar app that communicates with `agenticdaemon` via XPC to display job status, crash reports, and provide full daemon/job control.
 
 **Architecture:** The daemon registers a Mach XPC service (`com.agentic-cookbook.daemon.xpc`). A companion app connects via `NSXPCConnection` and polls every 5 seconds for status. Shared Codable types (`DaemonStatus`, `JobConfig`, `CrashReport`) live in a new `AgenticXPCProtocol` library; only the `@objc` XPC protocol and those types cross the module boundary, so the companion binary never links PLCrashReporter.
 
@@ -77,7 +77,7 @@ targets: [
         path: "Sources/AgenticDaemonLib"
     ),
     .executableTarget(
-        name: "agentic-daemon",
+        name: "agenticdaemon",
         dependencies: ["AgenticDaemonLib"],
         path: "Sources/CLI"
     ),
@@ -180,7 +180,7 @@ public struct DaemonStatus: Codable, Sendable {
 // Sources/AgenticXPCProtocol/AgenticDaemonXPC.swift
 import Foundation
 
-/// XPC protocol between agentic-daemon and its menu bar companion.
+/// XPC protocol between agenticdaemon and its menu bar companion.
 /// Mach service name: com.agentic-cookbook.daemon.xpc
 ///
 /// Complex types cross as JSON-encoded Data.
@@ -869,7 +869,7 @@ public final class DaemonController: @unchecked Sendable {
     }
 
     public func run() async {
-        logger.info("Starting agentic-daemon")
+        logger.info("Starting agenticdaemon")
 
         createDirectories()
 
@@ -1087,7 +1087,7 @@ Full updated plist:
 
     <key>ProgramArguments</key>
     <array>
-        <string>${HOME}/Library/Application Support/com.agentic-cookbook.daemon/agentic-daemon</string>
+        <string>${HOME}/Library/Application Support/com.agentic-cookbook.daemon/agenticdaemon</string>
     </array>
 
     <key>MachServices</key>
@@ -1156,7 +1156,7 @@ targets: [
         path: "Sources/AgenticDaemonLib"
     ),
     .executableTarget(
-        name: "agentic-daemon",
+        name: "agenticdaemon",
         dependencies: ["AgenticDaemonLib"],
         path: "Sources/CLI"
     ),
@@ -1442,7 +1442,7 @@ public final class MenuBuilder: @unchecked Sendable {
     // MARK: - Sections
 
     private func addHeader(_ menu: NSMenu, status: DaemonStatus) {
-        let title = "agentic-daemon  ·  uptime \(formatUptime(status.uptimeSeconds))"
+        let title = "agenticdaemon  ·  uptime \(formatUptime(status.uptimeSeconds))"
         let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
         item.isEnabled = false
         menu.addItem(item)
@@ -1941,7 +1941,7 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
     public func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusItem.button?.title = "⚙"
-        statusItem.button?.toolTip = "agentic-daemon"
+        statusItem.button?.toolTip = "agenticdaemon"
 
         menuBuilder = MenuBuilder(handlers: makeHandlers())
         client.connect()
@@ -2179,12 +2179,12 @@ MENUBAR_PLIST_SRC="$SCRIPT_DIR/${MENUBAR_LABEL}.plist"
 MENUBAR_PLIST_DST="$HOME/Library/LaunchAgents/${MENUBAR_LABEL}.plist"
 PKG_DIR="$SCRIPT_DIR/AgenticDaemon"
 
-echo "Building agentic-daemon and agentic-menubar..."
+echo "Building agenticdaemon and agentic-menubar..."
 cd "$PKG_DIR"
 swift build -c release
 
 BIN_PATH=$(swift build -c release --show-bin-path)
-DAEMON_BINARY="$BIN_PATH/agentic-daemon"
+DAEMON_BINARY="$BIN_PATH/agenticdaemon"
 MENUBAR_BINARY="$BIN_PATH/AgenticMenuBar"
 
 echo "Installing..."
@@ -2193,8 +2193,8 @@ mkdir -p "$SUPPORT/lib/Modules"
 mkdir -p "$LOGS"
 
 # Install daemon binary
-cp "$DAEMON_BINARY" "$SUPPORT/agentic-daemon"
-chmod 755 "$SUPPORT/agentic-daemon"
+cp "$DAEMON_BINARY" "$SUPPORT/agenticdaemon"
+chmod 755 "$SUPPORT/agenticdaemon"
 
 # Install menu bar companion binary
 cp "$MENUBAR_BINARY" "$SUPPORT/agentic-menubar"
@@ -2223,7 +2223,7 @@ launchctl bootstrap "gui/$(id -u)" "$MENUBAR_PLIST_DST"
 
 echo ""
 echo "Installed: $DAEMON_LABEL"
-echo "  Binary:  $SUPPORT/agentic-daemon"
+echo "  Binary:  $SUPPORT/agenticdaemon"
 echo "  JobKit:  $SUPPORT/lib/libAgenticJobKit.dylib"
 echo "  Jobs:    $SUPPORT/jobs/"
 echo "  Logs:    $LOGS/"

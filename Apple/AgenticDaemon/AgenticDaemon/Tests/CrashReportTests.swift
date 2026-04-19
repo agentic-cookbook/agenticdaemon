@@ -88,7 +88,7 @@ struct CrashReportTests {
 
         let collector = CrashReportCollector(
             supportDirectory: tempDir,
-            processName: "agentic-daemon",
+            processName: "agenticdaemon",
             subsystem: "test",
             diagnosticReportsDirectory: tempDir.appending(path: "empty-diag")
         )

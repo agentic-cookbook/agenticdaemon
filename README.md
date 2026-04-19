@@ -1,4 +1,4 @@
-# agentic-daemon
+# agenticdaemon
 
 A macOS user-space daemon that watches a `jobs/` directory for Swift scripts, auto-compiles them, and runs them on configurable schedules. Drop a Swift script in, and it compiles and runs automatically.
 
@@ -12,7 +12,7 @@ A macOS user-space daemon that watches a `jobs/` directory for Swift scripts, au
 mkdir -p ~/Library/Application\ Support/com.agentic-cookbook.daemon/jobs/hello
 cat > ~/Library/Application\ Support/com.agentic-cookbook.daemon/jobs/hello/job.swift << 'EOF'
 import Foundation
-print("Hello from agentic-daemon! \(Date())")
+print("Hello from agenticdaemon! \(Date())")
 EOF
 
 # Watch the logs

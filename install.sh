@@ -25,7 +25,7 @@ if [[ ! -d "$XCODEPROJ" ]]; then
     fi
 fi
 
-echo "Building agentic-daemon and AgenticMenuBar (Release)..."
+echo "Building agenticdaemon and AgenticMenuBar (Release)..."
 xcodebuild \
     -project "$XCODEPROJ" \
     -scheme AgenticDaemon \
@@ -35,7 +35,7 @@ xcodebuild \
     build
 
 BIN_PATH="$BUILD_DIR/Build/Products/Release"
-DAEMON_BINARY="$BIN_PATH/agentic-daemon"
+DAEMON_BINARY="$BIN_PATH/agenticdaemon"
 MENUBAR_BINARY="$BIN_PATH/AgenticMenuBar"
 
 echo "Installing..."
@@ -44,8 +44,8 @@ mkdir -p "$SUPPORT/lib/Modules"
 mkdir -p "$LOGS"
 
 # Install daemon binary
-cp "$DAEMON_BINARY" "$SUPPORT/agentic-daemon"
-chmod 755 "$SUPPORT/agentic-daemon"
+cp "$DAEMON_BINARY" "$SUPPORT/agenticdaemon"
+chmod 755 "$SUPPORT/agenticdaemon"
 
 # Install menu bar companion binary
 cp "$MENUBAR_BINARY" "$SUPPORT/agentic-menubar"
@@ -89,7 +89,7 @@ launchctl bootstrap "gui/$(id -u)" "$MENUBAR_PLIST_DST"
 
 echo ""
 echo "Installed: $DAEMON_LABEL"
-echo "  Binary:  $SUPPORT/agentic-daemon"
+echo "  Binary:  $SUPPORT/agenticdaemon"
 echo "  JobKit:  $SUPPORT/lib/libAgenticJobKit.dylib"
 echo "  Jobs:    $SUPPORT/jobs/"
 echo "  Logs:    $LOGS/"

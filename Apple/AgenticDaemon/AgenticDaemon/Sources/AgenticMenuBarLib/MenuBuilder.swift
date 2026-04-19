@@ -74,7 +74,7 @@ public final class MenuBuilder: @unchecked Sendable {
     // MARK: - Sections
 
     private func addHeader(_ menu: NSMenu, status: DaemonStatus) {
-        let title = "agentic-daemon  ·  uptime \(formatUptime(status.uptimeSeconds))"
+        let title = "agenticdaemon  ·  uptime \(formatUptime(status.uptimeSeconds))"
         let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
         item.isEnabled = false
         menu.addItem(item)

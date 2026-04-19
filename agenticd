@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-agenticd — agentic-daemon management CLI
+agenticd — agenticdaemon management CLI
 
 Commands:
     agenticd               # same as 'agenticd status'

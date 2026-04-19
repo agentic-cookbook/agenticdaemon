@@ -459,7 +459,7 @@
 		CF1D14FC42528C83D536002D /* DaemonConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonConnection.swift; sourceTree = "<group>"; };
 		D0FD6E9197273B5A852465E6 /* DirectoryWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryWatcher.swift; sourceTree = "<group>"; };
 		D27A00C0D13F8E0EFB11CE4C /* AgenticJobKit.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = AgenticJobKit.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5D044498CE8F5C522B16D48 /* agentic-daemon */ = {isa = PBXFileReference; includeInIndex = 0; path = "agentic-daemon"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5D044498CE8F5C522B16D48 /* agenticdaemon */ = {isa = PBXFileReference; includeInIndex = 0; path = "agenticdaemon"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D76BA0E080AC25D7BB2CF53E /* DaemonHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonHTTPClient.swift; sourceTree = "<group>"; };
 		D944FD295FDFBB45F3C231FC /* MenuBarKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MenuBarKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB405B11E35CF34040AA5391 /* DaemonStrategyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonStrategyTests.swift; sourceTree = "<group>"; };
@@ -623,7 +623,7 @@
 		55ADB872A9486894B9B2FF51 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D5D044498CE8F5C522B16D48 /* agentic-daemon */,
+				D5D044498CE8F5C522B16D48 /* agenticdaemon */,
 				453A83445DC8E3CAE1D60051 /* AgenticDaemonTests.xctest */,
 				D27A00C0D13F8E0EFB11CE4C /* AgenticJobKit.dylib */,
 				36642F15E736B4A49E632BC9 /* AgenticMenuBar */,
@@ -1011,9 +1011,9 @@
 			productReference = 453A83445DC8E3CAE1D60051 /* AgenticDaemonTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		616D816B85A8BA905862A245 /* agentic-daemon */ = {
+		616D816B85A8BA905862A245 /* agenticdaemon */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 31330903915BA085926F5E28 /* Build configuration list for PBXNativeTarget "agentic-daemon" */;
+			buildConfigurationList = 31330903915BA085926F5E28 /* Build configuration list for PBXNativeTarget "agenticdaemon" */;
 			buildPhases = (
 				8888C4561B8B18E9057018F7 /* Sources */,
 				01522B7AEE36E4088A0FAE90 /* Frameworks */,
@@ -1026,11 +1026,11 @@
 				A9B9D6711F088F274477A498 /* PBXTargetDependency */,
 				496BC28876A9F6770A03FF82 /* PBXTargetDependency */,
 			);
-			name = "agentic-daemon";
+			name = "agenticdaemon";
 			packageProductDependencies = (
 			);
-			productName = "agentic-daemon";
-			productReference = D5D044498CE8F5C522B16D48 /* agentic-daemon */;
+			productName = "agenticdaemon";
+			productReference = D5D044498CE8F5C522B16D48 /* agenticdaemon */;
 			productType = "com.apple.product-type.tool";
 		};
 		7E9EC451FF58208573AE30E8 /* DaemonKitTests */ = {
@@ -1210,7 +1210,7 @@
 				7E9EC451FF58208573AE30E8 /* DaemonKitTests */,
 				C884F82297C2EA4DDE434BE2 /* MenuBarKit */,
 				394E4CD59458EA17725467E6 /* MenuBarKitTests */,
-				616D816B85A8BA905862A245 /* agentic-daemon */,
+				616D816B85A8BA905862A245 /* agenticdaemon */,
 			);
 		};
 /* End PBXProject section */
@@ -1780,8 +1780,8 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.agentic-daemon";
-				PRODUCT_NAME = "agentic-daemon";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.agenticdaemon";
+				PRODUCT_NAME = "agenticdaemon";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -2053,8 +2053,8 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.agentic-daemon";
-				PRODUCT_NAME = "agentic-daemon";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.agenticdaemon";
+				PRODUCT_NAME = "agenticdaemon";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -2169,7 +2169,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		31330903915BA085926F5E28 /* Build configuration list for PBXNativeTarget "agentic-daemon" */ = {
+		31330903915BA085926F5E28 /* Build configuration list for PBXNativeTarget "agenticdaemon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D40FC8117D5A74A32EEEF54 /* Debug */,

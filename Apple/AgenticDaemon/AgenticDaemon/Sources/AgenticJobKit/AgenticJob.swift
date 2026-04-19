@@ -7,7 +7,7 @@ import Foundation
     func runJobWithData(_ data: Data) throws -> Data
 }
 
-/// Base class for all agentic-daemon job plugins.
+/// Base class for all agenticdaemon job plugins.
 ///
 /// Subclass this and override `run(request:)` to implement your job.
 /// The class must be named `Job` for the daemon to discover it.

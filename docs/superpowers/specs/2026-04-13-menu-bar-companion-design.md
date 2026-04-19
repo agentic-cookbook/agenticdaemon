@@ -5,7 +5,7 @@
 
 ## Overview
 
-A macOS menu bar companion app (`AgenticMenuBar`) that runs alongside `agentic-daemon` and exposes full visibility and control over the daemon and its jobs via an `NSStatusItem`. Communication uses XPC (Approach A: daemon as XPC listener).
+A macOS menu bar companion app (`AgenticMenuBar`) that runs alongside `agenticdaemon` and exposes full visibility and control over the daemon and its jobs via an `NSStatusItem`. Communication uses XPC (Approach A: daemon as XPC listener).
 
 ---
 
@@ -97,7 +97,7 @@ Five source files in `Sources/AgenticMenuBar`:
 
 **Main menu (daemon running):**
 ```
-● agentic-daemon                    uptime 2h 14m
+● agenticdaemon                    uptime 2h 14m
 ─────────────────────────────────────────────────
 JOBS (3)
   ● cleanup                         next: 4m  ▶

@@ -1,6 +1,6 @@
 import Foundation
 
-/// XPC protocol between agentic-daemon and its menu bar companion.
+/// XPC protocol between agenticdaemon and its menu bar companion.
 /// Mach service name: com.agentic-cookbook.daemon.xpc
 ///
 /// Complex types cross as JSON-encoded Data:

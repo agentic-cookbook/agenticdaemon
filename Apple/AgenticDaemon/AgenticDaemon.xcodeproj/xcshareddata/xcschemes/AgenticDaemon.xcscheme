@@ -30,8 +30,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "616D816B85A8BA905862A245"
-               BuildableName = "agentic-daemon"
-               BlueprintName = "agentic-daemon"
+               BuildableName = "agenticdaemon"
+               BlueprintName = "agenticdaemon"
                ReferencedContainer = "container:AgenticDaemon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

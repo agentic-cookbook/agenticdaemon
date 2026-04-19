@@ -41,7 +41,7 @@ public final class AgenticDaemonController: @unchecked Sendable {
             identifier: identifier,
             supportDirectory: supportDirectory,
             machServiceName: "com.agentic-cookbook.daemon.xpc",
-            crashReportProcessName: "agentic-daemon"
+            crashReportProcessName: "agenticdaemon"
         )
 
         let strategy = TimingStrategy(name: "agentic-jobs", taskSource: source)
@@ -58,7 +58,7 @@ public final class AgenticDaemonController: @unchecked Sendable {
     }
 
     public func run() async {
-        logger.info("Starting agentic-daemon")
+        logger.info("Starting agenticdaemon")
 
         createClientDirectories()
 

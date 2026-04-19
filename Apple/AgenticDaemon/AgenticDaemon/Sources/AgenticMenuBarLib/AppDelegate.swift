@@ -25,7 +25,7 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
     public func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusItem.button?.title = "⚙"
-        statusItem.button?.toolTip = "agentic-daemon"
+        statusItem.button?.toolTip = "agenticdaemon"
 
         menuBuilder = MenuBuilder(handlers: makeHandlers())
         client.connect()

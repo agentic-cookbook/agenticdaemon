@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""End-to-end test for agentic-daemon.
+"""End-to-end test for agenticdaemon.
 
 Lifecycle: install → drop job → verify execution → verify re-execution → uninstall.
 Must be run from the repo root. Requires no arguments.
@@ -19,7 +19,7 @@ SUPPORT_DIR = Path.home() / "Library" / "Application Support" / LABEL
 JOBS_DIR = SUPPORT_DIR / "jobs"
 LOGS_DIR = Path.home() / "Library" / "Logs" / LABEL
 PLIST_DST = Path.home() / "Library" / "LaunchAgents" / f"{LABEL}.plist"
-BINARY = SUPPORT_DIR / "agentic-daemon"
+BINARY = SUPPORT_DIR / "agenticdaemon"
 
 MARKER_ID = uuid.uuid4().hex[:12]
 MARKER_PATH = Path(f"/tmp/agentic-e2e-marker-{MARKER_ID}")
@@ -151,7 +151,7 @@ def main():
     root = repo_root()
     result = E2EResult()
 
-    print(f"\nagentic-daemon E2E Test")
+    print(f"\nagenticdaemon E2E Test")
     print(f"  Repo:   {root}")
     print(f"  Marker: {MARKER_PATH}")
     print(f"{'=' * 50}\n")

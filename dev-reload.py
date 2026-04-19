@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Development reload script for agentic-daemon.
+Development reload script for agenticdaemon.
 
 Builds the debug binary and dylib, writes a dev launchd plist pointing at them,
 and hot-swaps the running daemon so changes take effect immediately.
@@ -26,7 +26,7 @@ PID_WAIT_TIMEOUT = 10       # seconds to wait for daemon PID after bootstrap
 repo = Path(__file__).parent.resolve()
 pkg_dir = repo / "AgenticDaemon"
 build_dir = repo / ".build" / "debug"
-binary = build_dir / "agentic-daemon"
+binary = build_dir / "agenticdaemon"
 dylib = build_dir / "libAgenticJobKit.dylib"
 
 home = Path.home()

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Port job execution history (SQLite), an HTTP management API, an XPC service, and a dev-reload test from claude-watcher into agentic-daemon.
+**Goal:** Port job execution history (SQLite), an HTTP management API, an XPC service, and a dev-reload test from claude-watcher into agenticdaemon.
 
 **Architecture:** `JobRunStore` records every job execution to SQLite; `HTTPServer`/`HTTPRouter` expose that data plus live scheduler state on `localhost:22846`; `XPCService` registers a Mach service so future Swift clients can query the daemon without HTTP; `agenticd` Python CLI prefers the HTTP API and falls back to file reads. `test_dev_reload.py` validates the dev-reload script end-to-end.
 

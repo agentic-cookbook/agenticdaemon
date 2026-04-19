@@ -1,4 +1,4 @@
-# agentic-daemon
+# agenticdaemon
 
 macOS user-space daemon that auto-compiles and schedules Swift job scripts.
 
