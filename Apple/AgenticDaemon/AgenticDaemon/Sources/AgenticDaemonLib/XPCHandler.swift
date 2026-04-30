@@ -17,16 +17,16 @@ final class XPCHandler: NSObject, AgenticDaemonXPC, @unchecked Sendable {
         /// Sets the named job's next run time to now. Returns false if not found.
         let triggerJob: @Sendable (String) async -> Bool
         /// Clears the crash blacklist for the named job.
-        let clearBlacklist: @Sendable (String) -> Bool
+        let clearBlocklist: @Sendable (String) -> Bool
         /// Shuts the daemon down.
         let onShutdown: @Sendable () -> Void
     }
 
     private let deps: Dependencies
     private let encoder: JSONEncoder = {
-        let e = JSONEncoder()
-        e.dateEncodingStrategy = .iso8601
-        return e
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        return encoder
     }()
 
     init(dependencies: Dependencies) {
@@ -57,8 +57,8 @@ final class XPCHandler: NSObject, AgenticDaemonXPC, @unchecked Sendable {
         Task { reply(await deps.triggerJob(name)) }
     }
 
-    func clearBlacklist(_ name: String, reply: @escaping @Sendable (Bool) -> Void) {
-        reply(deps.clearBlacklist(name))
+    func clearBlocklist(_ name: String, reply: @escaping @Sendable (Bool) -> Void) {
+        reply(deps.clearBlocklist(name))
     }
 
     func shutdown(reply: @escaping @Sendable () -> Void) {

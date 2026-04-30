@@ -16,11 +16,11 @@ struct StubDaemonTask: DaemonTask {
 
 struct StubTaskSource: TaskSource {
     var tasks: [any DaemonTask]
-    var watchDirectory: URL? = nil
-    var shouldClearBlacklistHandler: @Sendable (String) -> Bool = { _ in false }
+    var watchDirectory: URL?
+    var shouldClearBlocklistHandler: @Sendable (String) -> Bool = { _ in false }
 
     func discoverTasks() -> [any DaemonTask] { tasks }
-    func shouldClearBlacklist(taskName: String) -> Bool { shouldClearBlacklistHandler(taskName) }
+    func shouldClearBlocklist(taskName: String) -> Bool { shouldClearBlocklistHandler(taskName) }
 }
 
 private func makeScheduler(stateDir: URL) -> (Scheduler, CrashTracker) {

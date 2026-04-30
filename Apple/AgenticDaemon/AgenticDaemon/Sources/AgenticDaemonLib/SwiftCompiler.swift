@@ -30,10 +30,10 @@ public struct SwiftCompiler: Sendable {
     }
 
     public func needsCompile(job: JobDescriptor) -> Bool {
-        let fm = FileManager.default
+        let fileManager = FileManager.default
         let binaryPath = job.binaryURL.path(percentEncoded: false)
 
-        guard fm.fileExists(atPath: binaryPath) else {
+        guard fileManager.fileExists(atPath: binaryPath) else {
             return true
         }
 

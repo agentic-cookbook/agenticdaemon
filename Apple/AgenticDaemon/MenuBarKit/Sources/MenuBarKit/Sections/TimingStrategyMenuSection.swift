@@ -41,7 +41,7 @@ public struct TimingStrategyMenuSection: MenuSection {
         submenu.addItem(header)
         submenu.addItem(MenuBarKitHelpers.infoItem(label: "State", value: unit.state.rawValue))
         submenu.addItem(MenuBarKitHelpers.infoItem(label: "Failures", value: "\(unit.consecutiveFailures)"))
-        if unit.isBlacklisted {
+        if unit.isBlocklisted {
             submenu.addItem(MenuBarKitHelpers.infoItem(label: "Blacklisted", value: "Yes"))
         }
         submenu.addItem(.separator())
@@ -58,7 +58,7 @@ public struct TimingStrategyMenuSection: MenuSection {
         case .running:     "●"
         case .idle:        "●"
         case .disabled:    "○"
-        case .blacklisted: "⚠"
+        case .blocklisted: "⚠"
         }
     }
 
@@ -68,7 +68,7 @@ public struct TimingStrategyMenuSection: MenuSection {
             return "running…"
         case .disabled:
             return "disabled"
-        case .blacklisted:
+        case .blocklisted:
             return "blacklisted"
         case .idle:
             guard let next = unit.nextActivation else { return "idle" }

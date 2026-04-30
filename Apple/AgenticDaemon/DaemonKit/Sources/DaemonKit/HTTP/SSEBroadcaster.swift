@@ -139,9 +139,9 @@ public final class SSEBroadcaster: @unchecked Sendable {
     public func shutdown() {
         stopKeepalive()
         let snapshot = lock.withLock {
-            let s = clients
+            let captured = clients
             clients.removeAll()
-            return s
+            return captured
         }
         for (_, client) in snapshot {
             client.connection.cancel()

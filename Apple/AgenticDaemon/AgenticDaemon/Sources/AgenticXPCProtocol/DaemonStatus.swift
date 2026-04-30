@@ -12,7 +12,7 @@ public struct DaemonStatus: Codable, Sendable {
         public let consecutiveFailures: Int
         public let isRunning: Bool
         public let config: JobConfig
-        public let isBlacklisted: Bool
+        public let isBlocklisted: Bool
 
         public init(
             name: String,
@@ -20,14 +20,14 @@ public struct DaemonStatus: Codable, Sendable {
             consecutiveFailures: Int,
             isRunning: Bool,
             config: JobConfig = .default,
-            isBlacklisted: Bool = false
+            isBlocklisted: Bool = false
         ) {
             self.name = name
             self.nextRun = nextRun
             self.consecutiveFailures = consecutiveFailures
             self.isRunning = isRunning
             self.config = config
-            self.isBlacklisted = isBlacklisted
+            self.isBlocklisted = isBlocklisted
         }
     }
 

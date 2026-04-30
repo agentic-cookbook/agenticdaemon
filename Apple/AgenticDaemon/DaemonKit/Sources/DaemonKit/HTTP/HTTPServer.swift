@@ -54,9 +54,9 @@ public final class HTTPServer: @unchecked Sendable {
             )
         }
 
-        let l = try NWListener(using: params)
-        l.newConnectionHandler = { [weak self] conn in self?.handleConnection(conn) }
-        l.stateUpdateHandler = { [weak self] state in
+        let nwListener = try NWListener(using: params)
+        nwListener.newConnectionHandler = { [weak self] conn in self?.handleConnection(conn) }
+        nwListener.stateUpdateHandler = { [weak self] state in
             guard let self else { return }
             switch state {
             case .ready:
@@ -71,8 +71,8 @@ public final class HTTPServer: @unchecked Sendable {
             default: break
             }
         }
-        l.start(queue: queue)
-        self.listener = l
+        nwListener.start(queue: queue)
+        self.listener = nwListener
     }
 
     /// Start and block until the server is ready. Returns the port in use.

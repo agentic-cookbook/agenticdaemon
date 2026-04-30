@@ -22,10 +22,24 @@ packages:
     url: https://github.com/microsoft/plcrashreporter.git
     from: "1.8.0"
 
+targetTemplates:
+  SwiftLint:
+    preBuildScripts:
+      - name: SwiftLint
+        basedOnDependencyAnalysis: false
+        script: |
+          if which swiftlint >/dev/null; then
+            swiftlint lint --quiet
+          else
+            echo "warning: SwiftLint not installed; brew install swiftlint to enable"
+          fi
+
 targets:
   DaemonKit:
     type: framework
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: DaemonKit/Sources/DaemonKit
     dependencies:
@@ -43,6 +57,8 @@ targets:
   AgenticJobKit:
     type: library.dynamic
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Sources/AgenticJobKit
     settings:
@@ -54,6 +70,8 @@ targets:
   AgenticXPCProtocol:
     type: library.static
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Sources/AgenticXPCProtocol
     dependencies:
@@ -66,6 +84,8 @@ targets:
   AgenticDaemonLib:
     type: library.static
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Sources/AgenticDaemonLib
     dependencies:
@@ -81,6 +101,8 @@ targets:
   MenuBarKit:
     type: framework
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: MenuBarKit/Sources/MenuBarKit
     dependencies:
@@ -93,6 +115,8 @@ targets:
   AgenticMenuBarLib:
     type: library.static
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Sources/AgenticMenuBarLib
     dependencies:
@@ -106,6 +130,8 @@ targets:
   agenticdaemon:
     type: tool
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Sources/CLI
     dependencies:
@@ -121,6 +147,8 @@ targets:
   AgenticMenuBar:
     type: tool
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Sources/AgenticMenuBar
     dependencies:
@@ -134,6 +162,8 @@ targets:
   DaemonKitTests:
     type: bundle.unit-test
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: DaemonKit/Tests/DaemonKitTests
     dependencies:
@@ -142,6 +172,8 @@ targets:
   MenuBarKitTests:
     type: bundle.unit-test
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: MenuBarKit/Tests/MenuBarKitTests
     dependencies:
@@ -151,6 +183,8 @@ targets:
   AgenticDaemonTests:
     type: bundle.unit-test
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Tests
         excludes:
@@ -165,6 +199,8 @@ targets:
   AgenticMenuBarTests:
     type: bundle.unit-test
     platform: macOS
+    templates:
+      - SwiftLint
     sources:
       - path: AgenticDaemon/Tests/AgenticMenuBarTests
     dependencies:

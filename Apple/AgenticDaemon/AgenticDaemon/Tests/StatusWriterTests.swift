@@ -63,7 +63,7 @@ struct StatusWriterTests {
         writer.write(status: snapshot)
 
         let data = try Data(contentsOf: statusURL)
-        let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+        let json = try #require(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         #expect(json["uptimeSeconds"] != nil)
         #expect(json["jobCount"] != nil)
@@ -96,7 +96,7 @@ struct StatusWriterTests {
                     consecutiveFailures: 1,
                     isRunning: false,
                     config: config,
-                    isBlacklisted: true
+                    isBlocklisted: true
                 )
             ]
         )
@@ -113,7 +113,7 @@ struct StatusWriterTests {
         #expect(job.config.timeout == 45)
         #expect(job.config.runAtWake == false)
         #expect(job.config.backoffOnFailure == false)
-        #expect(job.isBlacklisted == true)
+        #expect(job.isBlocklisted == true)
         cleanupTempDir(tmpDir)
     }
 
@@ -146,7 +146,7 @@ struct StatusWriterTests {
 
         let job = try #require(decoded.jobs.first)
         #expect(job.config.intervalSeconds == 60)
-        #expect(job.isBlacklisted == false)
+        #expect(job.isBlocklisted == false)
         cleanupTempDir(tmpDir)
     }
 

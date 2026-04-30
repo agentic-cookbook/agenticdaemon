@@ -35,10 +35,10 @@ public actor Scheduler {
                 logger.info("Skipping disabled task: \(task.name)")
                 continue
             }
-            if crashTracker.isBlacklisted(taskName: task.name) {
-                if taskSource.shouldClearBlacklist(taskName: task.name) {
+            if crashTracker.isBlocklisted(taskName: task.name) {
+                if taskSource.shouldClearBlocklist(taskName: task.name) {
                     logger.info("Source changed for blacklisted \(task.name), clearing blacklist")
-                    crashTracker.clearBlacklist(taskName: task.name)
+                    crashTracker.clearBlocklist(taskName: task.name)
                 } else {
                     logger.warning("Skipping blacklisted task: \(task.name)")
                     continue
@@ -54,9 +54,9 @@ public actor Scheduler {
         }
 
         for task in discovered where currentNames.contains(task.name) {
-            if crashTracker.isBlacklisted(taskName: task.name) && taskSource.shouldClearBlacklist(taskName: task.name) {
+            if crashTracker.isBlocklisted(taskName: task.name) && taskSource.shouldClearBlocklist(taskName: task.name) {
                 logger.info("Source changed for blacklisted \(task.name), clearing blacklist")
-                crashTracker.clearBlacklist(taskName: task.name)
+                crashTracker.clearBlocklist(taskName: task.name)
             }
             scheduledTasks[task.name]?.task = task
         }
@@ -159,7 +159,7 @@ public actor Scheduler {
     /// Check for crash from a previous daemon run and blacklist the culprit.
     public func recoverFromCrash() {
         if let crashedTask = crashTracker.checkForCrash() {
-            crashTracker.blacklist(taskName: crashedTask)
+            crashTracker.blocklist(taskName: crashedTask)
             logger.error("Previous daemon crash caused by task: \(crashedTask) — blacklisted")
         }
     }

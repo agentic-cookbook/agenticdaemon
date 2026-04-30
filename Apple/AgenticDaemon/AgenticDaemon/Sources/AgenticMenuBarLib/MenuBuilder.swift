@@ -11,7 +11,7 @@ public final class MenuBuilder: @unchecked Sendable {
         public let onTriggerJob: @Sendable (String) -> Void
         public let onEnableJob: @Sendable (String) -> Void
         public let onDisableJob: @Sendable (String) -> Void
-        public let onClearBlacklist: @Sendable (String) -> Void
+        public let onClearBlocklist: @Sendable (String) -> Void
         public let onShowCrash: @Sendable (CrashReport) -> Void
         public let onStartDaemon: @Sendable () -> Void
         public let onStopDaemon: @Sendable () -> Void
@@ -22,7 +22,7 @@ public final class MenuBuilder: @unchecked Sendable {
             onTriggerJob: @escaping @Sendable (String) -> Void,
             onEnableJob: @escaping @Sendable (String) -> Void,
             onDisableJob: @escaping @Sendable (String) -> Void,
-            onClearBlacklist: @escaping @Sendable (String) -> Void,
+            onClearBlocklist: @escaping @Sendable (String) -> Void,
             onShowCrash: @escaping @Sendable (CrashReport) -> Void,
             onStartDaemon: @escaping @Sendable () -> Void,
             onStopDaemon: @escaping @Sendable () -> Void,
@@ -32,7 +32,7 @@ public final class MenuBuilder: @unchecked Sendable {
             self.onTriggerJob = onTriggerJob
             self.onEnableJob = onEnableJob
             self.onDisableJob = onDisableJob
-            self.onClearBlacklist = onClearBlacklist
+            self.onClearBlocklist = onClearBlocklist
             self.onShowCrash = onShowCrash
             self.onStartDaemon = onStartDaemon
             self.onStopDaemon = onStopDaemon
@@ -162,7 +162,7 @@ public final class MenuBuilder: @unchecked Sendable {
         // Runtime
         addLabel(menu, "RUNTIME")
         addInfo(menu, label: "Failures", value: "\(job.consecutiveFailures)")
-        addInfo(menu, label: "Blacklisted", value: job.isBlacklisted ? "Yes" : "No")
+        addInfo(menu, label: "Blacklisted", value: job.isBlocklisted ? "Yes" : "No")
         menu.addItem(.separator())
 
         // Actions
@@ -172,8 +172,8 @@ public final class MenuBuilder: @unchecked Sendable {
         } else {
             menu.addItem(menuItem("Enable Job", action: { [handlers] in handlers.onEnableJob(job.name) }))
         }
-        if job.isBlacklisted {
-            menu.addItem(menuItem("Clear Blacklist", action: { [handlers] in handlers.onClearBlacklist(job.name) }))
+        if job.isBlocklisted {
+            menu.addItem(menuItem("Clear Blacklist", action: { [handlers] in handlers.onClearBlocklist(job.name) }))
         }
 
         return menu
@@ -210,10 +210,10 @@ public final class MenuBuilder: @unchecked Sendable {
     }
 
     private func formatUptime(_ seconds: TimeInterval) -> String {
-        let s = Int(seconds)
-        if s < 60 { return "\(s)s" }
-        if s < 3600 { return "\(s / 60)m \(s % 60)s" }
-        return "\(s / 3600)h \(s % 3600 / 60)m"
+        let total = Int(seconds)
+        if total < 60 { return "\(total)s" }
+        if total < 3600 { return "\(total / 60)m \(total % 60)s" }
+        return "\(total / 3600)h \(total % 3600 / 60)m"
     }
 }
 

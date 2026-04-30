@@ -85,20 +85,20 @@ public final class AgenticDaemonController: @unchecked Sendable {
                 let names = await strategy.taskNames
                 var jobs: [DaemonStatus.JobStatus] = []
                 for name in names.sorted() {
-                    guard let st = await strategy.scheduledTask(named: name) else { continue }
+                    guard let scheduled = await strategy.scheduledTask(named: name) else { continue }
                     let config: JobConfig
-                    if let scriptTask = st.task as? ScriptDaemonTask {
+                    if let scriptTask = scheduled.task as? ScriptDaemonTask {
                         config = scriptTask.descriptor.config
                     } else {
                         config = .default
                     }
                     jobs.append(DaemonStatus.JobStatus(
                         name: name,
-                        nextRun: st.nextRun,
-                        consecutiveFailures: st.consecutiveFailures,
-                        isRunning: st.isRunning,
+                        nextRun: scheduled.nextRun,
+                        consecutiveFailures: scheduled.consecutiveFailures,
+                        isRunning: scheduled.isRunning,
                         config: config,
-                        isBlacklisted: engine.crashTracker.isBlacklisted(taskName: name)
+                        isBlocklisted: engine.crashTracker.isBlocklisted(taskName: name)
                     ))
                 }
                 return DaemonStatus(
@@ -136,8 +136,8 @@ public final class AgenticDaemonController: @unchecked Sendable {
                 await strategy.triggerTask(name: name)
                 return true
             },
-            clearBlacklist: { name in
-                engine.crashTracker.clearBlacklist(taskName: name)
+            clearBlocklist: { name in
+                engine.crashTracker.clearBlocklist(taskName: name)
                 return true
             },
             onShutdown: { [weak self] in self?.shutdown() }
@@ -179,16 +179,16 @@ public final class AgenticDaemonController: @unchecked Sendable {
     // MARK: - Private
 
     private func createClientDirectories() {
-        let fm = FileManager.default
+        let fileManager = FileManager.default
         let dirs = [
             jobsDirectory,
             jobsDirectory.deletingLastPathComponent().appending(path: "lib")
         ]
         for dir in dirs {
             let path = dir.path(percentEncoded: false)
-            guard !fm.fileExists(atPath: path) else { continue }
+            guard !fileManager.fileExists(atPath: path) else { continue }
             do {
-                try fm.createDirectory(at: dir, withIntermediateDirectories: true)
+                try fileManager.createDirectory(at: dir, withIntermediateDirectories: true)
                 logger.info("Created directory: \(path)")
             } catch {
                 logger.error("Failed to create directory \(path): \(error)")

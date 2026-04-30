@@ -47,11 +47,11 @@ public struct HTTPRouter: Sendable {
             return await handleJobs()
         case ("GET", "/runs"):
             return handleRecentRuns()
-        case ("GET", let p) where p.hasPrefix("/jobs/") && p.hasSuffix("/runs"):
-            let name = String(p.dropFirst("/jobs/".count).dropLast("/runs".count))
+        case ("GET", let path) where path.hasPrefix("/jobs/") && path.hasSuffix("/runs"):
+            let name = String(path.dropFirst("/jobs/".count).dropLast("/runs".count))
             return handleJobRuns(jobName: name)
-        case ("GET", let p) where p.hasPrefix("/jobs/"):
-            let name = String(p.dropFirst("/jobs/".count))
+        case ("GET", let path) where path.hasPrefix("/jobs/"):
+            let name = String(path.dropFirst("/jobs/".count))
             return await handleJob(name: name)
         default:
             return .notFound()
@@ -78,7 +78,7 @@ public struct HTTPRouter: Sendable {
         let nextRun: Date
         let consecutiveFailures: Int
         let isRunning: Bool
-        let isBlacklisted: Bool
+        let isBlocklisted: Bool
     }
 
     private func handleJobs() async -> HTTPResponse {
@@ -91,7 +91,7 @@ public struct HTTPRouter: Sendable {
                 nextRun: job.nextRun,
                 consecutiveFailures: job.consecutiveFailures,
                 isRunning: job.isRunning,
-                isBlacklisted: crashTracker.isBlacklisted(taskName: name)
+                isBlocklisted: crashTracker.isBlocklisted(taskName: name)
             ))
         }
         return .json(summaries)
@@ -106,7 +106,7 @@ public struct HTTPRouter: Sendable {
             let nextRun: Date
             let consecutiveFailures: Int
             let isRunning: Bool
-            let isBlacklisted: Bool
+            let isBlocklisted: Bool
             let recentRuns: [JobRun]
         }
         return .json(JobDetail(
@@ -114,7 +114,7 @@ public struct HTTPRouter: Sendable {
             nextRun: job.nextRun,
             consecutiveFailures: job.consecutiveFailures,
             isRunning: job.isRunning,
-            isBlacklisted: crashTracker.isBlacklisted(taskName: name),
+            isBlocklisted: crashTracker.isBlocklisted(taskName: name),
             recentRuns: jobRunStore.runs(for: name, limit: 20)
         ))
     }

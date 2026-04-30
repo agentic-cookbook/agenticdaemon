@@ -13,8 +13,8 @@ public struct JobDiscovery: Sendable {
     }
 
     public func discover() -> [JobDescriptor] {
-        let fm = FileManager.default
-        guard let entries = try? fm.contentsOfDirectory(
+        let fileManager = FileManager.default
+        guard let entries = try? fileManager.contentsOfDirectory(
             at: jobsDirectory,
             includingPropertiesForKeys: [.isDirectoryKey],
             options: [.skipsHiddenFiles]
@@ -29,7 +29,7 @@ public struct JobDiscovery: Sendable {
             guard isDirectory(entry) else { continue }
 
             let sourceURL = entry.appending(path: "job.swift")
-            guard fm.fileExists(atPath: sourceURL.path(percentEncoded: false)) else {
+            guard fileManager.fileExists(atPath: sourceURL.path(percentEncoded: false)) else {
                 logger.debug("Skipping \(entry.lastPathComponent): no job.swift")
                 continue
             }

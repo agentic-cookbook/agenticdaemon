@@ -23,7 +23,7 @@ struct HTTPServerTests {
 
         let url = URL(string: "http://127.0.0.1:\(port)/health")!
         let (data, response) = try await URLSession.shared.data(from: url)
-        let httpResponse = response as! HTTPURLResponse
+        let httpResponse = try #require(response as? HTTPURLResponse)
 
         #expect(httpResponse.statusCode == 200)
         let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
@@ -38,7 +38,7 @@ struct HTTPServerTests {
 
         let url = URL(string: "http://127.0.0.1:\(port)/nonexistent")!
         let (_, response) = try await URLSession.shared.data(from: url)
-        let httpResponse = response as! HTTPURLResponse
+        let httpResponse = try #require(response as? HTTPURLResponse)
 
         #expect(httpResponse.statusCode == 404)
     }

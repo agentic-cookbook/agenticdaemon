@@ -45,5 +45,5 @@ private final class ResultBox: @unchecked Sendable {
     private let lock = NSLock()
     private var _value: Data?
     var value: Data? { lock.withLock { _value } }
-    func setValue(_ v: Data?) { lock.withLock { _value = v } }
+    func setValue(_ value: Data?) { lock.withLock { _value = value } }
 }

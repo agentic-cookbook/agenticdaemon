@@ -137,11 +137,11 @@ public struct CLIWriter: Sendable {
         writeImpl(string)
     }
 
-    public static let standardOutput = CLIWriter { s in
-        FileHandle.standardOutput.write(Data(s.utf8))
+    public static let standardOutput = CLIWriter { text in
+        FileHandle.standardOutput.write(Data(text.utf8))
     }
 
-    public static let standardError = CLIWriter { s in
-        FileHandle.standardError.write(Data(s.utf8))
+    public static let standardError = CLIWriter { text in
+        FileHandle.standardError.write(Data(text.utf8))
     }
 }

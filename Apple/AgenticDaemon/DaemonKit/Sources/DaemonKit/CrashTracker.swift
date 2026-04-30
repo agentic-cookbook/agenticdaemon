@@ -4,12 +4,12 @@ import os
 public struct CrashTracker: Sendable {
     private let logger: Logger
     private let runningFileURL: URL
-    private let blacklistFileURL: URL
+    private let blocklistFileURL: URL
 
     public init(stateDir: URL, subsystem: String) {
         self.logger = Logger(subsystem: subsystem, category: "CrashTracker")
         self.runningFileURL = stateDir.appending(path: "running.txt")
-        self.blacklistFileURL = stateDir.appending(path: "blacklist.json")
+        self.blocklistFileURL = stateDir.appending(path: "blacklist.json")
     }
 
     /// Write the name of the task about to run. If the daemon crashes,
@@ -56,36 +56,36 @@ public struct CrashTracker: Sendable {
     }
 
     /// Add a task to the blacklist. It won't be loaded until cleared.
-    public func blacklist(taskName: String) {
-        var list = loadBlacklist()
+    public func blocklist(taskName: String) {
+        var list = loadBlocklist()
         list.insert(taskName)
-        saveBlacklist(list)
+        saveBlocklist(list)
         logger.warning("Blacklisted task: \(taskName)")
     }
 
     /// Check if a task is blacklisted.
-    public func isBlacklisted(taskName: String) -> Bool {
-        loadBlacklist().contains(taskName)
+    public func isBlocklisted(taskName: String) -> Bool {
+        loadBlocklist().contains(taskName)
     }
 
     /// Remove a task from the blacklist (e.g., when source changes).
-    public func clearBlacklist(taskName: String) {
-        var list = loadBlacklist()
+    public func clearBlocklist(taskName: String) {
+        var list = loadBlocklist()
         list.remove(taskName)
-        saveBlacklist(list)
+        saveBlocklist(list)
         logger.info("Cleared blacklist for: \(taskName)")
     }
 
-    private func loadBlacklist() -> Set<String> {
-        guard let data = try? Data(contentsOf: blacklistFileURL),
+    private func loadBlocklist() -> Set<String> {
+        guard let data = try? Data(contentsOf: blocklistFileURL),
               let list = try? JSONDecoder().decode(Set<String>.self, from: data) else {
             return []
         }
         return list
     }
 
-    private func saveBlacklist(_ list: Set<String>) {
+    private func saveBlocklist(_ list: Set<String>) {
         guard let data = try? JSONEncoder().encode(list) else { return }
-        try? data.write(to: blacklistFileURL, options: .atomic)
+        try? data.write(to: blocklistFileURL, options: .atomic)
     }
 }

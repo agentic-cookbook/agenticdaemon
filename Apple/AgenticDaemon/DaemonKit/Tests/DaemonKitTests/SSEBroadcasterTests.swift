@@ -26,10 +26,10 @@ struct SSEBroadcasterTests {
     @Test("shutdown cancels all connections and clears clients")
     func shutdownClears() async throws {
         let sse = SSEBroadcaster(subsystem: "test")
-        let (c1, _) = try await makeLoopbackPair()
-        let (c2, _) = try await makeLoopbackPair()
-        sse.addClient(c1)
-        sse.addClient(c2)
+        let (conn1, _) = try await makeLoopbackPair()
+        let (conn2, _) = try await makeLoopbackPair()
+        sse.addClient(conn1)
+        sse.addClient(conn2)
         #expect(sse.clientCount == 2)
         sse.shutdown()
         #expect(sse.clientCount == 0)
@@ -252,8 +252,11 @@ private final class CheckedContinuationBox<T: Sendable>: @unchecked Sendable {
             try await withCheckedThrowingContinuation { (cont: CheckedContinuation<T, Error>) in
                 lock.withLock {
                     if resolved {
-                        if let err = pendingError { cont.resume(throwing: err) }
-                        else if let v = pending { cont.resume(returning: v) }
+                        if let err = pendingError {
+                            cont.resume(throwing: err)
+                        } else if let value = pending {
+                            cont.resume(returning: value)
+                        }
                     } else {
                         continuation = cont
                     }

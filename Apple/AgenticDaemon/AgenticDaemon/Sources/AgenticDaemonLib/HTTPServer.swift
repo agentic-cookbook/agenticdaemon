@@ -19,12 +19,12 @@ public final class HTTPServer: @unchecked Sendable {
             host: .ipv4(.loopback),
             port: NWEndpoint.Port(rawValue: port)!
         )
-        let l = try NWListener(using: params)
-        l.newConnectionHandler = { [weak self] connection in
+        let nwListener = try NWListener(using: params)
+        nwListener.newConnectionHandler = { [weak self] connection in
             self?.handle(connection: connection)
         }
-        l.start(queue: .global(qos: .utility))
-        listener = l
+        nwListener.start(queue: .global(qos: .utility))
+        listener = nwListener
         logger.info("HTTP server listening on port \(self.port)")
     }
 

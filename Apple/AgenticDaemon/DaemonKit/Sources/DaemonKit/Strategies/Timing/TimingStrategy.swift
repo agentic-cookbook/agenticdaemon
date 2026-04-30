@@ -118,10 +118,10 @@ public final class TimingStrategy: DaemonStrategy, @unchecked Sendable {
         var units: [WorkUnitSnapshot] = []
         for taskName in names.sorted() {
             guard let scheduled = await scheduler.scheduledTask(named: taskName) else { continue }
-            let isBlacklisted = crashTracker.isBlacklisted(taskName: taskName)
+            let isBlocklisted = crashTracker.isBlocklisted(taskName: taskName)
             let unitState: WorkUnitSnapshot.WorkUnitState
-            if isBlacklisted {
-                unitState = .blacklisted
+            if isBlocklisted {
+                unitState = .blocklisted
             } else if !scheduled.task.schedule.enabled {
                 unitState = .disabled
             } else if scheduled.isRunning {
@@ -134,7 +134,7 @@ public final class TimingStrategy: DaemonStrategy, @unchecked Sendable {
                 state: unitState,
                 nextActivation: scheduled.nextRun,
                 consecutiveFailures: scheduled.consecutiveFailures,
-                isBlacklisted: isBlacklisted
+                isBlocklisted: isBlocklisted
             ))
         }
         return StrategySnapshot(name: name, kind: Self.kind, workUnits: units)

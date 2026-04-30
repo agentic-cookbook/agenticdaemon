@@ -40,35 +40,35 @@ struct CrashTrackerTests {
     }
 
     @Test("Blacklists a crashed job")
-    func blacklistsJob() {
+    func blocklistsJob() {
         let tracker = CrashTracker(stateDir: tmpDir, subsystem: "test")
-        tracker.blacklist(taskName: "crasher")
+        tracker.blocklist(taskName: "crasher")
 
-        #expect(tracker.isBlacklisted(taskName: "crasher"))
-        #expect(!tracker.isBlacklisted(taskName: "other"))
+        #expect(tracker.isBlocklisted(taskName: "crasher"))
+        #expect(!tracker.isBlocklisted(taskName: "other"))
         cleanupTempDir(tmpDir)
     }
 
     @Test("Blacklist persists across instances")
-    func blacklistPersists() {
+    func blocklistPersists() {
         let tracker = CrashTracker(stateDir: tmpDir, subsystem: "test")
-        tracker.blacklist(taskName: "crasher")
+        tracker.blocklist(taskName: "crasher")
 
         let tracker2 = CrashTracker(stateDir: tmpDir, subsystem: "test")
-        #expect(tracker2.isBlacklisted(taskName: "crasher"))
+        #expect(tracker2.isBlocklisted(taskName: "crasher"))
         cleanupTempDir(tmpDir)
     }
 
     @Test("clearBlacklist removes a specific job")
-    func clearBlacklist() {
+    func clearBlocklist() {
         let tracker = CrashTracker(stateDir: tmpDir, subsystem: "test")
-        tracker.blacklist(taskName: "job-a")
-        tracker.blacklist(taskName: "job-b")
+        tracker.blocklist(taskName: "job-a")
+        tracker.blocklist(taskName: "job-b")
 
-        tracker.clearBlacklist(taskName: "job-a")
+        tracker.clearBlocklist(taskName: "job-a")
 
-        #expect(!tracker.isBlacklisted(taskName: "job-a"))
-        #expect(tracker.isBlacklisted(taskName: "job-b"))
+        #expect(!tracker.isBlocklisted(taskName: "job-a"))
+        #expect(tracker.isBlocklisted(taskName: "job-b"))
         cleanupTempDir(tmpDir)
     }
 

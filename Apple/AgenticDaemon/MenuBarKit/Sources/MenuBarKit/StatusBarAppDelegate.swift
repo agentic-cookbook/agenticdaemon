@@ -141,7 +141,7 @@ public final class StatusBarAppDelegate: NSObject, NSApplicationDelegate {
                     badge.widthAnchor.constraint(equalToConstant: 11),
                     badge.heightAnchor.constraint(equalToConstant: 11),
                     badge.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -1),
-                    badge.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -1),
+                    badge.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -1)
                 ])
                 unreachableBadge = badge
             }

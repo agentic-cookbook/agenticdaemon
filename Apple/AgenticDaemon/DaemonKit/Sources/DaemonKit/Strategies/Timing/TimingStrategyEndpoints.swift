@@ -47,13 +47,13 @@ public struct TimingJobSummary: Codable, Sendable {
     public let state: String
     public let nextActivation: Date?
     public let consecutiveFailures: Int
-    public let isBlacklisted: Bool
+    public let isBlocklisted: Bool
 
     public init(unit: WorkUnitSnapshot) {
         self.name = unit.name
         self.state = unit.state.rawValue
         self.nextActivation = unit.nextActivation
         self.consecutiveFailures = unit.consecutiveFailures
-        self.isBlacklisted = unit.isBlacklisted
+        self.isBlocklisted = unit.isBlocklisted
     }
 }

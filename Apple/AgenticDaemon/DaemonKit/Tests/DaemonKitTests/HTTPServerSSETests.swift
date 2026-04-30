@@ -88,7 +88,7 @@ struct HTTPServerSSETests {
 
         let url = URL(string: "http://127.0.0.1:\(port)/stream")!
         let (_, response) = try await URLSession.shared.data(from: url)
-        let httpResponse = response as! HTTPURLResponse
+        let httpResponse = try #require(response as? HTTPURLResponse)
         #expect(httpResponse.statusCode == 501)
     }
 }
@@ -181,11 +181,11 @@ private final class AsyncEvent: @unchecked Sendable {
         let conts: [CheckedContinuation<Void, Never>] = lock.withLock {
             if fired { return [] }
             fired = true
-            let c = continuations
+            let captured = continuations
             continuations.removeAll()
-            return c
+            return captured
         }
-        for c in conts { c.resume() }
+        for cont in conts { cont.resume() }
     }
 
     func wait() async {

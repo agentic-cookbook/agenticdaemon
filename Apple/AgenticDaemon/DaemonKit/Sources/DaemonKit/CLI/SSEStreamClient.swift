@@ -52,7 +52,8 @@ public final class SSEStreamClient: @unchecked Sendable {
                 switch state {
                 case .ready:
                     // Send the GET request
-                    let req = "GET \(path) HTTP/1.1\r\nHost: \(self.host):\(self.port)\r\nAccept: text/event-stream\r\n\r\n"
+                    let req = "GET \(path) HTTP/1.1\r\nHost: \(self.host):\(self.port)\r\n"
+                        + "Accept: text/event-stream\r\n\r\n"
                     connection?.send(content: Data(req.utf8), completion: .contentProcessed { _ in })
                     Self.receiveLoop(connection: connection, parser: parser, continuation: continuation)
                 case .failed, .cancelled:

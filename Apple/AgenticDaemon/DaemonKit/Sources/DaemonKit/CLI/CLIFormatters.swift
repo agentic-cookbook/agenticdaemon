@@ -2,20 +2,20 @@ import Foundation
 
 /// Pad or truncate a string to a fixed width. Strings longer than `width`
 /// are truncated with an ellipsis.
-public func padRight(_ s: String, _ width: Int) -> String {
+public func padRight(_ text: String, _ width: Int) -> String {
     guard width > 0 else { return "" }
-    if s.count > width {
-        return String(s.prefix(width - 1)) + "…"
+    if text.count > width {
+        return String(text.prefix(width - 1)) + "…"
     }
-    return s.padding(toLength: width, withPad: " ", startingAt: 0)
+    return text.padding(toLength: width, withPad: " ", startingAt: 0)
 }
 
 /// Format seconds as "42s", "3m 12s", or "2h 15m".
 public func formatDuration(_ seconds: Double) -> String {
-    let s = Int(seconds)
-    if s < 60 { return "\(s)s" }
-    if s < 3600 { return "\(s / 60)m \(s % 60)s" }
-    return "\(s / 3600)h \(s % 3600 / 60)m"
+    let total = Int(seconds)
+    if total < 60 { return "\(total)s" }
+    if total < 3600 { return "\(total / 60)m \(total % 60)s" }
+    return "\(total / 3600)h \(total % 3600 / 60)m"
 }
 
 /// Format a Date for terminal display.

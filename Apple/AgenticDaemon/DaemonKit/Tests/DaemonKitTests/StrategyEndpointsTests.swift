@@ -15,10 +15,10 @@ private struct StubTask: DaemonTask {
 
 private final class StubSource: TaskSource, @unchecked Sendable {
     var tasks: [any DaemonTask]
-    var watchDirectory: URL? = nil
+    var watchDirectory: URL?
     init(tasks: [any DaemonTask]) { self.tasks = tasks }
     func discoverTasks() -> [any DaemonTask] { tasks }
-    func shouldClearBlacklist(taskName: String) -> Bool { false }
+    func shouldClearBlocklist(taskName: String) -> Bool { false }
 }
 
 private func makeContext(tmp: URL) -> DaemonContext {
@@ -33,7 +33,7 @@ private func makeContext(tmp: URL) -> DaemonContext {
 private func makeTempDir() -> URL {
     let url = FileManager.default.temporaryDirectory
         .appending(path: "endpoints-\(UUID().uuidString)")
-    try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     return url
 }
 
@@ -65,7 +65,9 @@ struct TimingStrategyEndpointsTests {
         try await strategy.start(context: makeContext(tmp: tmp))
         defer { Task { await strategy.stop() } }
 
-        let resp = try #require(await strategy.handle(request: request(method: "GET", path: "/strategy/my-timer/snapshot")))
+        let resp = try #require(
+            await strategy.handle(request: request(method: "GET", path: "/strategy/my-timer/snapshot"))
+        )
         #expect(resp.status == 200)
 
         let decoded = try JSONDecoder.iso8601.decode(StrategySnapshot.self, from: resp.body)
@@ -148,7 +150,9 @@ struct EventStrategyEndpointsTests {
         let trigger = Trigger.custom(CustomTrigger(start: { _ in }, stop: {}))
         let strategy = EventStrategy(name: "ingest", trigger: trigger, handler: handler)
 
-        let resp = try #require(await strategy.handle(request: request(method: "GET", path: "/strategy/ingest/snapshot")))
+        let resp = try #require(
+            await strategy.handle(request: request(method: "GET", path: "/strategy/ingest/snapshot"))
+        )
         let decoded = try JSONDecoder.iso8601.decode(StrategySnapshot.self, from: resp.body)
         #expect(decoded.name == "ingest")
         #expect(decoded.kind == "event")
@@ -223,7 +227,9 @@ struct CompositeStrategyEndpointsTests {
         #expect(jobsResp.status == 200)
 
         // /strategy/event/snapshot -> handled by EventStrategy
-        let snapResp = try #require(await composite.handle(request: request(method: "GET", path: "/strategy/event/snapshot")))
+        let snapResp = try #require(
+            await composite.handle(request: request(method: "GET", path: "/strategy/event/snapshot"))
+        )
         #expect(snapResp.status == 200)
 
         // /unknown -> nil
@@ -322,8 +328,8 @@ private struct StubEndpoint: StrategyHTTPEndpoints {
 
 private extension JSONDecoder {
     static let iso8601: JSONDecoder = {
-        let d = JSONDecoder()
-        d.dateDecodingStrategy = .iso8601
-        return d
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
     }()
 }

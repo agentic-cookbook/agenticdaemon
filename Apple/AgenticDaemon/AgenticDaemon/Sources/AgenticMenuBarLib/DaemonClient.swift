@@ -20,9 +20,9 @@ public final class DaemonClient {
     )
     private var connection: NSXPCConnection?
     private let decoder: JSONDecoder = {
-        let d = JSONDecoder()
-        d.dateDecodingStrategy = .iso8601
-        return d
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
     }()
 
     public init() {}
@@ -105,10 +105,10 @@ public final class DaemonClient {
         }
     }
 
-    public func clearBlacklist(_ name: String) async throws {
+    public func clearBlocklist(_ name: String) async throws {
         let proxy = try makeProxy()
         try await withCheckedThrowingContinuation { cont in
-            proxy.clearBlacklist(name) { success in
+            proxy.clearBlocklist(name) { success in
                 cont.resume(with: success ? .success(()) : .failure(DaemonClientError.operationFailed))
             }
         }

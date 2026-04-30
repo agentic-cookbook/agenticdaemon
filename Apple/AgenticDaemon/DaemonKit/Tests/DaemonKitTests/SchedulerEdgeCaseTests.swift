@@ -16,17 +16,17 @@ private struct StubTask: DaemonTask {
 
 private struct StubSource: TaskSource {
     var tasks: [any DaemonTask]
-    var watchDirectory: URL? = nil
-    var shouldClearBlacklistHandler: @Sendable (String) -> Bool = { _ in false }
+    var watchDirectory: URL?
+    var shouldClearBlocklistHandler: @Sendable (String) -> Bool = { _ in false }
 
     func discoverTasks() -> [any DaemonTask] { tasks }
-    func shouldClearBlacklist(taskName: String) -> Bool { shouldClearBlacklistHandler(taskName) }
+    func shouldClearBlocklist(taskName: String) -> Bool { shouldClearBlocklistHandler(taskName) }
 }
 
 private func makeScheduler() -> (Scheduler, CrashTracker) {
     let tmpDir = FileManager.default.temporaryDirectory
         .appending(path: "sched-edge-\(UUID().uuidString)")
-    try! FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(at: tmpDir, withIntermediateDirectories: true)
     let tracker = CrashTracker(stateDir: tmpDir, subsystem: "test")
     let analytics = StubAnalytics()
     let scheduler = Scheduler(crashTracker: tracker, analytics: analytics, subsystem: "test")
@@ -46,14 +46,14 @@ private final class StubAnalytics: AnalyticsProvider, @unchecked Sendable {
 struct SchedulerEdgeCaseTests {
 
     @Test("recoverFromCrash blacklists the crashed task")
-    func recoverFromCrashBlacklists() async {
+    func recoverFromCrashBlocklists() async {
         let (scheduler, tracker) = makeScheduler()
         tracker.markRunning(taskName: "crasher")
 
         // Simulate daemon restart — don't clear running, then recover
         await scheduler.recoverFromCrash()
 
-        #expect(tracker.isBlacklisted(taskName: "crasher"))
+        #expect(tracker.isBlocklisted(taskName: "crasher"))
     }
 
     @Test("recoverFromCrash is no-op when no crash detected")
@@ -62,13 +62,13 @@ struct SchedulerEdgeCaseTests {
 
         await scheduler.recoverFromCrash()
 
-        #expect(!tracker.isBlacklisted(taskName: "anything"))
+        #expect(!tracker.isBlocklisted(taskName: "anything"))
     }
 
     @Test("syncTasks skips blacklisted tasks")
-    func syncSkipsBlacklisted() async {
+    func syncSkipsBlocklisted() async {
         let (scheduler, tracker) = makeScheduler()
-        tracker.blacklist(taskName: "bad-task")
+        tracker.blocklist(taskName: "bad-task")
 
         let task = StubTask(name: "bad-task", schedule: .default)
         let source = StubSource(tasks: [task])
@@ -79,17 +79,17 @@ struct SchedulerEdgeCaseTests {
     }
 
     @Test("syncTasks clears blacklist when shouldClearBlacklist returns true")
-    func syncClearsBlacklistWhenSourceChanged() async {
+    func syncClearsBlocklistWhenSourceChanged() async {
         let (scheduler, tracker) = makeScheduler()
-        tracker.blacklist(taskName: "fixed-task")
+        tracker.blocklist(taskName: "fixed-task")
 
         let task = StubTask(name: "fixed-task", schedule: .default)
-        let source = StubSource(tasks: [task], shouldClearBlacklistHandler: { _ in true })
+        let source = StubSource(tasks: [task], shouldClearBlocklistHandler: { _ in true })
         await scheduler.syncTasks(from: source)
 
         let count = await scheduler.taskCount
         #expect(count == 1)
-        #expect(!tracker.isBlacklisted(taskName: "fixed-task"))
+        #expect(!tracker.isBlocklisted(taskName: "fixed-task"))
     }
 
     @Test("syncTasks updates existing task objects on re-sync")
@@ -169,12 +169,12 @@ struct SchedulerEdgeCaseTests {
 
         // After A completes, B should have nextRun set to ~now.
         // Poll rather than sleep-once, so this doesn't flake under load.
-        var b = await scheduler.scheduledTask(named: "b")
-        for _ in 0..<40 where (b?.nextRun.timeIntervalSinceNow ?? 999) > 1.0 {
+        var taskB = await scheduler.scheduledTask(named: "b")
+        for _ in 0..<40 where (taskB?.nextRun.timeIntervalSinceNow ?? 999) > 1.0 {
             try? await Task.sleep(for: .milliseconds(50))
-            b = await scheduler.scheduledTask(named: "b")
+            taskB = await scheduler.scheduledTask(named: "b")
         }
-        #expect(b?.nextRun.timeIntervalSinceNow ?? 999 < 1.0)
+        #expect(taskB?.nextRun.timeIntervalSinceNow ?? 999 < 1.0)
     }
 
     @Test("task can disable itself via result")

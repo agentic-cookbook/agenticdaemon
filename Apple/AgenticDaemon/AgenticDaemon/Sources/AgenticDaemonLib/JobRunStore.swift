@@ -11,7 +11,7 @@ public final class JobRunStore: @unchecked Sendable {
         label: "com.agentic-cookbook.daemon.job-run-store",
         qos: .utility
     )
-    private let db: OpaquePointer
+    private let database: OpaquePointer
 
     public init(databaseURL: URL) throws {
         var handle: OpaquePointer?
@@ -20,12 +20,12 @@ public final class JobRunStore: @unchecked Sendable {
               let handle else {
             throw JobRunStoreError.openFailed(databaseURL.path(percentEncoded: false))
         }
-        db = handle
+        database = handle
         try configure()
     }
 
     deinit {
-        sqlite3_close(db)
+        sqlite3_close(database)
     }
 
     public func record(_ run: JobRun) {
@@ -73,7 +73,7 @@ public final class JobRunStore: @unchecked Sendable {
             let cutoff = Date().addingTimeInterval(-Double(retentionDays) * 86400)
             let sql = "DELETE FROM job_runs WHERE started_at < ?"
             var stmt: OpaquePointer?
-            guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return }
+            guard sqlite3_prepare_v2(database, sql, -1, &stmt, nil) == SQLITE_OK else { return }
             defer { sqlite3_finalize(stmt) }
             let iso = iso8601()
             sqlite3_bind_text(stmt, 1, iso.string(from: cutoff), -1, Self.transient)
@@ -92,7 +92,7 @@ public final class JobRunStore: @unchecked Sendable {
     private func configure() throws {
         let pragmas = ["PRAGMA journal_mode=WAL", "PRAGMA foreign_keys=ON"]
         for pragma in pragmas {
-            guard sqlite3_exec(db, pragma, nil, nil, nil) == SQLITE_OK else {
+            guard sqlite3_exec(database, pragma, nil, nil, nil) == SQLITE_OK else {
                 throw JobRunStoreError.configureFailed(pragma)
             }
         }
@@ -109,7 +109,7 @@ public final class JobRunStore: @unchecked Sendable {
             CREATE INDEX IF NOT EXISTS idx_job_runs_job_name   ON job_runs(job_name);
             CREATE INDEX IF NOT EXISTS idx_job_runs_started_at ON job_runs(started_at);
         """
-        guard sqlite3_exec(db, ddl, nil, nil, nil) == SQLITE_OK else {
+        guard sqlite3_exec(database, ddl, nil, nil, nil) == SQLITE_OK else {
             throw JobRunStoreError.configureFailed("CREATE TABLE")
         }
     }
@@ -121,7 +121,7 @@ public final class JobRunStore: @unchecked Sendable {
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """
         var stmt: OpaquePointer?
-        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return }
+        guard sqlite3_prepare_v2(database, sql, -1, &stmt, nil) == SQLITE_OK else { return }
         defer { sqlite3_finalize(stmt) }
         let iso = iso8601()
         sqlite3_bind_text(stmt, 1, run.id.uuidString, -1, Self.transient)
@@ -140,7 +140,7 @@ public final class JobRunStore: @unchecked Sendable {
 
     private func _query(sql: String, bind: (OpaquePointer) -> Void) -> [JobRun] {
         var stmt: OpaquePointer?
-        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK, let stmt else { return [] }
+        guard sqlite3_prepare_v2(database, sql, -1, &stmt, nil) == SQLITE_OK, let stmt else { return [] }
         defer { sqlite3_finalize(stmt) }
         bind(stmt)
         let iso = iso8601()

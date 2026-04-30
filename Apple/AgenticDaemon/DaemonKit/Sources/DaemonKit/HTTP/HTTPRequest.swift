@@ -52,11 +52,12 @@ public enum HTTPRequestParser {
             path = String(rawPath[rawPath.startIndex..<qIdx])
             let queryString = String(rawPath[rawPath.index(after: qIdx)...])
             for pair in queryString.split(separator: "&") {
-                let kv = pair.split(separator: "=", maxSplits: 1).map(String.init)
-                if kv.count == 2 {
-                    queryItems[kv[0].removingPercentEncoding ?? kv[0]] = kv[1].removingPercentEncoding ?? kv[1]
-                } else if kv.count == 1 {
-                    queryItems[kv[0].removingPercentEncoding ?? kv[0]] = ""
+                let parts = pair.split(separator: "=", maxSplits: 1).map(String.init)
+                if parts.count == 2 {
+                    queryItems[parts[0].removingPercentEncoding ?? parts[0]] =
+                        parts[1].removingPercentEncoding ?? parts[1]
+                } else if parts.count == 1 {
+                    queryItems[parts[0].removingPercentEncoding ?? parts[0]] = ""
                 }
             }
         }

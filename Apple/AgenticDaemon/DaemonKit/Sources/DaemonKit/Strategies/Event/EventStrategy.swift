@@ -54,11 +54,11 @@ public final class EventStrategy: DaemonStrategy, @unchecked Sendable {
     public func start(context: DaemonContext) async throws {
         let logger = Logger(subsystem: context.subsystem, category: "EventStrategy")
 
-        let shouldStart = state.withLock { s -> Bool in
-            guard !s.running else { return false }
-            s.running = true
-            s.logger = logger
-            s.analytics = context.analytics
+        let shouldStart = state.withLock { state -> Bool in
+            guard !state.running else { return false }
+            state.running = true
+            state.logger = logger
+            state.analytics = context.analytics
             return true
         }
         guard shouldStart else {
@@ -100,12 +100,13 @@ public final class EventStrategy: DaemonStrategy, @unchecked Sendable {
     }
 
     public func stop() async {
-        let (wasRunning, watcher, customStop, logger) = state.withLock { s -> (Bool, DirectoryWatcher?, (@Sendable () -> Void)?, Logger?) in
-            guard s.running else { return (false, nil, nil, s.logger) }
-            s.running = false
-            let result = (true, s.watcher, s.customStop, s.logger)
-            s.watcher = nil
-            s.customStop = nil
+        typealias StopState = (Bool, DirectoryWatcher?, (@Sendable () -> Void)?, Logger?)
+        let (wasRunning, watcher, customStop, logger) = state.withLock { state -> StopState in
+            guard state.running else { return (false, nil, nil, state.logger) }
+            state.running = false
+            let result = (true, state.watcher, state.customStop, state.logger)
+            state.watcher = nil
+            state.customStop = nil
             return result
         }
         guard wasRunning else { return }

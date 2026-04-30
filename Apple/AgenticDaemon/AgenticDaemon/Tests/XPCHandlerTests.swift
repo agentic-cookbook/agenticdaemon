@@ -13,7 +13,7 @@ struct XPCHandlerTests {
         enableJob: @escaping @Sendable (String) async -> Bool = { _ in true },
         disableJob: @escaping @Sendable (String) async -> Bool = { _ in true },
         triggerJob: @escaping @Sendable (String) async -> Bool = { _ in true },
-        clearBlacklist: @escaping @Sendable (String) -> Bool = { _ in true },
+        clearBlocklist: @escaping @Sendable (String) -> Bool = { _ in true },
         onShutdown: @escaping @Sendable () -> Void = {}
     ) -> XPCHandler {
         XPCHandler(dependencies: .init(
@@ -22,7 +22,7 @@ struct XPCHandlerTests {
             enableJob: enableJob,
             disableJob: disableJob,
             triggerJob: triggerJob,
-            clearBlacklist: clearBlacklist,
+            clearBlocklist: clearBlocklist,
             onShutdown: onShutdown
         ))
     }
@@ -87,7 +87,7 @@ struct XPCHandlerTests {
         })
 
         let success: Bool = await withCheckedContinuation { cont in
-            handler.triggerJob("my-job") { @Sendable s in cont.resume(returning: s) }
+            handler.triggerJob("my-job") { @Sendable success in cont.resume(returning: success) }
         }
 
         #expect(success == true)
@@ -99,7 +99,7 @@ struct XPCHandlerTests {
         let handler = makeHandler(triggerJob: { @Sendable _ in false })
 
         let success: Bool = await withCheckedContinuation { cont in
-            handler.triggerJob("ghost") { @Sendable s in cont.resume(returning: s) }
+            handler.triggerJob("ghost") { @Sendable success in cont.resume(returning: success) }
         }
         #expect(success == false)
     }
@@ -115,7 +115,7 @@ struct XPCHandlerTests {
         })
 
         let success: Bool = await withCheckedContinuation { cont in
-            handler.enableJob("cleanup") { @Sendable s in cont.resume(returning: s) }
+            handler.enableJob("cleanup") { @Sendable success in cont.resume(returning: success) }
         }
         #expect(success == true)
         #expect(enabledName.value == "cleanup")
@@ -130,7 +130,7 @@ struct XPCHandlerTests {
         })
 
         let success: Bool = await withCheckedContinuation { cont in
-            handler.disableJob("cleanup") { @Sendable s in cont.resume(returning: s) }
+            handler.disableJob("cleanup") { @Sendable success in cont.resume(returning: success) }
         }
         #expect(success == true)
         #expect(disabledName.value == "cleanup")
@@ -139,15 +139,15 @@ struct XPCHandlerTests {
     // MARK: - clearBlacklist
 
     @Test("clearBlacklist calls clearBlacklist dependency")
-    func clearBlacklistCallsDependency() async {
+    func clearBlocklistCallsDependency() async {
         let clearedName = LockIsolated<String?>(nil)
-        let handler = makeHandler(clearBlacklist: { @Sendable name in
+        let handler = makeHandler(clearBlocklist: { @Sendable name in
             clearedName.setValue(name)
             return true
         })
 
         let success: Bool = await withCheckedContinuation { cont in
-            handler.clearBlacklist("bad-job") { @Sendable s in cont.resume(returning: s) }
+            handler.clearBlocklist("bad-job") { @Sendable success in cont.resume(returning: success) }
         }
         #expect(success == true)
         #expect(clearedName.value == "bad-job")

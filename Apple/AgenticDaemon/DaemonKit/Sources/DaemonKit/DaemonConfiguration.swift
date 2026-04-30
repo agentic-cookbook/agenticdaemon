@@ -37,7 +37,8 @@ public struct DaemonConfiguration: Sendable {
         self.identifier = identifier
         self.supportDirectory = supportDirectory
         self.machServiceName = machServiceName
-        self.crashReportProcessName = crashReportProcessName ?? identifier.components(separatedBy: ".").last ?? identifier
+        let derivedName = identifier.components(separatedBy: ".").last ?? identifier
+        self.crashReportProcessName = crashReportProcessName ?? derivedName
         self.crashRetentionDays = crashRetentionDays
         self.tickInterval = tickInterval
         self.httpPort = httpPort

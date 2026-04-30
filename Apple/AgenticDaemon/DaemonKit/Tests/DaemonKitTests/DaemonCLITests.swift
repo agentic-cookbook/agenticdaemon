@@ -13,13 +13,13 @@ private final class CapturedOutput: @unchecked Sendable {
     var stderr: String { lock.withLock { _stderr } }
 
     func makeWriters() -> (CLIWriter, CLIWriter) {
-        let out = CLIWriter { [weak self] s in
+        let out = CLIWriter { [weak self] text in
             guard let self else { return }
-            self.lock.withLock { self._stdout += s }
+            self.lock.withLock { self._stdout += text }
         }
-        let err = CLIWriter { [weak self] s in
+        let err = CLIWriter { [weak self] text in
             guard let self else { return }
-            self.lock.withLock { self._stderr += s }
+            self.lock.withLock { self._stderr += text }
         }
         return (out, err)
     }
@@ -29,7 +29,10 @@ private struct TestExtension: DaemonCLIExtension {
     let commands: [CLICommand]
 }
 
-private func makeContext(output: CapturedOutput, http: DaemonHTTPClient = DaemonHTTPClient(baseURL: "http://127.0.0.1:1")) -> CLIContext {
+private func makeContext(
+    output: CapturedOutput,
+    http: DaemonHTTPClient = DaemonHTTPClient(baseURL: "http://127.0.0.1:1")
+) -> CLIContext {
     let (out, err) = output.makeWriters()
     return CLIContext(http: http, xpc: nil, stdout: out, stderr: err)
 }
@@ -412,7 +415,7 @@ private final class StubCLITaskSource: TaskSource, @unchecked Sendable {
     var watchDirectory: URL? { nil }
     init(tasks: [any DaemonTask]) { self.tasks = tasks }
     func discoverTasks() -> [any DaemonTask] { tasks }
-    func shouldClearBlacklist(taskName: String) -> Bool { false }
+    func shouldClearBlocklist(taskName: String) -> Bool { false }
 }
 
 private final class LockIsolatedInt: @unchecked Sendable {

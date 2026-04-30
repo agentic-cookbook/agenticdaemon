@@ -46,12 +46,12 @@ struct BackoffTests {
     func jitterProducesVariation() {
         var values: Set<TimeInterval> = []
         for _ in 0..<20 {
-            let v = Scheduler.backoffInterval(
+            let interval = Scheduler.backoffInterval(
                 baseInterval: 60,
                 consecutiveFailures: 3,
                 backoffEnabled: true
             )
-            values.insert(v)
+            values.insert(interval)
         }
         // With jitter, 20 samples should produce at least 2 distinct values
         #expect(values.count >= 2)

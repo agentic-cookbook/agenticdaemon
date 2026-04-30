@@ -18,16 +18,16 @@ private final class StubSource: TaskSource, @unchecked Sendable {
     private let lock = NSLock()
     private var _tasks: [any DaemonTask]
     private var _watchDirectory: URL?
-    private var _shouldClearBlacklist: @Sendable (String) -> Bool
+    private var _shouldClearBlocklist: @Sendable (String) -> Bool
 
     init(
         tasks: [any DaemonTask] = [],
         watchDirectory: URL? = nil,
-        shouldClearBlacklist: @escaping @Sendable (String) -> Bool = { _ in false }
+        shouldClearBlocklist: @escaping @Sendable (String) -> Bool = { _ in false }
     ) {
         self._tasks = tasks
         self._watchDirectory = watchDirectory
-        self._shouldClearBlacklist = shouldClearBlacklist
+        self._shouldClearBlocklist = shouldClearBlocklist
     }
 
     func discoverTasks() -> [any DaemonTask] {
@@ -38,8 +38,8 @@ private final class StubSource: TaskSource, @unchecked Sendable {
         lock.withLock { _watchDirectory }
     }
 
-    func shouldClearBlacklist(taskName: String) -> Bool {
-        lock.withLock { _shouldClearBlacklist(taskName) }
+    func shouldClearBlocklist(taskName: String) -> Bool {
+        lock.withLock { _shouldClearBlocklist(taskName) }
     }
 
     /// Allow tests to mutate the discovered task list at runtime, then trigger
@@ -49,7 +49,10 @@ private final class StubSource: TaskSource, @unchecked Sendable {
     }
 }
 
-private func makeContext(in tmp: URL, subsystem: String = "timing.test") -> (DaemonContext, CrashTracker, RecordingAnalytics) {
+private func makeContext(
+    in tmp: URL,
+    subsystem: String = "timing.test"
+) -> (DaemonContext, CrashTracker, RecordingAnalytics) {
     let tracker = CrashTracker(stateDir: tmp, subsystem: subsystem)
     let analytics = RecordingAnalytics()
     let context = DaemonContext(
@@ -64,7 +67,7 @@ private func makeContext(in tmp: URL, subsystem: String = "timing.test") -> (Dae
 private func makeTempDir(prefix: String = "timing") -> URL {
     let url = FileManager.default.temporaryDirectory
         .appending(path: "\(prefix)-\(UUID().uuidString)")
-    try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     return url
 }
 
@@ -141,7 +144,7 @@ struct TimingStrategyLifecycleTests {
         let unit = try #require(observed, "task never settled to idle")
         #expect(unit.name == "enabled")
         #expect(unit.state == .idle)
-        #expect(unit.isBlacklisted == false)
+        #expect(unit.isBlocklisted == false)
         #expect(unit.nextActivation != nil)
     }
 
@@ -165,7 +168,7 @@ struct TimingStrategyLifecycleTests {
     }
 
     @Test("snapshot marks blacklisted tasks")
-    func snapshotMarksBlacklistedTasks() async throws {
+    func snapshotMarksBlocklistedTasks() async throws {
         let tmp = makeTempDir()
         defer { try? FileManager.default.removeItem(at: tmp) }
 
@@ -181,11 +184,11 @@ struct TimingStrategyLifecycleTests {
         try await strategy.start(context: ctx)
         defer { Task { await strategy.stop() } }
 
-        tracker.blacklist(taskName: "bl")
+        tracker.blocklist(taskName: "bl")
         let snap = await strategy.snapshot()
         let unit = try #require(snap.workUnits.first)
-        #expect(unit.state == .blacklisted)
-        #expect(unit.isBlacklisted == true)
+        #expect(unit.state == .blocklisted)
+        #expect(unit.isBlocklisted == true)
     }
 
     @Test("tick loop executes tasks without external ticking")

@@ -26,7 +26,7 @@ private final class RecordingStrategy: DaemonStrategy, @unchecked Sendable {
     var startCount: Int { lock.withLock { _startCount } }
     var stopCount: Int { lock.withLock { _stopCount } }
 
-    func setStartDelay(_ v: TimeInterval) { lock.withLock { _startDelay = v } }
+    func setStartDelay(_ value: TimeInterval) { lock.withLock { _startDelay = value } }
 
     func start(context: DaemonContext) async throws {
         let delay = lock.withLock { _startDelay }
@@ -61,7 +61,7 @@ private func makeContext(in tmp: URL) -> DaemonContext {
 private func makeTempDir() -> URL {
     let url = FileManager.default.temporaryDirectory
         .appending(path: "composite-\(UUID().uuidString)")
-    try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     return url
 }
 
@@ -75,16 +75,16 @@ struct CompositeStrategyTests {
         let tmp = makeTempDir()
         defer { try? FileManager.default.removeItem(at: tmp) }
 
-        let a = RecordingStrategy(name: "a")
-        let b = RecordingStrategy(name: "b")
-        let c = RecordingStrategy(name: "c")
-        let composite = CompositeStrategy([a, b, c])
+        let strategyA = RecordingStrategy(name: "a")
+        let strategyB = RecordingStrategy(name: "b")
+        let strategyC = RecordingStrategy(name: "c")
+        let composite = CompositeStrategy([strategyA, strategyB, strategyC])
 
         try await composite.start(context: makeContext(in: tmp))
 
-        #expect(a.startCount == 1)
-        #expect(b.startCount == 1)
-        #expect(c.startCount == 1)
+        #expect(strategyA.startCount == 1)
+        #expect(strategyB.startCount == 1)
+        #expect(strategyC.startCount == 1)
     }
 
     @Test("stop propagates to all children in reverse order")
@@ -94,10 +94,10 @@ struct CompositeStrategyTests {
 
         // Sequence observer via NSLock captures order
         let order = LockIsolatedArray<String>([])
-        let a = OrderedStrategy(name: "a", order: order)
-        let b = OrderedStrategy(name: "b", order: order)
-        let c = OrderedStrategy(name: "c", order: order)
-        let composite = CompositeStrategy([a, b, c])
+        let strategyA = OrderedStrategy(name: "a", order: order)
+        let strategyB = OrderedStrategy(name: "b", order: order)
+        let strategyC = OrderedStrategy(name: "c", order: order)
+        let composite = CompositeStrategy([strategyA, strategyB, strategyC])
 
         try await composite.start(context: makeContext(in: tmp))
         await composite.stop()
@@ -110,24 +110,24 @@ struct CompositeStrategyTests {
         let tmp = makeTempDir()
         defer { try? FileManager.default.removeItem(at: tmp) }
 
-        let a = RecordingStrategy(name: "a")
-        let b = RecordingStrategy(name: "b")
-        let c = RecordingStrategy(name: "c", throwOnStart: true)
-        let d = RecordingStrategy(name: "d")
-        let composite = CompositeStrategy([a, b, c, d])
+        let strategyA = RecordingStrategy(name: "a")
+        let strategyB = RecordingStrategy(name: "b")
+        let strategyC = RecordingStrategy(name: "c", throwOnStart: true)
+        let strategyD = RecordingStrategy(name: "d")
+        let composite = CompositeStrategy([strategyA, strategyB, strategyC, strategyD])
 
         await #expect(throws: (any Error).self) {
             try await composite.start(context: makeContext(in: tmp))
         }
 
         // a and b started and then stopped; c attempted start; d never touched
-        #expect(a.startCount == 1)
-        #expect(a.stopCount == 1)
-        #expect(b.startCount == 1)
-        #expect(b.stopCount == 1)
-        #expect(c.startCount == 1)  // attempted
-        #expect(c.stopCount == 0)   // didn't successfully start
-        #expect(d.startCount == 0)
+        #expect(strategyA.startCount == 1)
+        #expect(strategyA.stopCount == 1)
+        #expect(strategyB.startCount == 1)
+        #expect(strategyB.stopCount == 1)
+        #expect(strategyC.startCount == 1)  // attempted
+        #expect(strategyC.stopCount == 0)   // didn't successfully start
+        #expect(strategyD.startCount == 0)
     }
 
     @Test("snapshot nests children")
@@ -135,13 +135,13 @@ struct CompositeStrategyTests {
         let tmp = makeTempDir()
         defer { try? FileManager.default.removeItem(at: tmp) }
 
-        let a = RecordingStrategy(name: "timer", snapshotUnits: [
+        let strategyA = RecordingStrategy(name: "timer", snapshotUnits: [
             WorkUnitSnapshot(name: "job1", state: .idle)
         ])
-        let b = RecordingStrategy(name: "ingest", snapshotUnits: [
+        let strategyB = RecordingStrategy(name: "ingest", snapshotUnits: [
             WorkUnitSnapshot(name: "handler", state: .running)
         ])
-        let composite = CompositeStrategy(name: "outer", [a, b])
+        let composite = CompositeStrategy(name: "outer", [strategyA, strategyB])
 
         let snap = await composite.snapshot()
         #expect(snap.name == "outer")
@@ -159,10 +159,10 @@ struct CompositeStrategyTests {
         let tmp = makeTempDir()
         defer { try? FileManager.default.removeItem(at: tmp) }
 
-        let a = RecordingStrategy(name: "a", snapshotUnits: [
+        let strategyA = RecordingStrategy(name: "a", snapshotUnits: [
             WorkUnitSnapshot(name: "u1", state: .idle)
         ])
-        let composite = CompositeStrategy([a])
+        let composite = CompositeStrategy([strategyA])
         let snap = await composite.snapshot()
 
         let encoder = JSONEncoder()
@@ -242,5 +242,5 @@ private final class LockIsolatedArray<Element>: @unchecked Sendable {
     init(_ initial: [Element] = []) { _values = initial }
 
     var values: [Element] { lock.withLock { _values } }
-    func append(_ v: Element) { lock.withLock { _values.append(v) } }
+    func append(_ value: Element) { lock.withLock { _values.append(value) } }
 }

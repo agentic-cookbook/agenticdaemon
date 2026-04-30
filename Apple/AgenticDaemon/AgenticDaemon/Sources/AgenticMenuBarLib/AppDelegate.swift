@@ -106,9 +106,9 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
                     await self?.refresh()
                 }
             },
-            onClearBlacklist: { [weak self] name in
+            onClearBlocklist: { [weak self] name in
                 Task { @MainActor in
-                    try? await self?.client.clearBlacklist(name)
+                    try? await self?.client.clearBlocklist(name)
                     await self?.refresh()
                 }
             },

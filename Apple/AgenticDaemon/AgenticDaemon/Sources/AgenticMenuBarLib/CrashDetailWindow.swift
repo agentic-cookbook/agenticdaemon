@@ -58,20 +58,20 @@ public final class CrashDetailWindow: NSObject, NSWindowDelegate {
         lines.append("Task:            \(report.taskName)")
         lines.append("Timestamp:       \(report.timestamp)")
         lines.append("Source:          \(report.source.rawValue)")
-        if let sig = report.signal        { lines.append("Signal:          \(sig)") }
+        if let sig = report.signal { lines.append("Signal:          \(sig)") }
         if let exc = report.exceptionType { lines.append("Exception Type:  \(exc)") }
-        if let th  = report.faultingThread { lines.append("Faulting Thread: \(th)") }
+        if let thread = report.faultingThread { lines.append("Faulting Thread: \(thread)") }
 
         if let frames = report.stackTrace, !frames.isEmpty {
             lines.append("")
             lines.append("Stack Trace:")
             lines.append(String(repeating: "─", count: 60))
-            for (i, frame) in frames.enumerated() {
-                var line = String(format: "  %3d", i)
-                if let sym = frame.symbol      { line += "  \(sym)" }
+            for (index, frame) in frames.enumerated() {
+                var line = String(format: "  %3d", index)
+                if let sym = frame.symbol { line += "  \(sym)" }
                 if let off = frame.imageOffset { line += " + \(off)" }
-                if let file = frame.sourceFile, let ln = frame.sourceLine {
-                    line += "  (\(file):\(ln))"
+                if let file = frame.sourceFile, let lineNumber = frame.sourceLine {
+                    line += "  (\(file):\(lineNumber))"
                 }
                 lines.append(line)
             }

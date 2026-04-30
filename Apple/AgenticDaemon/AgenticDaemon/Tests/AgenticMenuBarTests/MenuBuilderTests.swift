@@ -12,7 +12,7 @@ struct MenuBuilderTests {
         onTriggerJob: { _ in },
         onEnableJob: { _ in },
         onDisableJob: { _ in },
-        onClearBlacklist: { _ in },
+        onClearBlocklist: { _ in },
         onShowCrash: { _ in },
         onStartDaemon: {},
         onStopDaemon: {},
@@ -84,8 +84,14 @@ struct MenuBuilderTests {
 
     @Test("job submenu contains config and control items")
     func jobSubmenuContents() {
-        let config = JobConfig(intervalSeconds: 120, enabled: false, timeout: 45, runAtWake: false, backoffOnFailure: false)
-        let status = makeStatus(jobs: [makeJobStatus(name: "worker", config: config, isBlacklisted: true)])
+        let config = JobConfig(
+            intervalSeconds: 120,
+            enabled: false,
+            timeout: 45,
+            runAtWake: false,
+            backoffOnFailure: false
+        )
+        let status = makeStatus(jobs: [makeJobStatus(name: "worker", config: config, isBlocklisted: true)])
         let builder = MenuBuilder(handlers: noopHandlers)
         let menu = builder.build(status: status, crashes: [])
 
@@ -110,7 +116,7 @@ private func makeJobStatus(
     name: String,
     config: JobConfig = .default,
     isRunning: Bool = false,
-    isBlacklisted: Bool = false
+    isBlocklisted: Bool = false
 ) -> DaemonStatus.JobStatus {
     DaemonStatus.JobStatus(
         name: name,
@@ -118,7 +124,7 @@ private func makeJobStatus(
         consecutiveFailures: 0,
         isRunning: isRunning,
         config: config,
-        isBlacklisted: isBlacklisted
+        isBlocklisted: isBlocklisted
     )
 }
 

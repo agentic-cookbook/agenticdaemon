@@ -112,9 +112,9 @@ public enum MenuBarKitHelpers {
     }
 
     public static func formatUptime(_ seconds: TimeInterval) -> String {
-        let s = Int(seconds)
-        if s < 60 { return "\(s)s" }
-        if s < 3600 { return "\(s / 60)m \(s % 60)s" }
-        return "\(s / 3600)h \(s % 3600 / 60)m"
+        let total = Int(seconds)
+        if total < 60 { return "\(total)s" }
+        if total < 3600 { return "\(total / 60)m \(total % 60)s" }
+        return "\(total / 3600)h \(total % 3600 / 60)m"
     }
 }

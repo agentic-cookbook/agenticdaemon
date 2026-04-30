@@ -85,11 +85,11 @@ public struct StrategySnapshot: Sendable, Codable {
     }
 
     public init(from decoder: any Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        name = try c.decode(String.self, forKey: .name)
-        kind = try c.decode(String.self, forKey: .kind)
-        workUnits = try c.decode([WorkUnitSnapshot].self, forKey: .workUnits)
-        children = try c.decodeIfPresent([StrategySnapshot].self, forKey: .children) ?? []
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        kind = try container.decode(String.self, forKey: .kind)
+        workUnits = try container.decode([WorkUnitSnapshot].self, forKey: .workUnits)
+        children = try container.decodeIfPresent([StrategySnapshot].self, forKey: .children) ?? []
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -108,7 +108,7 @@ public struct WorkUnitSnapshot: Sendable, Codable {
     public let state: WorkUnitState
     public let nextActivation: Date?
     public let consecutiveFailures: Int
-    public let isBlacklisted: Bool
+    public let isBlocklisted: Bool
     public let lastMessage: String?
 
     public init(
@@ -116,14 +116,14 @@ public struct WorkUnitSnapshot: Sendable, Codable {
         state: WorkUnitState,
         nextActivation: Date? = nil,
         consecutiveFailures: Int = 0,
-        isBlacklisted: Bool = false,
+        isBlocklisted: Bool = false,
         lastMessage: String? = nil
     ) {
         self.name = name
         self.state = state
         self.nextActivation = nextActivation
         self.consecutiveFailures = consecutiveFailures
-        self.isBlacklisted = isBlacklisted
+        self.isBlocklisted = isBlocklisted
         self.lastMessage = lastMessage
     }
 
@@ -135,6 +135,6 @@ public struct WorkUnitSnapshot: Sendable, Codable {
         case idle
         case running
         case disabled
-        case blacklisted
+        case blocklisted
     }
 }

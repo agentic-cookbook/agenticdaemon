@@ -7,7 +7,7 @@ struct JobConfigTests {
 
     @Test("Decodes full JSON with all fields")
     func decodesFullJSON() throws {
-        let json = """
+        let json = Data("""
         {
             "intervalSeconds": 120,
             "enabled": false,
@@ -15,7 +15,7 @@ struct JobConfigTests {
             "runAtWake": false,
             "backoffOnFailure": false
         }
-        """.data(using: .utf8)!
+        """.utf8)
 
         let config = try JSONDecoder().decode(JobConfig.self, from: json)
 
@@ -102,9 +102,9 @@ struct JobConfigTests {
 
     @Test("Decoded negative values are clamped")
     func decodedNegativesClamped() throws {
-        let json = """
+        let json = Data("""
         {"intervalSeconds": -1, "enabled": true, "timeout": -1, "runAtWake": true, "backoffOnFailure": true}
-        """.data(using: .utf8)!
+        """.utf8)
         let config = try JSONDecoder().decode(JobConfig.self, from: json)
         #expect(config.intervalSeconds >= 1)
         #expect(config.timeout >= 1)

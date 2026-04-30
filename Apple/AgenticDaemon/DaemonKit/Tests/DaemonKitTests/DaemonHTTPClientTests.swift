@@ -37,14 +37,14 @@ struct DaemonHTTPClientTests {
         defer { server.stop() }
 
         let client = DaemonHTTPClient(baseURL: "http://127.0.0.1:\(port)")
-        struct Anything: Decodable { let x: Int }
+        struct Anything: Decodable { let value: Int }
         #expect(client.get("/nonexistent", as: Anything.self) == nil)
     }
 
     @Test("get returns nil when server is not running")
     func getReturnsNilNoServer() {
         let client = DaemonHTTPClient(baseURL: "http://127.0.0.1:19999")
-        struct Anything: Decodable { let x: Int }
+        struct Anything: Decodable { let value: Int }
         #expect(client.get("/health", as: Anything.self) == nil)
     }
 

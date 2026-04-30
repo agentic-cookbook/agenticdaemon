@@ -22,7 +22,7 @@ struct ScriptTaskSource: TaskSource {
         }
     }
 
-    func shouldClearBlacklist(taskName: String) -> Bool {
+    func shouldClearBlocklist(taskName: String) -> Bool {
         let jobDir = jobsDirectory.appending(path: taskName)
         let sourceURL = jobDir.appending(path: "job.swift")
         let moduleName = taskName.replacingOccurrences(of: "-", with: "_")

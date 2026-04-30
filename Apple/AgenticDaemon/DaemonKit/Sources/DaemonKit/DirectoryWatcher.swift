@@ -22,14 +22,14 @@ public final class DirectoryWatcher: Sendable {
 
     public func start() {
         let path = directory.path(percentEncoded: false)
-        let fd = open(path, O_EVTONLY)
-        guard fd >= 0 else {
+        let fileDescriptor = open(path, O_EVTONLY)
+        guard fileDescriptor >= 0 else {
             logger.error("Failed to open directory for watching: \(path)")
             return
         }
 
         let source = DispatchSource.makeFileSystemObjectSource(
-            fileDescriptor: fd,
+            fileDescriptor: fileDescriptor,
             eventMask: [.write, .delete, .rename],
             queue: .global(qos: .utility)
         )
@@ -42,7 +42,7 @@ public final class DirectoryWatcher: Sendable {
             state.debounce(interval: debounceInterval) { onChange() }
         }
 
-        source.setCancelHandler { close(fd) }
+        source.setCancelHandler { close(fileDescriptor) }
 
         state.setSource(source)
         source.resume()

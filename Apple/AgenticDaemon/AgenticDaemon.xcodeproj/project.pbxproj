@@ -1053,6 +1053,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 329614C01553D203794EEA51 /* Build configuration list for PBXNativeTarget "AgenticMenuBar" */;
 			buildPhases = (
+				E3C1F74EADE4823B22B8452C /* SwiftLint */,
 				E7439D798F11CD3992F8EE9D /* Sources */,
 				6E325F7D2AA5B13B1B2D1420 /* Frameworks */,
 			);
@@ -1074,6 +1075,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1E2C0941D36A47F337535304 /* Build configuration list for PBXNativeTarget "MenuBarKitTests" */;
 			buildPhases = (
+				A75C5F6F9DA6B1E9AE42132F /* SwiftLint */,
 				D0D20E191D3FBD0F098A8164 /* Sources */,
 				789A37F8559509ABCEAA9C11 /* Frameworks */,
 				A9A5D79770993172D2B7B023 /* Embed Frameworks */,
@@ -1095,6 +1097,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A89FFB9CB26314F0AF677DF /* Build configuration list for PBXNativeTarget "AgenticMenuBarLib" */;
 			buildPhases = (
+				2E597A03B90C7E8E781125A2 /* SwiftLint */,
 				940222E60480567203D121ED /* Sources */,
 				0D273F7D9F8D2B180494A8BB /* Copy Swift Objective-C Interface Header */,
 			);
@@ -1115,6 +1118,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 078D31815A7FB6EE9B4965E2 /* Build configuration list for PBXNativeTarget "AgenticDaemonTests" */;
 			buildPhases = (
+				7181623C2661E6B0CF3FD074 /* SwiftLint */,
 				5E47EB966E8CE645FB53BF4A /* Sources */,
 				33A2FF957517690981E25E95 /* Frameworks */,
 				9514F3948884B6624BA14C56 /* Embed Frameworks */,
@@ -1138,6 +1142,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95962AA89F09FFC7041E91CC /* Build configuration list for PBXNativeTarget "agenticdaemon" */;
 			buildPhases = (
+				122F900A3CACF7D4E1F6466D /* SwiftLint */,
 				865CC5AFD33B3B3AFE33C71A /* Sources */,
 				B11E61DACD7AD3D58AB586AA /* Frameworks */,
 			);
@@ -1160,6 +1165,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE4566BC9356E19A3734E3B0 /* Build configuration list for PBXNativeTarget "DaemonKitTests" */;
 			buildPhases = (
+				F99605084D033859E088D45B /* SwiftLint */,
 				F5E60A1F04C8E01743A79FCC /* Sources */,
 				284464BA87C3CBEF4D575429 /* Frameworks */,
 				F32706783EFAEDC8D7D686F0 /* Embed Frameworks */,
@@ -1180,6 +1186,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07CB39BC582739E5682F765A /* Build configuration list for PBXNativeTarget "AgenticXPCProtocol" */;
 			buildPhases = (
+				D662BDF0209D9C894483BDB8 /* SwiftLint */,
 				78D357B58A727C81B2058D1D /* Sources */,
 				2DB56E95F8DE9D052965227C /* Copy Swift Objective-C Interface Header */,
 			);
@@ -1199,6 +1206,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2F6790B3924AAC56D499F3B9 /* Build configuration list for PBXNativeTarget "DaemonKit" */;
 			buildPhases = (
+				5141A9DD7BFF786EDDC85E00 /* SwiftLint */,
 				680EE53C60C2DC25C2E5C7FE /* Sources */,
 				9D46E5B6F7C375A422A270D0 /* Frameworks */,
 			);
@@ -1218,6 +1226,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F39BF4804C97BAEB07D7EC30 /* Build configuration list for PBXNativeTarget "AgenticDaemonLib" */;
 			buildPhases = (
+				775DF6B3EEFA72B286773FCF /* SwiftLint */,
 				EEFEA392D417F348622AB447 /* Sources */,
 				F5CFC93C6159D1B4A34567FA /* Copy Swift Objective-C Interface Header */,
 				3D0519C4DC3DBBD747999883 /* Frameworks */,
@@ -1240,6 +1249,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5281D9CF7E82FA3A732DD73 /* Build configuration list for PBXNativeTarget "MenuBarKit" */;
 			buildPhases = (
+				4118FAB65946D12F4152F4B1 /* SwiftLint */,
 				8BA1160E9A5B73432F10BD8D /* Sources */,
 				37CABE4EA2A9D7E7940743E5 /* Frameworks */,
 			);
@@ -1259,6 +1269,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CAE9645502318899C021894E /* Build configuration list for PBXNativeTarget "AgenticJobKit" */;
 			buildPhases = (
+				987417407796651DE8B0AFBC /* SwiftLint */,
 				008D2ACD421AE4E35FBDF6D5 /* Sources */,
 			);
 			buildRules = (
@@ -1276,6 +1287,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5726FF86DAB24B741F5FAF78 /* Build configuration list for PBXNativeTarget "AgenticMenuBarTests" */;
 			buildPhases = (
+				DD7A9F4FC0FDBD496E38D602 /* SwiftLint */,
 				042DD7FF68877AB9DE63FF8C /* Sources */,
 				0D992274D82F3E3D0D768C50 /* Frameworks */,
 				FDC943C0AF870EA582F5AF99 /* Embed Frameworks */,
@@ -1357,6 +1369,25 @@
 			shellPath = /bin/sh;
 			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 		};
+		122F900A3CACF7D4E1F6466D /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
 		2DB56E95F8DE9D052965227C /* Copy Swift Objective-C Interface Header */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1373,6 +1404,196 @@
 			shellPath = /bin/sh;
 			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 		};
+		2E597A03B90C7E8E781125A2 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		4118FAB65946D12F4152F4B1 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		5141A9DD7BFF786EDDC85E00 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		7181623C2661E6B0CF3FD074 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		775DF6B3EEFA72B286773FCF /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		987417407796651DE8B0AFBC /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		A75C5F6F9DA6B1E9AE42132F /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		D662BDF0209D9C894483BDB8 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		DD7A9F4FC0FDBD496E38D602 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
+		E3C1F74EADE4823B22B8452C /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+		};
 		F5CFC93C6159D1B4A34567FA /* Copy Swift Objective-C Interface Header */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1388,6 +1609,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+		F99605084D033859E088D45B /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

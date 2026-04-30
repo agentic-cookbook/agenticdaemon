@@ -103,5 +103,5 @@ public protocol TaskSource: Sendable {
     /// Return true if the crash blacklist should be cleared for this task.
     /// Called when a task that was blacklisted due to crashing is seen again.
     /// Typically returns true if the task's source/binary has changed.
-    func shouldClearBlacklist(taskName: String) -> Bool
+    func shouldClearBlocklist(taskName: String) -> Bool
 }

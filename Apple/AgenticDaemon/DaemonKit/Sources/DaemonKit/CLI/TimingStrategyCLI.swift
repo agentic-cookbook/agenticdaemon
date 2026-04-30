@@ -23,10 +23,16 @@ public struct TimingStrategyCLI: DaemonCLIExtension {
                 }
                 let nameWidth = (summaries.map(\.name.count).max() ?? 0) + 2
                 let stateWidth = (summaries.map(\.state.count).max() ?? 0) + 2
-                ctx.stdout.write("\(padRight("NAME", nameWidth))\(padRight("STATE", stateWidth))FAILURES  NEXT\n")
-                for s in summaries {
-                    let next = s.nextActivation.map { formatTimestamp($0) } ?? "-"
-                    ctx.stdout.write("\(padRight(s.name, nameWidth))\(padRight(s.state, stateWidth))\(padRight(String(s.consecutiveFailures), 10))\(next)\n")
+                ctx.stdout.write(
+                    "\(padRight("NAME", nameWidth))\(padRight("STATE", stateWidth))FAILURES  NEXT\n"
+                )
+                for summary in summaries {
+                    let next = summary.nextActivation.map { formatTimestamp($0) } ?? "-"
+                    ctx.stdout.write(
+                        "\(padRight(summary.name, nameWidth))"
+                        + "\(padRight(summary.state, stateWidth))"
+                        + "\(padRight(String(summary.consecutiveFailures), 10))\(next)\n"
+                    )
                 }
                 return 0
             },
@@ -45,7 +51,7 @@ public struct TimingStrategyCLI: DaemonCLIExtension {
                 ctx.stdout.write("name:                 \(summary.name)\n")
                 ctx.stdout.write("state:                \(summary.state)\n")
                 ctx.stdout.write("consecutive_failures: \(summary.consecutiveFailures)\n")
-                ctx.stdout.write("is_blacklisted:       \(summary.isBlacklisted)\n")
+                ctx.stdout.write("is_blocklisted:       \(summary.isBlocklisted)\n")
                 if let next = summary.nextActivation {
                     ctx.stdout.write("next_activation:      \(formatTimestamp(next))\n")
                 }

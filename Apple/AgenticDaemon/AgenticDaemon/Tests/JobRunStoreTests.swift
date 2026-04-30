@@ -30,11 +30,11 @@ import Foundation
     @Test func queryReturnsNewestFirst() throws {
         let store = try makeStore()
         let base = Date(timeIntervalSinceNow: -100)
-        for i in 0..<5 {
+        for index in 0..<5 {
             let run = JobRun(
                 jobName: "j",
-                startedAt: base.addingTimeInterval(Double(i * 10)),
-                endedAt: base.addingTimeInterval(Double(i * 10 + 1)),
+                startedAt: base.addingTimeInterval(Double(index * 10)),
+                endedAt: base.addingTimeInterval(Double(index * 10 + 1)),
                 durationSeconds: 1.0,
                 success: true
             )

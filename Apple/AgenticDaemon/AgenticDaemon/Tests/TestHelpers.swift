@@ -5,7 +5,7 @@ import Foundation
 func makeTempDir(prefix: String = "agenticd-test") -> URL {
     let tmp = FileManager.default.temporaryDirectory
         .appending(path: "\(prefix)-\(UUID().uuidString)")
-    try! FileManager.default.createDirectory(at: tmp, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(at: tmp, withIntermediateDirectories: true)
     return tmp
 }
 
@@ -18,16 +18,16 @@ func createJobDir(
     configJSON: String? = nil
 ) -> URL {
     let jobDir = parent.appending(path: name)
-    try! FileManager.default.createDirectory(at: jobDir, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(at: jobDir, withIntermediateDirectories: true)
 
     if let source = swiftSource {
         let sourceURL = jobDir.appending(path: "job.swift")
-        try! source.write(to: sourceURL, atomically: true, encoding: .utf8)
+        try? source.write(to: sourceURL, atomically: true, encoding: .utf8)
     }
 
     if let config = configJSON {
         let configURL = jobDir.appending(path: "config.json")
-        try! config.write(to: configURL, atomically: true, encoding: .utf8)
+        try? config.write(to: configURL, atomically: true, encoding: .utf8)
     }
 
     return jobDir
@@ -79,9 +79,9 @@ func findBuildDir(file: String = #filePath) -> URL {
         .lazy
         .map({ $0.bundleURL.deletingLastPathComponent() })
         .first(where: { dir in
-            let fm = FileManager.default
-            return fm.fileExists(atPath: dir.appending(path: "AgenticJobKit.swiftmodule").path)
-                || fm.fileExists(atPath: dir.appending(path: "libAgenticJobKit.dylib").path)
+            let fileManager = FileManager.default
+            return fileManager.fileExists(atPath: dir.appending(path: "AgenticJobKit.swiftmodule").path)
+                || fileManager.fileExists(atPath: dir.appending(path: "libAgenticJobKit.dylib").path)
         }) {
         return products
     }

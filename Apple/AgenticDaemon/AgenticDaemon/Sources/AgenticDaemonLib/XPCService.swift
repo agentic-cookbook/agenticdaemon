@@ -30,11 +30,11 @@ public final class XPCService: NSObject, AgenticDaemonXPCProtocol, @unchecked Se
 
     public func start() {
         let delegate = XPCListenerDelegate(service: self)
-        let l = NSXPCListener(machServiceName: "com.agentic-cookbook.daemon")
-        l.delegate = delegate
-        l.resume()
+        let xpcListener = NSXPCListener(machServiceName: "com.agentic-cookbook.daemon")
+        xpcListener.delegate = delegate
+        xpcListener.resume()
         listenerDelegate = delegate
-        listener = l
+        listener = xpcListener
         logger.info("XPC service registered")
     }
 
@@ -76,10 +76,10 @@ public final class XPCService: NSObject, AgenticDaemonXPCProtocol, @unchecked Se
                     "name": name,
                     "consecutiveFailures": job.consecutiveFailures,
                     "isRunning": job.isRunning,
-                    "isBlacklisted": crashTracker.isBlacklisted(taskName: name)
+                    "isBlocklisted": crashTracker.isBlocklisted(taskName: name)
                 ]
-                if let d = try? JSONSerialization.data(withJSONObject: payload) {
-                    items.append(d)
+                if let data = try? JSONSerialization.data(withJSONObject: payload) {
+                    items.append(data)
                 }
             }
             replyBox.value(items)

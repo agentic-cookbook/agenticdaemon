@@ -97,7 +97,8 @@ struct TimingStrategyMenuSectionTests {
     @Test("hidden when no timing strategy in snapshot")
     func noTimingHides() {
         let section = TimingStrategyMenuSection()
-        let items = section.items(snapshot: snapshot(strategy: StrategySnapshot(name: "e", kind: "event", workUnits: [])))
+        let snap = snapshot(strategy: StrategySnapshot(name: "e", kind: "event", workUnits: []))
+        let items = section.items(snapshot: snap)
         #expect(items.isEmpty)
     }
 
@@ -246,5 +247,5 @@ private final class LockBool: @unchecked Sendable {
     private let lock = NSLock()
     private var _value = false
     var value: Bool { lock.withLock { _value } }
-    func set(_ v: Bool) { lock.withLock { _value = v } }
+    func set(_ value: Bool) { lock.withLock { _value = value } }
 }

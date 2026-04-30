@@ -79,14 +79,14 @@ public struct LogAnalyticsProvider: AnalyticsProvider {
         case .taskStarted:
             logger.info("[\(kind)] \(name)")
         case .taskCompleted:
-            let d = event.properties["durationSeconds"] as? Double ?? 0
-            logger.info("[\(kind)] \(name) in \(d, format: .fixed(precision: 2))s")
+            let duration = event.properties["durationSeconds"] as? Double ?? 0
+            logger.info("[\(kind)] \(name) in \(duration, format: .fixed(precision: 2))s")
         case .taskFailed:
-            let d = event.properties["durationSeconds"] as? Double ?? 0
-            logger.error("[\(kind)] \(name) in \(d, format: .fixed(precision: 2))s")
+            let duration = event.properties["durationSeconds"] as? Double ?? 0
+            logger.error("[\(kind)] \(name) in \(duration, format: .fixed(precision: 2))s")
         case .taskTimedOut:
-            let t = event.properties["timeoutSeconds"] as? Double ?? 0
-            logger.warning("[\(kind)] \(name) after \(t, format: .fixed(precision: 0))s")
+            let timeout = event.properties["timeoutSeconds"] as? Double ?? 0
+            logger.warning("[\(kind)] \(name) after \(timeout, format: .fixed(precision: 0))s")
         case .taskCrashed:
             let sig = event.properties["signal"] as? String ?? "unknown"
             let exc = event.properties["exceptionType"] as? String ?? "unknown"

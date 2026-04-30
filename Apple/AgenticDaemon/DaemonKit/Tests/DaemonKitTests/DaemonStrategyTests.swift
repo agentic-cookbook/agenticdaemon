@@ -17,7 +17,7 @@ struct DaemonStrategyTypesTests {
                     state: .idle,
                     nextActivation: now,
                     consecutiveFailures: 2,
-                    isBlacklisted: false,
+                    isBlocklisted: false,
                     lastMessage: "ok"
                 ),
                 WorkUnitSnapshot(
@@ -25,7 +25,7 @@ struct DaemonStrategyTypesTests {
                     state: .running,
                     nextActivation: nil,
                     consecutiveFailures: 0,
-                    isBlacklisted: true,
+                    isBlocklisted: true,
                     lastMessage: nil
                 )
             ]
@@ -47,7 +47,7 @@ struct DaemonStrategyTypesTests {
         #expect(decoded.workUnits[0].consecutiveFailures == 2)
         #expect(decoded.workUnits[0].nextActivation == now)
         #expect(decoded.workUnits[1].state == .running)
-        #expect(decoded.workUnits[1].isBlacklisted == true)
+        #expect(decoded.workUnits[1].isBlocklisted == true)
         #expect(decoded.workUnits[1].nextActivation == nil)
     }
 
@@ -56,7 +56,7 @@ struct DaemonStrategyTypesTests {
         #expect(WorkUnitSnapshot.WorkUnitState.idle.rawValue == "idle")
         #expect(WorkUnitSnapshot.WorkUnitState.running.rawValue == "running")
         #expect(WorkUnitSnapshot.WorkUnitState.disabled.rawValue == "disabled")
-        #expect(WorkUnitSnapshot.WorkUnitState.blacklisted.rawValue == "blacklisted")
+        #expect(WorkUnitSnapshot.WorkUnitState.blocklisted.rawValue == "blacklisted")
     }
 
     @Test("DaemonContext captures dependencies without copying them needlessly")

@@ -20,9 +20,11 @@ public struct HealthMenuSection: MenuSection {
         var items: [NSMenuItem] = [MenuBarKitHelpers.disabledItem(title)]
 
         let strat = health.strategy
+        let unitCount = strat.workUnits.count
+        let unitSuffix = unitCount == 1 ? "" : "s"
         items.append(MenuBarKitHelpers.infoItem(
             label: "Strategy",
-            value: "\(strat.kind) \"\(strat.name)\" (\(strat.workUnits.count) unit\(strat.workUnits.count == 1 ? "" : "s"))",
+            value: "\(strat.kind) \"\(strat.name)\" (\(unitCount) unit\(unitSuffix))",
             indent: 0
         ))
         return items

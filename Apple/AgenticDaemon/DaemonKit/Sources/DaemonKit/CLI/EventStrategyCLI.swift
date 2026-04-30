@@ -53,18 +53,18 @@ public struct EventStrategyCLI: DaemonCLIExtension {
 
     static func parseFilters(_ args: [String]) -> [String: String] {
         var filters: [String: String] = [:]
-        var i = 0
-        while i < args.count {
-            if args[i] == "--filter", i + 1 < args.count {
-                let pair = args[i + 1]
-                if let eq = pair.firstIndex(of: "=") {
-                    let key = String(pair[..<eq])
-                    let value = String(pair[pair.index(after: eq)...])
+        var index = 0
+        while index < args.count {
+            if args[index] == "--filter", index + 1 < args.count {
+                let pair = args[index + 1]
+                if let equalsIndex = pair.firstIndex(of: "=") {
+                    let key = String(pair[..<equalsIndex])
+                    let value = String(pair[pair.index(after: equalsIndex)...])
                     filters[key] = value
                 }
-                i += 2
+                index += 2
             } else {
-                i += 1
+                index += 1
             }
         }
         return filters
@@ -72,9 +72,9 @@ public struct EventStrategyCLI: DaemonCLIExtension {
 
     static func encodeQuery(_ items: [String: String]) -> String {
         items.sorted(by: { $0.key < $1.key }).map { key, value in
-            let k = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? key
-            let v = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
-            return "\(k)=\(v)"
+            let encodedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? key
+            let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
+            return "\(encodedKey)=\(encodedValue)"
         }.joined(separator: "&")
     }
 }

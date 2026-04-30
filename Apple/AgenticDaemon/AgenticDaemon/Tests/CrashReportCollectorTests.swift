@@ -14,9 +14,8 @@ struct CrashReportCollectorTests {
         faultingThread: Int = 3,
         timestamp: String = "2026-04-07 18:08:23.00 -0700"
     ) -> String {
-        let metadata = """
-        {"app_name":"\(processName)","timestamp":"\(timestamp)","bug_type":"309","os_version":"macOS 26.3.1","name":"\(processName)"}
-        """
+        let metadata = #"{"app_name":"\#(processName)","timestamp":"\#(timestamp)","#
+            + #""bug_type":"309","os_version":"macOS 26.3.1","name":"\#(processName)"}"#
         let report = """
         {
           "procName": "\(processName)",

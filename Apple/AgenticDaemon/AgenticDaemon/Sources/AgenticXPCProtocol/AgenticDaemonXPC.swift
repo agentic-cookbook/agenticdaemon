@@ -15,6 +15,6 @@ import Foundation
     func enableJob(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
     func disableJob(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
     func triggerJob(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
-    func clearBlacklist(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
+    func clearBlocklist(_ name: String, reply: @escaping @Sendable (Bool) -> Void)
     func shutdown(reply: @escaping @Sendable () -> Void)
 }

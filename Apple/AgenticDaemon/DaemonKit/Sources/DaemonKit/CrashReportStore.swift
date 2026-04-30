@@ -28,8 +28,8 @@ public struct CrashReportStore: Sendable {
     }
 
     public func loadAll() -> [CrashReport] {
-        let fm = FileManager.default
-        guard let files = try? fm.contentsOfDirectory(
+        let fileManager = FileManager.default
+        guard let files = try? fileManager.contentsOfDirectory(
             at: crashesDirectory, includingPropertiesForKeys: nil
         ) else {
             return []
@@ -50,8 +50,8 @@ public struct CrashReportStore: Sendable {
     }
 
     public func cleanup(retentionDays: Int) {
-        let fm = FileManager.default
-        guard let files = try? fm.contentsOfDirectory(
+        let fileManager = FileManager.default
+        guard let files = try? fileManager.contentsOfDirectory(
             at: crashesDirectory, includingPropertiesForKeys: [.creationDateKey]
         ) else {
             return
@@ -60,12 +60,12 @@ public struct CrashReportStore: Sendable {
         let cutoff = Date.now.addingTimeInterval(-Double(retentionDays) * 86400)
 
         for file in files where file.pathExtension == "json" {
-            guard let attrs = try? fm.attributesOfItem(atPath: file.path(percentEncoded: false)),
+            guard let attrs = try? fileManager.attributesOfItem(atPath: file.path(percentEncoded: false)),
                   let created = attrs[.creationDate] as? Date,
                   created < cutoff else {
                 continue
             }
-            try? fm.removeItem(at: file)
+            try? fileManager.removeItem(at: file)
             logger.info("Cleaned up old crash report: \(file.lastPathComponent)")
         }
     }

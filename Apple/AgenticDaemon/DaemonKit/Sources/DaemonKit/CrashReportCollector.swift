@@ -75,7 +75,9 @@ public struct CrashReportCollector: Sendable {
             : nil
 
         var stackFrames: [CrashReport.StackFrame]?
-        if let crashedThread = plReport.threads?.first(where: { ($0 as? PLCrashReportThreadInfo)?.crashed == true }) as? PLCrashReportThreadInfo,
+        if let crashedThread = plReport.threads?.first(where: {
+            ($0 as? PLCrashReportThreadInfo)?.crashed == true
+        }) as? PLCrashReportThreadInfo,
            let frames = crashedThread.stackFrames as? [PLCrashReportStackFrameInfo] {
             stackFrames = frames.map { frame in
                 CrashReport.StackFrame(
@@ -101,14 +103,14 @@ public struct CrashReportCollector: Sendable {
     }
 
     func collectDiagnosticReports(crashedTaskName: String) -> [CrashReport] {
-        let fm = FileManager.default
-        guard fm.fileExists(atPath: diagnosticReportsDirectory.path(percentEncoded: false)) else {
+        let fileManager = FileManager.default
+        guard fileManager.fileExists(atPath: diagnosticReportsDirectory.path(percentEncoded: false)) else {
             return []
         }
 
         let contents: [URL]
         do {
-            contents = try fm.contentsOfDirectory(
+            contents = try fileManager.contentsOfDirectory(
                 at: diagnosticReportsDirectory,
                 includingPropertiesForKeys: nil
             )

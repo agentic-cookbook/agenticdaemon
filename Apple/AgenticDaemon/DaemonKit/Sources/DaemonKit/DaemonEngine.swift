@@ -167,16 +167,16 @@ public final class DaemonEngine: @unchecked Sendable {
     }
 
     private func createDirectories() {
-        let fm = FileManager.default
+        let fileManager = FileManager.default
         let dirs = [
             configuration.supportDirectory,
             configuration.crashesDirectory
         ]
         for dir in dirs {
             let path = dir.path(percentEncoded: false)
-            guard !fm.fileExists(atPath: path) else { continue }
+            guard !fileManager.fileExists(atPath: path) else { continue }
             do {
-                try fm.createDirectory(at: dir, withIntermediateDirectories: true)
+                try fileManager.createDirectory(at: dir, withIntermediateDirectories: true)
                 logger.info("Created directory: \(path)")
             } catch {
                 logger.error("Failed to create directory \(path): \(error)")

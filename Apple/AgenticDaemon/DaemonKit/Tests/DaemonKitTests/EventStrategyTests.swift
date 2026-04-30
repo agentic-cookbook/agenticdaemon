@@ -57,7 +57,7 @@ private func makeContext(in tmp: URL) -> (DaemonContext, CrashTracker, Recording
 private func makeTempDir(prefix: String = "event") -> URL {
     let url = FileManager.default.temporaryDirectory
         .appending(path: "\(prefix)-\(UUID().uuidString)")
-    try! FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+    try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     return url
 }
 
@@ -315,9 +315,9 @@ private func makeManualTrigger() -> (@Sendable () -> Void, CustomTrigger) {
 private final class ManualTriggerState: @unchecked Sendable {
     private let lock = NSLock()
     private var callback: (@Sendable () -> Void)?
-    func setCallback(_ cb: (@Sendable () -> Void)?) { lock.withLock { callback = cb } }
+    func setCallback(_ value: (@Sendable () -> Void)?) { lock.withLock { callback = value } }
     func invoke() {
-        let cb = lock.withLock { callback }
-        cb?()
+        let captured = lock.withLock { callback }
+        captured?()
     }
 }
