@@ -172,6 +172,25 @@ targets:
       - target: AgenticXPCProtocol
       - target: DaemonKit
 
+aggregateTargets:
+  AgenticDaemonMacOSAll:
+    targets:
+      - DaemonKit
+      - AgenticJobKit
+      - AgenticXPCProtocol
+      - AgenticDaemonLib
+      - MenuBarKit
+      - AgenticMenuBarLib
+      - agenticdaemon
+      - AgenticMenuBar
+
+  AgenticDaemonMacOSTestsAll:
+    targets:
+      - DaemonKitTests
+      - MenuBarKitTests
+      - AgenticDaemonTests
+      - AgenticMenuBarTests
+
 schemes:
   AgenticDaemon:
     build:
@@ -184,3 +203,32 @@ schemes:
         - MenuBarKitTests
         - AgenticDaemonTests
         - AgenticMenuBarTests
+
+  AgenticDaemonMacOSAll:
+    build:
+      targets:
+        AgenticDaemonMacOSAll: all
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+  AgenticDaemonMacOSTestsAll:
+    build:
+      targets:
+        AgenticDaemonMacOSTestsAll: all
+    test:
+      config: Debug
+      targets:
+        - DaemonKitTests
+        - MenuBarKitTests
+        - AgenticDaemonTests
+        - AgenticMenuBarTests
+    run:
+      config: Debug
+    analyze:
+      config: Debug

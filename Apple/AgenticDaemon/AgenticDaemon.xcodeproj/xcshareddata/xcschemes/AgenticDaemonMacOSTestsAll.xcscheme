@@ -15,23 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "12EB39AB48636F5CDD9A7BB4"
-               BuildableName = "AgenticMenuBar"
-               BlueprintName = "AgenticMenuBar"
-               ReferencedContainer = "container:AgenticDaemon.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7432D21A79BE0EE8EC05BB07"
-               BuildableName = "agenticdaemon"
-               BlueprintName = "agenticdaemon"
+               BlueprintIdentifier = "530AC90ACB680682E0E944DA"
+               BuildableName = "AgenticDaemonMacOSTestsAll"
+               BlueprintName = "AgenticDaemonMacOSTestsAll"
                ReferencedContainer = "container:AgenticDaemon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "12EB39AB48636F5CDD9A7BB4"
-            BuildableName = "AgenticMenuBar"
-            BlueprintName = "AgenticMenuBar"
+            BlueprintIdentifier = "530AC90ACB680682E0E944DA"
+            BuildableName = "AgenticDaemonMacOSTestsAll"
+            BlueprintName = "AgenticDaemonMacOSTestsAll"
             ReferencedContainer = "container:AgenticDaemon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -111,16 +97,17 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "12EB39AB48636F5CDD9A7BB4"
-            BuildableName = "AgenticMenuBar"
-            BlueprintName = "AgenticMenuBar"
+            BlueprintIdentifier = "530AC90ACB680682E0E944DA"
+            BuildableName = "AgenticDaemonMacOSTestsAll"
+            BlueprintName = "AgenticDaemonMacOSTestsAll"
             ReferencedContainer = "container:AgenticDaemon.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -128,16 +115,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "12EB39AB48636F5CDD9A7BB4"
-            BuildableName = "AgenticMenuBar"
-            BlueprintName = "AgenticMenuBar"
+            BlueprintIdentifier = "530AC90ACB680682E0E944DA"
+            BuildableName = "AgenticDaemonMacOSTestsAll"
+            BlueprintName = "AgenticDaemonMacOSTestsAll"
             ReferencedContainer = "container:AgenticDaemon.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
