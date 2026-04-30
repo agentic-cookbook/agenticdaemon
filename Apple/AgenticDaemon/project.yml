@@ -37,7 +37,7 @@ targetTemplates:
             export PATH="/opt/homebrew/bin:$PATH"
           fi
           if which swiftlint >/dev/null; then
-            swiftlint lint --quiet
+            swiftlint lint --quiet --strict
           else
             echo "warning: SwiftLint not installed; brew install swiftlint to enable"
           fi
