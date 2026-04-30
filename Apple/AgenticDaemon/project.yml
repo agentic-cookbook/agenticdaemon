@@ -1,6 +1,7 @@
 name: AgenticDaemon
 options:
   bundleIdPrefix: com.agentic-cookbook
+  xcodeVersion: "2640"
   deploymentTarget:
     macOS: "14.0"
   createIntermediateGroups: true
@@ -16,6 +17,10 @@ settings:
     GENERATE_INFOPLIST_FILE: YES
     SWIFT_ENABLE_EXPLICIT_MODULES: NO
     CLANG_ENABLE_EXPLICIT_MODULES: NO
+    DEAD_CODE_STRIPPING: YES
+    ENABLE_MODULE_VERIFIER: YES
+    MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS: "gnu11 gnu++14"
+    STRING_CATALOG_GENERATE_SYMBOLS: YES
 
 packages:
   plcrashreporter:
@@ -28,6 +33,9 @@ targetTemplates:
       - name: SwiftLint
         basedOnDependencyAnalysis: false
         script: |
+          if [[ "$(uname -m)" == "arm64" ]]; then
+            export PATH="/opt/homebrew/bin:$PATH"
+          fi
           if which swiftlint >/dev/null; then
             swiftlint lint --quiet
           else
