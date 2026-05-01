@@ -122,7 +122,7 @@
 		9ED72C25784BEC77DAAF4BD3 /* SchedulerEdgeCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423F284ECF060E1E9409D54C /* SchedulerEdgeCaseTests.swift */; };
 		9EF3F2781306E6C5A6F9B2FE /* JobConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129B888D36850795D91D751 /* JobConfigTests.swift */; };
 		A017BF261F51F78CEFD60C1E /* EventStrategyCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7980AFF7F16283721B45D662 /* EventStrategyCLI.swift */; };
-		A07C00598244B7579252C24A /* libAgenticJobKit.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D27A00C0D13F8E0EFB11CE4C /* libAgenticJobKit.dylib */; };
+		A07C00598244B7579252C24A /* AgenticJobKit.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D27A00C0D13F8E0EFB11CE4C /* AgenticJobKit.dylib */; };
 		A250B02C5B9CDC4725F7126C /* XPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE22529C0F5CAAFF11CFD510 /* XPCServer.swift */; };
 		A3192B063BEA450745733FAD /* CrashReportCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B591624C5835536A348FE8 /* CrashReportCollector.swift */; };
 		A3697423DEE503065AB92ADC /* CrashReportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427A2C084733B9E3159B36E4 /* CrashReportTests.swift */; };
@@ -170,7 +170,7 @@
 		EE4C6180CD5EAD5A41910A2A /* MenuBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2CB043D54D68C23E700B3B /* MenuBuilderTests.swift */; };
 		EF1AA3557C407141A2707AFB /* DaemonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961416DD2638BD6953EF05E7 /* DaemonKit.framework */; };
 		EFD30846120B7168BBD08442 /* CrashTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C6B885471933D44FC80C45 /* CrashTrackerTests.swift */; };
-		F195B18516F288566ED22A52 /* libAgenticJobKit.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D27A00C0D13F8E0EFB11CE4C /* libAgenticJobKit.dylib */; };
+		F195B18516F288566ED22A52 /* AgenticJobKit.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D27A00C0D13F8E0EFB11CE4C /* AgenticJobKit.dylib */; };
 		F443BB19CD9E5BDB7883AF46 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CA07E0246DF475294EF0CB7 /* libsqlite3.tbd */; };
 		F59848918FB2322E404EDC0C /* DaemonCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFFDEB44FA2A9AB12830350 /* DaemonCLI.swift */; };
 		F8599FD26AC1A93BBF187E54 /* StrategyHTTPEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470987969595CA635E8D54B9 /* StrategyHTTPEndpoints.swift */; };
@@ -512,7 +512,7 @@
 		27181FB6B650CE4D782A6E0D /* JobRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobRequest.swift; sourceTree = "<group>"; };
 		2F7CE5BF4DF74F845CEB3954 /* XPCService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XPCService.swift; sourceTree = "<group>"; };
 		33EFBA9D2ADF84F6FB51973B /* EventStrategyEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventStrategyEndpoints.swift; sourceTree = "<group>"; };
-		36642F15E736B4A49E632BC9 /* AgenticMenuBar */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AgenticMenuBar; sourceTree = BUILT_PRODUCTS_DIR; };
+		36642F15E736B4A49E632BC9 /* AgenticMenuBar */ = {isa = PBXFileReference; includeInIndex = 0; path = AgenticMenuBar; sourceTree = BUILT_PRODUCTS_DIR; };
 		387082F7FAE02633E37E5997 /* TimingStrategyEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingStrategyEndpoints.swift; sourceTree = "<group>"; };
 		3DA1F0B28D77098BFEBCD636 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3DC1DE4C9AC6017CAE0B0D69 /* DaemonStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonStatus.swift; sourceTree = "<group>"; };
@@ -581,9 +581,9 @@
 		CEBBE25F0C99C36C2652AB9C /* CompositeStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeStrategy.swift; sourceTree = "<group>"; };
 		CF1D14FC42528C83D536002D /* DaemonConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonConnection.swift; sourceTree = "<group>"; };
 		D0FD6E9197273B5A852465E6 /* DirectoryWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryWatcher.swift; sourceTree = "<group>"; };
-		D27A00C0D13F8E0EFB11CE4C /* libAgenticJobKit.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libAgenticJobKit.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		D27A00C0D13F8E0EFB11CE4C /* AgenticJobKit.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = AgenticJobKit.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		D76BA0E080AC25D7BB2CF53E /* DaemonHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonHTTPClient.swift; sourceTree = "<group>"; };
-		D8AD65BB55002386FC60F4E5 /* agenticdaemon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = agenticdaemon; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8AD65BB55002386FC60F4E5 /* agenticdaemon */ = {isa = PBXFileReference; includeInIndex = 0; path = agenticdaemon; sourceTree = BUILT_PRODUCTS_DIR; };
 		D944FD295FDFBB45F3C231FC /* MenuBarKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MenuBarKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB405B11E35CF34040AA5391 /* DaemonStrategyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonStrategyTests.swift; sourceTree = "<group>"; };
 		DCDDBC3F0F12F7EB1AA62E75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -626,7 +626,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87259241CAF936A4A13EFD86 /* libAgenticDaemonLib.a in Frameworks */,
-				F195B18516F288566ED22A52 /* libAgenticJobKit.dylib in Frameworks */,
+				F195B18516F288566ED22A52 /* AgenticJobKit.dylib in Frameworks */,
 				C973D23F478176466C0EEE60 /* libAgenticXPCProtocol.a in Frameworks */,
 				2766DA5CE60C053E5259E600 /* DaemonKit.framework in Frameworks */,
 				438CF963BE9DCA8ACBDA051E /* libsqlite3.tbd in Frameworks */,
@@ -681,7 +681,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36357BB514E4AC674C7D1362 /* libAgenticDaemonLib.a in Frameworks */,
-				A07C00598244B7579252C24A /* libAgenticJobKit.dylib in Frameworks */,
+				A07C00598244B7579252C24A /* AgenticJobKit.dylib in Frameworks */,
 				0B96FB2DDBB7D8F74A02401C /* libAgenticXPCProtocol.a in Frameworks */,
 				EF1AA3557C407141A2707AFB /* DaemonKit.framework in Frameworks */,
 				F443BB19CD9E5BDB7883AF46 /* libsqlite3.tbd in Frameworks */,
@@ -748,7 +748,7 @@
 			children = (
 				D8AD65BB55002386FC60F4E5 /* agenticdaemon */,
 				453A83445DC8E3CAE1D60051 /* AgenticDaemonTests.xctest */,
-				D27A00C0D13F8E0EFB11CE4C /* libAgenticJobKit.dylib */,
+				D27A00C0D13F8E0EFB11CE4C /* AgenticJobKit.dylib */,
 				36642F15E736B4A49E632BC9 /* AgenticMenuBar */,
 				0C7B993B9F73DE60D1EB67D0 /* AgenticMenuBarTests.xctest */,
 				961416DD2638BD6953EF05E7 /* DaemonKit.framework */,
@@ -1280,7 +1280,7 @@
 			packageProductDependencies = (
 			);
 			productName = AgenticJobKit;
-			productReference = D27A00C0D13F8E0EFB11CE4C /* libAgenticJobKit.dylib */;
+			productReference = D27A00C0D13F8E0EFB11CE4C /* AgenticJobKit.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		FEE9DFAB1EB490416C372A64 /* AgenticMenuBarTests */ = {
@@ -1314,6 +1314,8 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = 873803B320AC70C8DE8604AC /* Build configuration list for PBXProject "AgenticDaemon" */;
 			developmentRegion = en;
@@ -1384,7 +1386,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		2DB56E95F8DE9D052965227C /* Copy Swift Objective-C Interface Header */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1419,7 +1421,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		4118FAB65946D12F4152F4B1 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1438,7 +1440,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		5141A9DD7BFF786EDDC85E00 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1457,7 +1459,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		7181623C2661E6B0CF3FD074 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1476,7 +1478,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		775DF6B3EEFA72B286773FCF /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1495,7 +1497,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		987417407796651DE8B0AFBC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1514,7 +1516,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		A75C5F6F9DA6B1E9AE42132F /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1533,7 +1535,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		D662BDF0209D9C894483BDB8 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1552,7 +1554,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		DD7A9F4FC0FDBD496E38D602 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1571,7 +1573,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		E3C1F74EADE4823B22B8452C /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1590,7 +1592,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 		F5CFC93C6159D1B4A34567FA /* Copy Swift Objective-C Interface Header */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1625,7 +1627,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == \"arm64\" ]]; then\n  export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\nif which swiftlint >/dev/null; then\n  swiftlint lint --quiet --strict\nelse\n  echo \"warning: SwiftLint not installed; brew install swiftlint to enable\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2041,6 +2043,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -2059,10 +2062,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				LM_FILTER_WARNINGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "$(inherited) -weak_framework AppIntents";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -2077,7 +2083,6 @@
 		223AC13EFCC6242A09ED488A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEAD_CODE_STRIPPING = YES;
 			};
 			name = Debug;
 		};
@@ -2085,7 +2090,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2104,7 +2108,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2124,7 +2127,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2143,7 +2145,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2162,14 +2163,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticXPCProtocol";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2180,14 +2178,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticMenuBarLib";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2198,14 +2193,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticDaemonLib";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2217,7 +2209,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2236,14 +2227,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticMenuBarLib";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2254,14 +2242,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticDaemonLib";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2273,7 +2258,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2295,18 +2279,15 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.DaemonKit";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2319,7 +2300,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2367,6 +2347,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -2379,9 +2360,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				LM_FILTER_WARNINGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "$(inherited) -weak_framework AppIntents";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -2396,7 +2380,6 @@
 		8AC5E04620875D2E8920D944 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEAD_CODE_STRIPPING = YES;
 			};
 			name = Debug;
 		};
@@ -2404,15 +2387,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				EXECUTABLE_PREFIX = lib;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticJobKit";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2425,18 +2405,15 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.MenuBarKit";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2451,18 +2428,15 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.DaemonKit";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2474,7 +2448,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2493,15 +2466,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				EXECUTABLE_PREFIX = lib;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticJobKit";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2513,7 +2483,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2527,7 +2496,6 @@
 		B3ACD966D35E8F33977933EB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEAD_CODE_STRIPPING = YES;
 			};
 			name = Release;
 		};
@@ -2536,7 +2504,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2552,7 +2519,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2566,7 +2532,6 @@
 		E5A97D6EDB9D00B32B0C01C8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEAD_CODE_STRIPPING = YES;
 			};
 			name = Release;
 		};
@@ -2576,18 +2541,15 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.MenuBarKit";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2599,14 +2561,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				ENABLE_MODULE_VERIFIER = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.agentic-cookbook.AgenticXPCProtocol";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -2618,7 +2577,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

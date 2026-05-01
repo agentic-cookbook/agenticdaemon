@@ -21,6 +21,8 @@ settings:
     ENABLE_MODULE_VERIFIER: YES
     MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS: "gnu11 gnu++14"
     STRING_CATALOG_GENERATE_SYMBOLS: YES
+    LM_FILTER_WARNINGS: YES
+    OTHER_LDFLAGS: "$(inherited) -weak_framework AppIntents"
 
 packages:
   plcrashreporter:
